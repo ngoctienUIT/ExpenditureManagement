@@ -29,6 +29,13 @@
             {
               "client_id": "479822435618-ds8ovtskq9uqboduveibccp72thm614d.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "479822435618-5rs0eu94d3i6i3ev7dtj4ao5e799qetl.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.expenditureManagement"
+              }
             }
           ]
         }
