@@ -1,6 +1,5 @@
 import 'package:expenditure_management/constants/function/on_will_pop.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:expenditure_management/constants/app_colors.dart';
 import 'package:expenditure_management/page/main/analytic/analytic_page.dart';
@@ -42,7 +41,9 @@ class _MainPageState extends State<MainPage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.pushNamed(context, '/add');
+        },
         child: const Icon(Icons.add_rounded),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

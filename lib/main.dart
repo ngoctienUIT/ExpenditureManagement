@@ -1,4 +1,5 @@
 import 'package:expenditure_management/firebase_options.dart';
+import 'package:expenditure_management/page/add_spending/add_spending_page.dart';
 import 'package:expenditure_management/page/forgot/forgot_page.dart';
 import 'package:expenditure_management/page/forgot/success_page.dart';
 import 'package:expenditure_management/page/login/login_page.dart';
@@ -44,7 +45,8 @@ class MyApp extends StatelessWidget {
         '/main': (context) => const MainPage(),
         '/forgot': (context) => const ForgotPage(),
         '/success': (context) => const SuccessPage(),
-        '/verify': (context) => const VerifyPage()
+        '/verify': (context) => const VerifyPage(),
+        '/add': (context) => const AddSpendingPage()
       },
     );
   }
