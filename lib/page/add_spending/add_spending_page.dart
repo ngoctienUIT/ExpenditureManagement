@@ -193,8 +193,11 @@ class _AddSpendingPageState extends State<AddSpendingPage> {
                               ),
                               Row(
                                 children: [
-                                  const Icon(Icons.edit,
-                                      color: Colors.grey, size: 30),
+                                  const Icon(
+                                    Icons.edit,
+                                    color: Colors.grey,
+                                    size: 30,
+                                  ),
                                   const SizedBox(width: 10),
                                   Expanded(
                                     child: TextFormField(

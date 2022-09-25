@@ -39,4 +39,19 @@ class SpendingFirebase {
       }
     });
   }
+
+  static Future<List<Spending>> getSpendingList(List<String> list) async {
+    List<Spending> spendingList = [];
+    for (var element in list) {
+      await FirebaseFirestore.instance
+          .collection("spending")
+          .doc(element)
+          .get()
+          .then((value) {
+        Spending spending = Spending.fromFirebase(value);
+        spendingList.add(spending);
+      });
+    }
+    return spendingList;
+  }
 }
