@@ -196,6 +196,7 @@ class _SignupFormState extends State<SignupForm> {
                             password: _passwordController.text,
                             user: User(
                               name: _nameController.text.trim(),
+                              money: 0,
                               birthday:
                                   DateFormat("dd/MM/yyyy").format(birthday),
                               gender: gender,

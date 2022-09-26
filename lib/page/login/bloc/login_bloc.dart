@@ -97,6 +97,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         await firestore.set(myuser.User(
                 name: FirebaseAuth.instance.currentUser!.displayName.toString(),
                 birthday: DateFormat("dd/MM/yyyy").format(DateTime.now()),
+                money: 0,
                 avatar: FirebaseAuth.instance.currentUser!.photoURL.toString())
             .toMap());
       }
