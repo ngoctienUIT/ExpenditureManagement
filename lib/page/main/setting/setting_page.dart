@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expenditure_management/constants/app_colors.dart';
 import 'package:expenditure_management/constants/app_styles.dart';
+import 'package:expenditure_management/page/main/setting/change_profile_page.dart';
 import 'package:expenditure_management/page/main/setting/widget/setting_item.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:expenditure_management/models/user.dart' as myuser;
+import 'package:intl/intl.dart';
 
 class SettingPage extends StatefulWidget {
   const SettingPage({Key? key}) : super(key: key);
@@ -17,6 +19,8 @@ class SettingPage extends StatefulWidget {
 }
 
 class _SettingPageState extends State<SettingPage> {
+  var numberFormat = NumberFormat.currency(locale: "vi_VI");
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +39,7 @@ class _SettingPageState extends State<SettingPage> {
                   return Column(
                     children: [
                       Material(
-                        elevation: 3,
+                        elevation: 2,
                         child: SizedBox(
                           width: double.infinity,
                           height: 50,
@@ -61,9 +65,9 @@ class _SettingPageState extends State<SettingPage> {
                       const SizedBox(height: 20),
                       const Text("Tiền hàng tháng"),
                       const SizedBox(height: 10),
-                      const Text(
-                        "3.000.000VND",
-                        style: TextStyle(
+                      Text(
+                        numberFormat.format(user.money),
+                        style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
@@ -79,7 +83,14 @@ class _SettingPageState extends State<SettingPage> {
               child: Column(
                 children: [
                   const SizedBox(height: 10),
-                  settingItem("Profile", () {}, FontAwesomeIcons.user),
+                  settingItem("Account", () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ChangeProfilePage(),
+                      ),
+                    );
+                  }, FontAwesomeIcons.user),
                   const SizedBox(height: 20),
                   settingItem("Language", () {}, Icons.translate_outlined),
                   const SizedBox(height: 20),

@@ -24,7 +24,7 @@ class ChooseType extends StatelessWidget {
       body: ListView.builder(
         itemCount: listType.length,
         itemBuilder: (context, index) {
-          if (index == 0 || index == 10) {
+          if ([0, 10, 21, 27, 35, 38].contains(index)) {
             return Padding(
               padding: const EdgeInsets.only(top: 20, bottom: 10, left: 15),
               child: Text(
@@ -37,6 +37,7 @@ class ChooseType extends StatelessWidget {
               ),
             );
           }
+
           return InkWell(
             onTap: () {
               action(index);

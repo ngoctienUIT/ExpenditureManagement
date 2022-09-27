@@ -30,6 +30,12 @@ class ViewListSpendingPage extends StatelessWidget {
           listType[spendingList[0].type]["title"]!,
           style: const TextStyle(color: Colors.black),
         ),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(Icons.arrow_back_ios_new_rounded),
+        ),
         centerTitle: true,
       ),
       body: ListView.builder(
@@ -65,7 +71,8 @@ class ViewListSpendingPage extends StatelessWidget {
                               DateFormat("EEEE").format(listDate[index]),
                               style: const TextStyle(fontSize: 18),
                             ),
-                            Text(DateFormat("MM/yyyy").format(listDate[index]))
+                            Text(DateFormat("MMMM, yyyy")
+                                .format(listDate[index]))
                           ],
                         ),
                         const Spacer(),

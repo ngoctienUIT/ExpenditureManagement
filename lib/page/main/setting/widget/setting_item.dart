@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 Widget settingItem(String text, Function action, IconData icon) {
   return InkWell(
-    onTap: () {},
+    onTap: () {
+      action();
+    },
     child: Row(
       children: [
         Container(

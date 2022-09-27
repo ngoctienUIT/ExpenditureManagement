@@ -40,7 +40,7 @@ class _HomePageState extends State<HomePage> {
                   myuser.User user =
                       myuser.User.fromFirebase(snapshot.requireData);
                   return Material(
-                    elevation: 2,
+                    elevation: 1,
                     child: SizedBox(
                       width: double.infinity,
                       height: 60,
