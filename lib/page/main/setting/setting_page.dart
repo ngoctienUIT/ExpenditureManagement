@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expenditure_management/constants/app_colors.dart';
 import 'package:expenditure_management/constants/app_styles.dart';
-import 'package:expenditure_management/page/main/setting/change_profile_page.dart';
+import 'package:expenditure_management/page/main/setting/edit_profile_page.dart';
 import 'package:expenditure_management/page/main/setting/widget/setting_item.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -20,10 +20,12 @@ class SettingPage extends StatefulWidget {
 
 class _SettingPageState extends State<SettingPage> {
   var numberFormat = NumberFormat.currency(locale: "vi_VI");
+  bool language = true;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.whisperBackground,
       body: SafeArea(
         child: Column(
           children: [
@@ -87,7 +89,7 @@ class _SettingPageState extends State<SettingPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const ChangeProfilePage(),
+                        builder: (context) => const EditProfilePage(),
                       ),
                     );
                   }, FontAwesomeIcons.user),
@@ -108,8 +110,10 @@ class _SettingPageState extends State<SettingPage> {
                       const Text("Dark Mode", style: TextStyle(fontSize: 18)),
                       const Spacer(),
                       Switch(
-                        value: true,
-                        onChanged: (value) {},
+                        value: language,
+                        onChanged: (value) {
+                          setState(() => language = value);
+                        },
                       )
                     ],
                   ),

@@ -1,21 +1,22 @@
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:expenditure_management/constants/app_colors.dart';
 import 'package:expenditure_management/constants/app_styles.dart';
+import 'package:expenditure_management/controls/spending_firebase.dart';
+import 'package:expenditure_management/page/main/setting/widget/show_birthday.dart';
 import 'package:expenditure_management/page/signup/gender_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:expenditure_management/models/user.dart' as myuser;
+import 'package:flutter/services.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:expenditure_management/models/user.dart' as myuser;
 
-class ChangeProfilePage extends StatefulWidget {
-  const ChangeProfilePage({Key? key}) : super(key: key);
+class EditProfilePage extends StatelessWidget {
+  const EditProfilePage({super.key});
 
-  @override
-  State<ChangeProfilePage> createState() => _ChangeProfilePageState();
-}
-
-class _ChangeProfilePageState extends State<ChangeProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,10 +25,7 @@ class _ChangeProfilePageState extends State<ChangeProfilePage> {
         elevation: 2,
         iconTheme: const IconThemeData(color: Colors.black),
         backgroundColor: Colors.white,
-        title: const Text(
-          "Account",
-          style: TextStyle(color: Colors.black),
-        ),
+        title: const Text("Account", style: TextStyle(color: Colors.black)),
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
@@ -49,6 +47,9 @@ class _ChangeProfilePageState extends State<ChangeProfilePage> {
               text: NumberFormat.currency(locale: "vi_VI").format(user.money),
             );
             bool gender = user.gender;
+            File? image;
+            DateTime selectedDate =
+                DateFormat("dd/MM/yyyy").parse(user.birthday);
 
             return StatefulBuilder(
               builder: (context, setState) {
@@ -57,19 +58,38 @@ class _ChangeProfilePageState extends State<ChangeProfilePage> {
                     children: [
                       const SizedBox(height: 20),
                       InkWell(
-                        onTap: () {},
+                        borderRadius: BorderRadius.circular(90),
+                        onTap: () async {
+                          try {
+                            var pickImage = await ImagePicker()
+                                .pickImage(source: ImageSource.gallery);
+                            if (pickImage == null) return;
+                            final cropImage = await ImageCropper().cropImage(
+                                sourcePath: pickImage.path,
+                                aspectRatio:
+                                    const CropAspectRatio(ratioX: 1, ratioY: 1),
+                                aspectRatioPresets: [
+                                  CropAspectRatioPreset.square
+                                ]);
+                            if (cropImage == null) return;
+                            setState(() => image = File(cropImage.path));
+                          } on PlatformException catch (_) {}
+                        },
                         child: Stack(
                           children: [
                             ClipOval(
-                              child: Image.network(
-                                user.avatar,
-                                width: 170,
-                              ),
+                              child: image == null
+                                  ? Image.network(user.avatar, width: 170)
+                                  : Image.file(image!, width: 170),
                             ),
-                            const Positioned(
-                              bottom: 0,
-                              right: 0,
-                              child: Icon(Icons.image, size: 30),
+                            Positioned(
+                              bottom: 5,
+                              right: 5,
+                              child: Image.asset(
+                                "assets/icons/image.png",
+                                width: 35,
+                                color: Colors.black54,
+                              ),
                             )
                           ],
                         ),
@@ -80,39 +100,47 @@ class _ChangeProfilePageState extends State<ChangeProfilePage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
-                              "Tên",
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
-                            ),
+                            textProfile("Họ tên"),
                             TextField(
                               controller: nameController,
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                             const SizedBox(height: 30),
-                            const Text(
-                              "Tiền",
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
-                            ),
+                            textProfile("Tiền hàng tháng"),
                             TextField(
                               controller: moneyController,
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
                               inputFormatters: [
                                 CurrencyTextInputFormatter(locale: "vi")
                               ],
                             ),
                             const SizedBox(height: 30),
-                            const Text(
-                              "Ngày sinh",
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
+                            textProfile("Ngày sinh"),
+                            const SizedBox(height: 20),
+                            InkWell(
+                              onTap: () async {
+                                final DateTime? picked = await showDatePicker(
+                                  context: context,
+                                  initialDate: selectedDate,
+                                  firstDate: DateTime(2000),
+                                  lastDate: DateTime.now(),
+                                );
+                                if (picked != null && picked != selectedDate) {
+                                  setState(() => selectedDate = picked);
+                                }
+                              },
+                              child: showBirthday(selectedDate),
                             ),
-                            const TextField(),
                             const SizedBox(height: 30),
-                            const Text(
-                              "Giới tính",
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
-                            ),
+                            textProfile("Giới tính"),
                             const SizedBox(height: 30),
                             Row(
                               children: [
@@ -122,9 +150,7 @@ class _ChangeProfilePageState extends State<ChangeProfilePage> {
                                     gender: true,
                                     action: () {
                                       if (!gender) {
-                                        setState(() {
-                                          gender = true;
-                                        });
+                                        setState(() => gender = true);
                                       }
                                     }),
                                 const Spacer(),
@@ -133,9 +159,7 @@ class _ChangeProfilePageState extends State<ChangeProfilePage> {
                                     gender: false,
                                     action: () {
                                       if (gender) {
-                                        setState(() {
-                                          gender = false;
-                                        });
+                                        setState(() => gender = false);
                                       }
                                     }),
                                 const Spacer(),
@@ -152,7 +176,19 @@ class _ChangeProfilePageState extends State<ChangeProfilePage> {
                                     borderRadius: BorderRadius.circular(30),
                                   ),
                                 ),
-                                onPressed: () async {},
+                                onPressed: () async {
+                                  SpendingFirebase.updateInfo(
+                                    user: user.copyWith(
+                                      name: nameController.text,
+                                      money: int.parse(moneyController.text
+                                          .replaceAll(RegExp(r'[^0-9]'), '')),
+                                      gender: gender,
+                                      birthday: DateFormat("dd/MM/yyyy")
+                                          .format(selectedDate),
+                                    ),
+                                    image: image,
+                                  );
+                                },
                                 child: Text("Lưu", style: AppStyles.p),
                               ),
                             ),
@@ -167,6 +203,17 @@ class _ChangeProfilePageState extends State<ChangeProfilePage> {
           }
           return const Center(child: CircularProgressIndicator());
         },
+      ),
+    );
+  }
+
+  Widget textProfile(String text) {
+    return Text(
+      text,
+      style: TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.bold,
+        color: Colors.grey[600],
       ),
     );
   }

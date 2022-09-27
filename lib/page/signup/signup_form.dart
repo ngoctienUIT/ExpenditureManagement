@@ -71,16 +71,10 @@ class _SignupFormState extends State<SignupForm> {
                 children: [
                   const Text(
                     "Hello New User!",
-                    style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 10),
-                  const Text(
-                    "Welcome to App",
-                    style: TextStyle(fontSize: 20),
-                  ),
+                  const Text("Welcome to App", style: TextStyle(fontSize: 20)),
                   const SizedBox(height: 50),
                   inputText(
                     hint: "Name",
@@ -104,9 +98,7 @@ class _SignupFormState extends State<SignupForm> {
                           gender: true,
                           action: () {
                             if (!gender) {
-                              setState(() {
-                                gender = true;
-                              });
+                              setState(() => gender = true);
                             }
                           }),
                       const Spacer(),
@@ -115,9 +107,7 @@ class _SignupFormState extends State<SignupForm> {
                           gender: false,
                           action: () {
                             if (gender) {
-                              setState(() {
-                                gender = false;
-                              });
+                              setState(() => gender = false);
                             }
                           }),
                       const Spacer(),
@@ -133,9 +123,7 @@ class _SignupFormState extends State<SignupForm> {
                         lastDate: DateTime.now(),
                       );
                       if (picked != null && picked != birthday) {
-                        setState(() {
-                          birthday = picked;
-                        });
+                        setState(() => birthday = picked);
                       }
                     },
                     child: Container(
@@ -213,18 +201,12 @@ class _SignupFormState extends State<SignupForm> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        "Have an account?",
-                        style: AppStyles.p,
-                      ),
+                      Text("Have an account?", style: AppStyles.p),
                       TextButton(
                         onPressed: () {
                           Navigator.pushReplacementNamed(context, '/login');
                         },
-                        child: Text(
-                          "Login now",
-                          style: AppStyles.p,
-                        ),
+                        child: Text("Login now", style: AppStyles.p),
                       )
                     ],
                   ),

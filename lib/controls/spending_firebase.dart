@@ -1,7 +1,10 @@
+import 'dart:io';
 import 'package:expenditure_management/models/spending.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:intl/intl.dart';
+import 'package:expenditure_management/models/user.dart' as myuser;
 
 class SpendingFirebase {
   static Future addSpending(Spending spending) async {
@@ -53,5 +56,28 @@ class SpendingFirebase {
       });
     }
     return spendingList;
+  }
+
+  static Future updateInfo({required myuser.User user, File? image}) async {
+    if (image != null) {
+      user.avatar = await uploadImage(
+        folder: "avatar",
+        name: "${FirebaseAuth.instance.currentUser!.uid}.png",
+        image: image,
+      );
+    }
+    FirebaseFirestore.instance
+        .collection("info")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .update(user.toMap());
+  }
+
+  static Future<String> uploadImage(
+      {required String folder,
+      required String name,
+      required File image}) async {
+    Reference upload = FirebaseStorage.instance.ref().child("$folder/$name");
+    await upload.putFile(image);
+    return await upload.getDownloadURL();
   }
 }

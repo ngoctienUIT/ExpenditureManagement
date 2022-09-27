@@ -30,6 +30,7 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.whisperBackground,
       body: WillPopScope(
         onWillPop: () => onWillPop(
           action: (now) => currentBackPressTime = now,
@@ -65,9 +66,7 @@ class _MainPageState extends State<MainPage> {
                     current: currentTab,
                     icon: FontAwesomeIcons.house,
                     action: () {
-                      setState(() {
-                        currentTab = 0;
-                      });
+                      setState(() => currentTab = 0);
                     },
                   ),
                   itemBottomTab(
@@ -77,9 +76,7 @@ class _MainPageState extends State<MainPage> {
                     size: 28,
                     icon: Icons.calendar_month_outlined,
                     action: () {
-                      setState(() {
-                        currentTab = 1;
-                      });
+                      setState(() => currentTab = 1);
                     },
                   ),
                 ],
@@ -93,9 +90,7 @@ class _MainPageState extends State<MainPage> {
                     current: currentTab,
                     icon: FontAwesomeIcons.chartPie,
                     action: () {
-                      setState(() {
-                        currentTab = 2;
-                      });
+                      setState(() => currentTab = 2);
                     },
                   ),
                   itemBottomTab(
@@ -104,9 +99,7 @@ class _MainPageState extends State<MainPage> {
                     current: currentTab,
                     icon: FontAwesomeIcons.gear,
                     action: () {
-                      setState(() {
-                        currentTab = 3;
-                      });
+                      setState(() => currentTab = 3);
                     },
                   ),
                 ],
