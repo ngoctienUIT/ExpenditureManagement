@@ -3,6 +3,7 @@ import 'package:expenditure_management/constants/list.dart';
 import 'package:expenditure_management/models/spending.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 class ViewListSpendingPage extends StatelessWidget {
   const ViewListSpendingPage({Key? key, required this.spendingList})
@@ -43,8 +44,7 @@ class ViewListSpendingPage extends StatelessWidget {
         itemBuilder: (context, index) {
           var numberFormat = NumberFormat.currency(locale: "vi_VI");
           var list = spendingList
-              .where((element) =>
-                  element.dateTime.difference(listDate[index]).inHours < 24)
+              .where((element) => isSameDay(element.dateTime, listDate[index]))
               .toList();
 
           return Padding(

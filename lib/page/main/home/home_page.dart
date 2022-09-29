@@ -186,11 +186,6 @@ class _HomePageState extends State<HomePage> {
                                     .where((element) => element.type == index)
                                     .toList();
                                 if (list.isNotEmpty) {
-                                  int sum = 0;
-                                  for (var element in list) {
-                                    sum += element.money;
-                                  }
-
                                   return InkWell(
                                     borderRadius: BorderRadius.circular(15),
                                     onTap: () {
@@ -226,7 +221,10 @@ class _HomePageState extends State<HomePage> {
                                             ),
                                             const Spacer(),
                                             Text(
-                                              numberFormat.format(sum),
+                                              numberFormat.format(list
+                                                  .map((e) => e.money)
+                                                  .reduce((value, element) =>
+                                                      value + element)),
                                               style:
                                                   const TextStyle(fontSize: 16),
                                             ),

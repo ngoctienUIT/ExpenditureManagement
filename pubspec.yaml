@@ -52,6 +52,7 @@ dependencies:
   currency_text_input_formatter: ^2.1.7
   image_picker: ^0.8.5+3
   image_cropper: ^3.0.0
+  table_calendar: ^3.0.7
 
 dev_dependencies:
   flutter_test:
