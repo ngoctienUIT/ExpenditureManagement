@@ -75,18 +75,35 @@ class _CalendarPageState extends State<CalendarPage> {
                                 onFormatChanged: (format) =>
                                     setState(() => _format = format),
                               ),
-                              totalSpending(spendingList),
-                              Expanded(child: buildSpending(spendingList))
+                              totalSpending(spendingList: spendingList),
+                              Expanded(
+                                child:
+                                    buildSpending(spendingList: spendingList),
+                              )
                             ],
                           );
                         }
-                        return const Center(child: CircularProgressIndicator());
+                        return loadingData();
                       });
                 });
               }
-              return const Center(child: CircularProgressIndicator());
+              return loadingData();
             }),
       ),
+    );
+  }
+
+  Widget loadingData() {
+    return Column(
+      children: [
+        customTableCalendar(
+          focusedDay: _focusedDay,
+          selectedDay: _selectedDay,
+          format: _format,
+        ),
+        totalSpending(),
+        Expanded(child: buildSpending())
+      ],
     );
   }
 }

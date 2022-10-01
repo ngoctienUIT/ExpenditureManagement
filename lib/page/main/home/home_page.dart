@@ -1,8 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expenditure_management/constants/app_colors.dart';
-import 'package:expenditure_management/constants/list.dart';
 import 'package:expenditure_management/controls/spending_firebase.dart';
-import 'package:expenditure_management/page/main/home/view_list_spending_page.dart';
+import 'package:expenditure_management/page/main/home/item_spending_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -175,75 +174,9 @@ class _HomePageState extends State<HomePage> {
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
                           var data = snapshot.data;
-                          return ListView.builder(
-                            padding: const EdgeInsets.all(10),
-                            itemCount: listType.length,
-                            itemBuilder: (context, index) {
-                              if (index == 0 || index == 10) {
-                                return const SizedBox.shrink();
-                              } else {
-                                var list = data!
-                                    .where((element) => element.type == index)
-                                    .toList();
-                                if (list.isNotEmpty) {
-                                  return InkWell(
-                                    borderRadius: BorderRadius.circular(15),
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              ViewListSpendingPage(
-                                                  spendingList: list),
-                                        ),
-                                      );
-                                    },
-                                    child: Card(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(15),
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 20, horizontal: 15),
-                                        child: Row(
-                                          children: [
-                                            Image.asset(
-                                              listType[index]["image"]!,
-                                              width: 40,
-                                            ),
-                                            const SizedBox(width: 10),
-                                            Text(
-                                              listType[index]["title"]!,
-                                              style: const TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            const Spacer(),
-                                            Text(
-                                              numberFormat.format(list
-                                                  .map((e) => e.money)
-                                                  .reduce((value, element) =>
-                                                      value + element)),
-                                              style:
-                                                  const TextStyle(fontSize: 16),
-                                            ),
-                                            const SizedBox(width: 10),
-                                            const Icon(Icons
-                                                .arrow_forward_ios_outlined)
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                } else {
-                                  return const SizedBox.shrink();
-                                }
-                              }
-                            },
-                          );
+                          return itemSpendingWidget(spendingList: data);
                         }
-                        return const Center(child: CircularProgressIndicator());
+                        return itemSpendingWidget();
                       },
                     );
                   }

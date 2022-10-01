@@ -10,10 +10,10 @@ Widget customTableCalendar({
   required DateTime focusedDay,
   required DateTime selectedDay,
   required CalendarFormat format,
-  required List<Spending> dataSpending,
-  required Function(DateTime) onPageChanged,
-  required Function(DateTime, DateTime) onDaySelected,
-  required Function(CalendarFormat) onFormatChanged,
+  List<Spending>? dataSpending,
+  Function(DateTime)? onPageChanged,
+  Function(DateTime, DateTime)? onDaySelected,
+  Function(CalendarFormat)? onFormatChanged,
 }) {
   return Card(
     child: TableCalendar(
@@ -23,18 +23,23 @@ Widget customTableCalendar({
       startingDayOfWeek: StartingDayOfWeek.monday,
       selectedDayPredicate: (day) => isSameDay(selectedDay, day),
       calendarFormat: format,
-      onPageChanged: (focusedDay) => onPageChanged(focusedDay),
-      onFormatChanged: (format) => onFormatChanged(format),
+      onPageChanged: (focusedDay) {
+        if (onPageChanged != null) onPageChanged(focusedDay);
+      },
+      onFormatChanged: (format) {
+        if (onFormatChanged != null) onFormatChanged(format);
+      },
       onDaySelected: (mySelectedDay, myFocusedDay) {
         if (!isSameDay(selectedDay, mySelectedDay) &&
-            isSameMonth(focusedDay, mySelectedDay)) {
-          onDaySelected(mySelectedDay, myFocusedDay);
-        }
+            isSameMonth(focusedDay, mySelectedDay) &&
+            onDaySelected != null) onDaySelected(mySelectedDay, myFocusedDay);
       },
       eventLoader: (day) {
-        return dataSpending
-            .where((element) => isSameDay(element.dateTime, day))
-            .toList();
+        return dataSpending != null
+            ? dataSpending
+                .where((element) => isSameDay(element.dateTime, day))
+                .toList()
+            : [];
       },
       calendarBuilders: CalendarBuilders(
         prioritizedBuilder: (context, day, focusedDay) {

@@ -1,3 +1,4 @@
+import 'package:expenditure_management/constants/function/loading_animation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -44,6 +45,7 @@ class _SignupFormState extends State<SignupForm> {
     return BlocBuilder<SignupBloc, SignupState>(
       builder: (context, state) {
         if (state is SignupSuccessState) {
+          Navigator.pop(context);
           SchedulerBinding.instance.addPostFrameCallback((_) {
             var snackBar =
                 const SnackBar(content: Text('Tạo tài khoản thành công'));
@@ -55,6 +57,7 @@ class _SignupFormState extends State<SignupForm> {
         }
 
         if (state is SignupErrorState) {
+          Navigator.pop(context);
           SchedulerBinding.instance.addPostFrameCallback((_) {
             var snackBar =
                 const SnackBar(content: Text('Không thể tạo tài khoản'));
@@ -178,6 +181,7 @@ class _SignupFormState extends State<SignupForm> {
                   customButton(
                     action: () {
                       if (_formKey.currentState!.validate()) {
+                        loadingAnimation(context);
                         BlocProvider.of<SignupBloc>(context).add(
                           SignupEmailPasswordEvent(
                             email: _userController.text.trim(),
