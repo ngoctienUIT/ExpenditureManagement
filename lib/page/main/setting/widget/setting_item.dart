@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
-Widget settingItem(String text, Function action, IconData icon) {
+Widget settingItem(
+    {required String text,
+    required Function action,
+    required IconData icon,
+    Color? color}) {
   return InkWell(
     onTap: () {
       action();
@@ -9,11 +13,11 @@ Widget settingItem(String text, Function action, IconData icon) {
       children: [
         Container(
           decoration: BoxDecoration(
-            color: Colors.red,
+            color: color ?? Colors.black45,
             borderRadius: BorderRadius.circular(90),
           ),
           padding: const EdgeInsets.all(10),
-          child: Icon(icon),
+          child: Icon(icon, color: Colors.white),
         ),
         const SizedBox(width: 10),
         Text(text, style: const TextStyle(fontSize: 18)),
