@@ -77,10 +77,15 @@ class _CalendarPageState extends State<CalendarPage> {
                                       check = true;
                                     });
                                   }),
-                              totalSpending(spendingList: _currentSpendingList),
+                              if (_currentSpendingList!.isNotEmpty)
+                                totalSpending(
+                                  spendingList: _currentSpendingList,
+                                ),
                               Expanded(
                                 child: buildSpending(
-                                    spendingList: _currentSpendingList),
+                                  spendingList: _currentSpendingList,
+                                  date: _selectedDay,
+                                ),
                               )
                             ],
                           );
