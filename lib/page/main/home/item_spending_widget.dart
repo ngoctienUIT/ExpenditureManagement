@@ -16,7 +16,7 @@ Widget itemSpendingWidget({List<Spending>? spendingList}) {
             if (index == 0 || index == 10) {
               return const SizedBox.shrink();
             } else {
-              var list = spendingList!
+              var list = spendingList
                   .where((element) => element.type == index)
                   .toList();
               if (list.isNotEmpty) {

@@ -6,15 +6,18 @@ import 'package:table_calendar/table_calendar.dart';
 bool isSameMonth(DateTime day1, DateTime day2) =>
     day1.year == day2.year && day1.month == day2.month;
 
-Widget customTableCalendar({
-  required DateTime focusedDay,
-  required DateTime selectedDay,
-  required CalendarFormat format,
-  List<Spending>? dataSpending,
-  Function(DateTime)? onPageChanged,
-  Function(DateTime, DateTime)? onDaySelected,
-  Function(CalendarFormat)? onFormatChanged,
-}) {
+BorderSide customBorderSide() => const BorderSide(
+    color: Colors.black12,
+    width: 1.0,
+    style: BorderStyle.solid,
+    strokeAlign: StrokeAlign.inside);
+
+Widget customTableCalendar(
+    {required DateTime focusedDay,
+    required DateTime selectedDay,
+    List<Spending>? dataSpending,
+    Function(DateTime)? onPageChanged,
+    Function(DateTime, DateTime)? onDaySelected}) {
   return Card(
     child: TableCalendar(
       firstDay: DateTime.utc(2000),
@@ -22,12 +25,8 @@ Widget customTableCalendar({
       focusedDay: focusedDay,
       startingDayOfWeek: StartingDayOfWeek.monday,
       selectedDayPredicate: (day) => isSameDay(selectedDay, day),
-      calendarFormat: format,
       onPageChanged: (focusedDay) {
         if (onPageChanged != null) onPageChanged(focusedDay);
-      },
-      onFormatChanged: (format) {
-        if (onFormatChanged != null) onFormatChanged(format);
       },
       onDaySelected: (mySelectedDay, myFocusedDay) {
         if (!isSameDay(selectedDay, mySelectedDay) &&
@@ -41,6 +40,55 @@ Widget customTableCalendar({
                 .toList()
             : [];
       },
+      calendarStyle: CalendarStyle(
+        tableBorder: TableBorder(
+          bottom: customBorderSide(),
+          horizontalInside: customBorderSide(),
+          verticalInside: customBorderSide(),
+          left: customBorderSide(),
+          right: customBorderSide(),
+          top: customBorderSide(),
+        ),
+        isTodayHighlighted: true,
+        selectedDecoration: BoxDecoration(
+          color: Colors.cyanAccent,
+          shape: BoxShape.rectangle,
+          borderRadius: BorderRadius.circular(6.0),
+        ),
+        cellPadding: const EdgeInsets.all(0),
+        selectedTextStyle: const TextStyle(color: Colors.green),
+        todayDecoration: BoxDecoration(
+          color: Colors.cyanAccent,
+          shape: BoxShape.rectangle,
+          borderRadius: BorderRadius.circular(6.0),
+        ),
+        defaultDecoration: BoxDecoration(
+          shape: BoxShape.rectangle,
+          borderRadius: BorderRadius.circular(6.0),
+        ),
+        weekendDecoration: BoxDecoration(
+          shape: BoxShape.rectangle,
+          borderRadius: BorderRadius.circular(6.0),
+        ),
+        outsideDaysVisible: true,
+        todayTextStyle: const TextStyle(color: Colors.green),
+      ),
+      headerStyle: HeaderStyle(
+        formatButtonVisible: false,
+        titleCentered: true,
+        rightChevronPadding: const EdgeInsets.all(0),
+        decoration: BoxDecoration(
+          color: Colors.greenAccent,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        headerPadding: const EdgeInsets.all(0),
+        headerMargin: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+        titleTextStyle: const TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 18,
+          color: Colors.black54,
+        ),
+      ),
       calendarBuilders: CalendarBuilders(
         prioritizedBuilder: (context, day, focusedDay) {
           if (day.month != focusedDay.month || day.year != focusedDay.year) {

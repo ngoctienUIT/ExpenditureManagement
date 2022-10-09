@@ -18,10 +18,11 @@ class CalendarPage extends StatefulWidget {
 }
 
 class _CalendarPageState extends State<CalendarPage> {
-  CalendarFormat _format = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
   DateTime _selectedDay = DateTime.now();
   var numberFormat = NumberFormat.currency(locale: "vi_VI");
+  List<Spending>? _currentSpendingList;
+  bool check = true;
 
   @override
   Widget build(BuildContext context) {
@@ -56,29 +57,30 @@ class _CalendarPageState extends State<CalendarPage> {
                               .where((element) =>
                                   isSameDay(element.dateTime, _selectedDay))
                               .toList();
+                          if (check) {
+                            _currentSpendingList = spendingList;
+                            check = false;
+                          }
 
                           return Column(
                             children: [
                               customTableCalendar(
-                                focusedDay: _focusedDay,
-                                selectedDay: _selectedDay,
-                                format: _format,
-                                dataSpending: dataSpending,
-                                onPageChanged: (focusedDay) =>
-                                    setState(() => _focusedDay = focusedDay),
-                                onDaySelected: (selectedDay, focusedDay) {
-                                  setState(() {
-                                    _focusedDay = focusedDay;
-                                    _selectedDay = selectedDay;
-                                  });
-                                },
-                                onFormatChanged: (format) =>
-                                    setState(() => _format = format),
-                              ),
-                              totalSpending(spendingList: spendingList),
+                                  focusedDay: _focusedDay,
+                                  selectedDay: _selectedDay,
+                                  dataSpending: dataSpending,
+                                  onPageChanged: (focusedDay) =>
+                                      setState(() => _focusedDay = focusedDay),
+                                  onDaySelected: (selectedDay, focusedDay) {
+                                    setState(() {
+                                      _focusedDay = focusedDay;
+                                      _selectedDay = selectedDay;
+                                      check = true;
+                                    });
+                                  }),
+                              totalSpending(spendingList: _currentSpendingList),
                               Expanded(
-                                child:
-                                    buildSpending(spendingList: spendingList),
+                                child: buildSpending(
+                                    spendingList: _currentSpendingList),
                               )
                             ],
                           );
@@ -99,7 +101,6 @@ class _CalendarPageState extends State<CalendarPage> {
         customTableCalendar(
           focusedDay: _focusedDay,
           selectedDay: _selectedDay,
-          format: _format,
         ),
         totalSpending(),
         Expanded(child: buildSpending())

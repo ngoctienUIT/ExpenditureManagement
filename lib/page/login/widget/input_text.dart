@@ -27,10 +27,7 @@ Widget inputText(
     decoration: InputDecoration(
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10.0),
-        borderSide: const BorderSide(
-          width: 0,
-          style: BorderStyle.none,
-        ),
+        borderSide: const BorderSide(width: 0, style: BorderStyle.none),
       ),
       hintStyle: AppStyles.p,
       filled: true,
