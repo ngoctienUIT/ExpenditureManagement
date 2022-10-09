@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 List<Map<String, String>> listType = [
   {"title": "Chi tiêu hàng tháng"},
   {"image": "assets/icons/eat.png", "title": "Ăn uống"},
@@ -42,3 +44,5 @@ List<Map<String, String>> listType = [
   {"image": "assets/icons/wallet.png", "title": "Tiền chuyển đến"},
   {"image": "assets/icons/plus.png", "title": "Nhóm mới"},
 ];
+
+List<Color> listColor = [];

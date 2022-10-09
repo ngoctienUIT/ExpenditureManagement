@@ -13,7 +13,7 @@ Widget itemSpendingWidget({List<Spending>? spendingList}) {
           padding: const EdgeInsets.all(10),
           itemCount: listType.length,
           itemBuilder: (context, index) {
-            if (index == 0 || index == 10) {
+            if ([0, 10, 21, 27, 35, 38].contains(index)) {
               return const SizedBox.shrink();
             } else {
               var list = spendingList

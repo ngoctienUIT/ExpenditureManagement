@@ -1,3 +1,5 @@
+import 'dart:math';
+import 'package:expenditure_management/constants/list.dart';
 import 'package:expenditure_management/models/spending.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -7,11 +9,25 @@ class MyPieChart extends StatefulWidget {
   final List<Spending> list;
 
   @override
-  State<StatefulWidget> createState() => MyPieChartState();
+  State<StatefulWidget> createState() => _MyPieChartState();
 }
 
-class MyPieChartState extends State {
+class _MyPieChartState extends State<MyPieChart> {
   int touchedIndex = 0;
+  int sum = 1;
+  List<Color> listColor = [];
+
+  @override
+  void initState() {
+    sum = widget.list
+        .map((e) => e.money)
+        .reduce((value, element) => value + element);
+    for (int i = 0; i < listType.length; i++) {
+      listColor.add(
+          Color((Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0));
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,89 +59,44 @@ class MyPieChartState extends State {
   }
 
   List<PieChartSectionData> showingSections() {
-    return List.generate(4, (i) {
-      final isTouched = i == touchedIndex;
-      final fontSize = isTouched ? 20.0 : 16.0;
-      final radius = isTouched ? 110.0 : 100.0;
-      final widgetSize = isTouched ? 55.0 : 40.0;
+    List<PieChartSectionData> pieChartList = [];
+    for (int i = 0; i < listType.length; i++) {
+      if (![0, 10, 21, 27, 35, 38].contains(i)) {
+        List<Spending> spendingList =
+            widget.list.where((element) => element.type == i).toList();
+        if (spendingList.isNotEmpty) {
+          final isTouched = i == touchedIndex;
+          final fontSize = isTouched ? 20.0 : 16.0;
+          final radius = isTouched ? 110.0 : 100.0;
+          final widgetSize = isTouched ? 55.0 : 40.0;
 
-      switch (i) {
-        case 0:
-          return PieChartSectionData(
-            color: const Color(0xff0293ee),
-            value: 40,
-            title: '40%',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: const Color(0xffffffff),
+          int sumSpending = spendingList
+              .map((e) => e.money)
+              .reduce((value, element) => value + element);
+
+          pieChartList.add(
+            PieChartSectionData(
+              color: listColor[i],
+              value: (sumSpending / sum) * 100,
+              title: "",
+              radius: radius,
+              titleStyle: TextStyle(
+                fontSize: fontSize,
+                fontWeight: FontWeight.bold,
+                color: const Color(0xffffffff),
+              ),
+              badgeWidget: _Badge(
+                listType[i]["image"]!,
+                size: widgetSize,
+                borderColor: const Color(0xff0293ee),
+              ),
+              badgePositionPercentageOffset: .98,
             ),
-            badgeWidget: _Badge(
-              'assets/icons/water.png',
-              size: widgetSize,
-              borderColor: const Color(0xff0293ee),
-            ),
-            badgePositionPercentageOffset: .98,
           );
-        case 1:
-          return PieChartSectionData(
-            color: const Color(0xfff8b250),
-            value: 30,
-            title: '30%',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: const Color(0xffffffff),
-            ),
-            badgeWidget: _Badge(
-              'assets/icons/house.png',
-              size: widgetSize,
-              borderColor: const Color(0xfff8b250),
-            ),
-            badgePositionPercentageOffset: .98,
-          );
-        case 2:
-          return PieChartSectionData(
-            color: const Color(0xff845bef),
-            value: 16,
-            title: '16%',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: const Color(0xffffffff),
-            ),
-            badgeWidget: _Badge(
-              'assets/icons/taxi.png',
-              size: widgetSize,
-              borderColor: const Color(0xff845bef),
-            ),
-            badgePositionPercentageOffset: .98,
-          );
-        case 3:
-          return PieChartSectionData(
-            color: const Color(0xff13d38e),
-            value: 15,
-            title: '15%',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: const Color(0xffffffff),
-            ),
-            badgeWidget: _Badge(
-              'assets/icons/eat.png',
-              size: widgetSize,
-              borderColor: const Color(0xff13d38e),
-            ),
-            badgePositionPercentageOffset: .98,
-          );
-        default:
-          throw 'Oh no';
+        }
       }
-    });
+    }
+    return pieChartList;
   }
 }
 
