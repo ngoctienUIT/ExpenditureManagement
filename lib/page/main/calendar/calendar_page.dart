@@ -18,11 +18,11 @@ class CalendarPage extends StatefulWidget {
 }
 
 class _CalendarPageState extends State<CalendarPage> {
+  bool check = true;
+  List<Spending>? _currentSpendingList;
   DateTime _focusedDay = DateTime.now();
   DateTime _selectedDay = DateTime.now();
   var numberFormat = NumberFormat.currency(locale: "vi_VI");
-  List<Spending>? _currentSpendingList;
-  bool check = true;
 
   @override
   Widget build(BuildContext context) {
@@ -34,10 +34,12 @@ class _CalendarPageState extends State<CalendarPage> {
                 .collection("data")
                 .doc(FirebaseAuth.instance.currentUser!.uid)
                 .snapshots(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                var data = snapshot.requireData.data() as Map<String, dynamic>;
+            builder: (context, streamSnapshot) {
+              if (streamSnapshot.hasData) {
+                var data =
+                    streamSnapshot.requireData.data() as Map<String, dynamic>;
                 List<String> list = [];
+                check = true;
 
                 return StatefulBuilder(builder: (context, setState) {
                   if (data[DateFormat("MM_yyyy").format(_focusedDay)] != null) {
@@ -49,15 +51,19 @@ class _CalendarPageState extends State<CalendarPage> {
 
                   return FutureBuilder(
                       future: SpendingFirebase.getSpendingList(list),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          var dataSpending = snapshot.data;
+                      builder: (context, futureSnapshot) {
+                        if (futureSnapshot.hasData) {
+                          var dataSpending = futureSnapshot.data;
 
                           List<Spending> spendingList = dataSpending!
                               .where((element) =>
                                   isSameDay(element.dateTime, _selectedDay))
                               .toList();
-                          if (check) {
+
+                          if (check ||
+                              (_currentSpendingList!.length !=
+                                      spendingList.length &&
+                                  isSameMonth(_selectedDay, _focusedDay))) {
                             _currentSpendingList = spendingList;
                             check = false;
                           }

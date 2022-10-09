@@ -46,88 +46,93 @@ class _SettingPageState extends State<SettingPage> {
                 return infoWidget();
               },
             ),
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                children: [
-                  const SizedBox(height: 10),
-                  settingItem(
-                    text: "Account",
-                    action: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const EditProfilePage(),
-                        ),
-                      );
-                    },
-                    icon: FontAwesomeIcons.solidUser,
-                    color: const Color.fromRGBO(0, 150, 255, 1),
-                  ),
-                  const SizedBox(height: 20),
-                  settingItem(
-                    text: "Language",
-                    action: _showBottomSheet,
-                    icon: Icons.translate_outlined,
-                    color: const Color.fromRGBO(233, 116, 81, 1),
-                  ),
-                  const SizedBox(height: 20),
-                  Row(
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: SingleChildScrollView(
+                  child: Column(
                     children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Colors.black87,
-                          borderRadius: BorderRadius.circular(90),
-                        ),
-                        padding: const EdgeInsets.all(10),
-                        child: const Icon(
-                          FontAwesomeIcons.solidMoon,
-                          color: Colors.white,
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      const Text("Dark Mode", style: TextStyle(fontSize: 18)),
-                      const Spacer(),
-                      FlutterSwitch(
-                        height: 30,
-                        width: 60,
-                        value: darkMode,
-                        onToggle: (value) {
-                          setState(() => darkMode = value);
+                      const SizedBox(height: 10),
+                      settingItem(
+                        text: "Account",
+                        action: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const EditProfilePage(),
+                            ),
+                          );
                         },
+                        icon: FontAwesomeIcons.solidUser,
+                        color: const Color.fromRGBO(0, 150, 255, 1),
+                      ),
+                      const SizedBox(height: 20),
+                      settingItem(
+                        text: "Language",
+                        action: _showBottomSheet,
+                        icon: Icons.translate_outlined,
+                        color: const Color.fromRGBO(233, 116, 81, 1),
+                      ),
+                      const SizedBox(height: 20),
+                      Row(
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.black87,
+                              borderRadius: BorderRadius.circular(90),
+                            ),
+                            padding: const EdgeInsets.all(10),
+                            child: const Icon(
+                              FontAwesomeIcons.solidMoon,
+                              color: Colors.white,
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          const Text("Dark Mode",
+                              style: TextStyle(fontSize: 18)),
+                          const Spacer(),
+                          FlutterSwitch(
+                            height: 30,
+                            width: 60,
+                            value: darkMode,
+                            onToggle: (value) {
+                              setState(() => darkMode = value);
+                            },
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      settingItem(
+                        text: "About",
+                        action: () {},
+                        icon: FontAwesomeIcons.circleInfo,
+                        color: const Color.fromRGBO(79, 121, 66, 1),
+                      ),
+                      const SizedBox(height: 40),
+                      SizedBox(
+                        width: double.infinity,
+                        height: 50,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.buttonLogin,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                          ),
+                          onPressed: () async {
+                            await FirebaseAuth.instance.signOut();
+                            await GoogleSignIn().signOut();
+                            await FacebookAuth.instance.logOut();
+                            if (!mounted) return;
+                            Navigator.pushNamedAndRemoveUntil(
+                                context, '/', (route) => false);
+                          },
+                          child: Text("Đăng xuất", style: AppStyles.p),
+                        ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 20),
-                  settingItem(
-                    text: "About",
-                    action: () {},
-                    icon: FontAwesomeIcons.circleInfo,
-                    color: const Color.fromRGBO(79, 121, 66, 1),
-                  ),
-                  const SizedBox(height: 40),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 50,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.buttonLogin,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                      ),
-                      onPressed: () async {
-                        await FirebaseAuth.instance.signOut();
-                        await GoogleSignIn().signOut();
-                        await FacebookAuth.instance.logOut();
-                        if (!mounted) return;
-                        Navigator.pushNamedAndRemoveUntil(
-                            context, '/', (route) => false);
-                      },
-                      child: Text("Đăng xuất", style: AppStyles.p),
-                    ),
-                  ),
-                ],
+                ),
               ),
             )
           ],
