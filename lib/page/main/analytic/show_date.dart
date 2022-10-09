@@ -5,7 +5,7 @@ Widget showDate(
     {required String date,
     required int index,
     required DateTime now,
-    required Function(String) action}) {
+    required Function(String, DateTime) action}) {
   return SizedBox(
     width: double.infinity,
     child: Row(
@@ -15,13 +15,13 @@ Widget showDate(
           onPressed: () {
             if (index == 0) {
               now = now.subtract(const Duration(days: 6));
-              action(getWeek(now));
+              action(getWeek(now), now);
             } else if (index == 1) {
               now = DateTime(now.year, now.month - 1);
-              action(getMonth(now));
+              action(getMonth(now), now);
             } else {
               now = DateTime(now.year - 1);
-              action(getYear(now));
+              action(getYear(now), now);
             }
           },
           child: const Icon(Icons.arrow_back_ios_new_rounded),
@@ -35,13 +35,13 @@ Widget showDate(
           onPressed: () {
             if (index == 0) {
               now = now.add(const Duration(days: 6));
-              action(getWeek(now));
+              action(getWeek(now), now);
             } else if (index == 1) {
               now = DateTime(now.year, now.month + 1);
-              action(getMonth(now));
+              action(getMonth(now), now);
             } else {
               now = DateTime(now.year + 1);
-              action(getYear(now));
+              action(getYear(now), now);
             }
           },
           child: const Icon(Icons.arrow_forward_ios_rounded),

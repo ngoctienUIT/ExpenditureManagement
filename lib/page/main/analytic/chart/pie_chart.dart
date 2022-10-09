@@ -1,8 +1,10 @@
+import 'package:expenditure_management/models/spending.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class MyPieChart extends StatefulWidget {
-  const MyPieChart({Key? key}) : super(key: key);
+  const MyPieChart({Key? key, required this.list}) : super(key: key);
+  final List<Spending> list;
 
   @override
   State<StatefulWidget> createState() => MyPieChartState();
@@ -128,12 +130,12 @@ class MyPieChartState extends State {
 }
 
 class _Badge extends StatelessWidget {
-  final String svgAsset;
+  final String imgAsset;
   final double size;
   final Color borderColor;
 
   const _Badge(
-    this.svgAsset, {
+    this.imgAsset, {
     Key? key,
     required this.size,
     required this.borderColor,
@@ -159,7 +161,7 @@ class _Badge extends StatelessWidget {
       ),
       padding: EdgeInsets.all(size * .15),
       child: Center(
-        child: Image.asset(svgAsset, fit: BoxFit.contain),
+        child: Image.asset(imgAsset, fit: BoxFit.contain),
       ),
     );
   }

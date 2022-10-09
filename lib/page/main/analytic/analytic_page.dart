@@ -1,9 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:expenditure_management/constants/function/get_data_spending.dart';
 import 'package:expenditure_management/constants/function/get_date.dart';
+import 'package:expenditure_management/controls/spending_firebase.dart';
+import 'package:expenditure_management/models/spending.dart';
 import 'package:expenditure_management/page/main/analytic/chart/pie_chart.dart';
+import 'package:expenditure_management/page/main/analytic/custom_tabbar.dart';
 import 'package:expenditure_management/page/main/analytic/show_date.dart';
+import 'package:expenditure_management/page/main/calendar/widget/custom_table_calendar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:expenditure_management/constants/app_styles.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 class AnalyticPage extends StatefulWidget {
   const AnalyticPage({Key? key}) : super(key: key);
@@ -39,6 +45,25 @@ class _AnalyticPageState extends State<AnalyticPage>
     super.initState();
   }
 
+  bool checkDate(DateTime date) {
+    if (_tabController.index == 0) {
+      int weekDay = now.weekday;
+      DateTime firstDayOfWeek = DateTime(now.year, now.month, now.day)
+          .subtract(Duration(days: weekDay - 1));
+
+      DateTime lastDayOfWeek = firstDayOfWeek.add(const Duration(days: 6));
+
+      if (firstDayOfWeek.isBefore(date) && lastDayOfWeek.isAfter(date) ||
+          isSameDay(firstDayOfWeek, date) ||
+          isSameDay(lastDayOfWeek, date)) return true;
+    } else if (_tabController.index == 1 && isSameMonth(date, now)) {
+      return true;
+    } else if (_tabController.index == 2 && date.year == now.year) {
+      return true;
+    }
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,58 +81,69 @@ class _AnalyticPageState extends State<AnalyticPage>
                 ],
               ),
               const SizedBox(height: 20),
-              Container(
-                height: 40,
-                alignment: Alignment.center,
-                padding: const EdgeInsets.all(3),
-                decoration: BoxDecoration(
-                    color: const Color.fromRGBO(242, 243, 247, 1),
-                    borderRadius: BorderRadius.circular(10)),
-                child: TabBar(
-                    controller: _tabController,
-                    labelColor: Colors.black87,
-                    labelStyle: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 16),
-                    unselectedLabelColor: const Color.fromRGBO(45, 216, 198, 1),
-                    unselectedLabelStyle: AppStyles.p,
-                    isScrollable: false,
-                    indicatorColor: Colors.red,
-                    indicator: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10)),
-                    tabs: const [
-                      Tab(text: "Weekly"),
-                      Tab(text: "Monthly"),
-                      Tab(text: "Yearly")
-                    ]),
-              ),
+              customTabBar(controller: _tabController),
               const SizedBox(height: 20),
-              Expanded(
-                child: StreamBuilder<DocumentSnapshot>(
-                    stream: null,
-                    builder: (context, snapshot) {
-                      return Card(
-                        // elevation: 0,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(4)),
-                        color: const Color(0xff2c4260),
-                        child: Column(
-                          children: [
-                            const SizedBox(height: 10),
-                            showDate(
-                              date: date,
-                              index: _tabController.index,
-                              now: now,
-                              action: (date) {
-                                setState(() => this.date = date);
-                              },
-                            ),
-                            chart ? const MyPieChart() : const MyPieChart(),
-                          ],
-                        ),
+              StreamBuilder<DocumentSnapshot>(
+                  stream: FirebaseFirestore.instance
+                      .collection("data")
+                      .doc(FirebaseAuth.instance.currentUser!.uid)
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      var data =
+                          snapshot.requireData.data() as Map<String, dynamic>;
+                      List<String> list = getDataSpending(
+                        data: data,
+                        index: _tabController.index,
+                        date: now,
                       );
-                    }),
-              ),
+
+                      return FutureBuilder(
+                          future: SpendingFirebase.getSpendingList(list),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              var dataSpending = snapshot.data;
+
+                              List<Spending> spendingList = dataSpending!
+                                  .where(
+                                      (element) => checkDate(element.dateTime))
+                                  .toList();
+
+                              for (var element in spendingList)
+                                print(element.toMap());
+                              return Card(
+                                // elevation: 0,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(4)),
+                                color: const Color(0xff2c4260),
+                                child: Column(
+                                  children: [
+                                    const SizedBox(height: 10),
+                                    showDate(
+                                      date: date,
+                                      index: _tabController.index,
+                                      now: now,
+                                      action: (date, now) {
+                                        setState(() {
+                                          this.date = date;
+                                          this.now = now;
+                                        });
+                                      },
+                                    ),
+                                    chart
+                                        ? MyPieChart(list: spendingList)
+                                        : MyPieChart(list: spendingList),
+                                  ],
+                                ),
+                              );
+                            }
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          });
+                    }
+
+                    return const Center(child: CircularProgressIndicator());
+                  }),
               ElevatedButton(
                 onPressed: () {
                   setState(() => chart = !chart);
