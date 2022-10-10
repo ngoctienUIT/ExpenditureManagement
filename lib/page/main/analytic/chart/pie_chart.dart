@@ -13,7 +13,7 @@ class MyPieChart extends StatefulWidget {
 }
 
 class _MyPieChartState extends State<MyPieChart> {
-  int touchedIndex = 0;
+  int touchedIndex = -1;
   int sum = 1;
   List<Color> listColor = [];
 
@@ -26,6 +26,7 @@ class _MyPieChartState extends State<MyPieChart> {
       listColor.add(
           Color((Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0));
     }
+
     super.initState();
   }
 
@@ -35,25 +36,23 @@ class _MyPieChartState extends State<MyPieChart> {
       aspectRatio: 1,
       child: PieChart(
         PieChartData(
-            pieTouchData: PieTouchData(
-                touchCallback: (FlTouchEvent event, pieTouchResponse) {
-              setState(() {
-                if (!event.isInterestedForInteractions ||
-                    pieTouchResponse == null ||
-                    pieTouchResponse.touchedSection == null) {
-                  touchedIndex = -1;
-                  return;
-                }
-                touchedIndex =
-                    pieTouchResponse.touchedSection!.touchedSectionIndex;
-              });
-            }),
-            borderData: FlBorderData(
-              show: false,
-            ),
-            sectionsSpace: 0,
-            centerSpaceRadius: 0,
-            sections: showingSections()),
+          pieTouchData: PieTouchData(touchCallback: (event, pieTouchResponse) {
+            setState(() {
+              if (!event.isInterestedForInteractions ||
+                  pieTouchResponse == null ||
+                  pieTouchResponse.touchedSection == null) {
+                touchedIndex = -1;
+                return;
+              }
+              touchedIndex =
+                  pieTouchResponse.touchedSection!.touchedSectionIndex;
+            });
+          }),
+          borderData: FlBorderData(show: false),
+          sectionsSpace: 0,
+          centerSpaceRadius: 0,
+          sections: showingSections(),
+        ),
       ),
     );
   }
@@ -65,7 +64,7 @@ class _MyPieChartState extends State<MyPieChart> {
         List<Spending> spendingList =
             widget.list.where((element) => element.type == i).toList();
         if (spendingList.isNotEmpty) {
-          final isTouched = i == touchedIndex;
+          final isTouched = pieChartList.length == touchedIndex;
           final fontSize = isTouched ? 20.0 : 16.0;
           final radius = isTouched ? 110.0 : 100.0;
           final widgetSize = isTouched ? 55.0 : 40.0;
@@ -78,7 +77,9 @@ class _MyPieChartState extends State<MyPieChart> {
             PieChartSectionData(
               color: listColor[i],
               value: (sumSpending / sum) * 100,
-              title: "",
+              title: isTouched
+                  ? "${((sumSpending / sum) * 100).toStringAsFixed(2)}%"
+                  : "",
               radius: radius,
               titleStyle: TextStyle(
                 fontSize: fontSize,
@@ -101,16 +102,16 @@ class _MyPieChartState extends State<MyPieChart> {
 }
 
 class _Badge extends StatelessWidget {
-  final String imgAsset;
-  final double size;
-  final Color borderColor;
-
   const _Badge(
     this.imgAsset, {
     Key? key,
     required this.size,
     required this.borderColor,
   }) : super(key: key);
+
+  final String imgAsset;
+  final double size;
+  final Color borderColor;
 
   @override
   Widget build(BuildContext context) {
@@ -122,7 +123,7 @@ class _Badge extends StatelessWidget {
         color: Colors.white,
         shape: BoxShape.circle,
         border: Border.all(color: borderColor, width: 2),
-        boxShadow: <BoxShadow>[
+        boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(.5),
             offset: const Offset(3, 3),
@@ -131,9 +132,7 @@ class _Badge extends StatelessWidget {
         ],
       ),
       padding: EdgeInsets.all(size * .15),
-      child: Center(
-        child: Image.asset(imgAsset, fit: BoxFit.contain),
-      ),
+      child: Center(child: Image.asset(imgAsset, fit: BoxFit.contain)),
     );
   }
 }

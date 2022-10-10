@@ -3,6 +3,7 @@ import 'package:expenditure_management/constants/function/get_data_spending.dart
 import 'package:expenditure_management/constants/function/get_date.dart';
 import 'package:expenditure_management/controls/spending_firebase.dart';
 import 'package:expenditure_management/models/spending.dart';
+import 'package:expenditure_management/page/main/analytic/chart/column_chart.dart';
 import 'package:expenditure_management/page/main/analytic/chart/pie_chart.dart';
 import 'package:expenditure_management/page/main/analytic/custom_tabbar.dart';
 import 'package:expenditure_management/page/main/analytic/show_date.dart';
@@ -111,6 +112,7 @@ class _AnalyticPageState extends State<AnalyticPage>
 
                               for (var element in spendingList)
                                 print(element.toMap());
+
                               return Card(
                                 // elevation: 0,
                                 shape: RoundedRectangleBorder(
@@ -130,9 +132,20 @@ class _AnalyticPageState extends State<AnalyticPage>
                                         });
                                       },
                                     ),
-                                    chart
-                                        ? MyPieChart(list: spendingList)
-                                        : MyPieChart(list: spendingList),
+                                    spendingList.isNotEmpty
+                                        ? (chart
+                                            ? const AspectRatio(
+                                                aspectRatio: 1.7,
+                                                child: ColumnChart(),
+                                              )
+                                            : MyPieChart(list: spendingList))
+                                        : const SizedBox(
+                                            height: 200,
+                                            child: Center(
+                                              child:
+                                                  Text("Không có dữ liệu!"),
+                                            ),
+                                          ),
                                   ],
                                 ),
                               );
