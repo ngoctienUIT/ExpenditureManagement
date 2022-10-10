@@ -1,146 +1,189 @@
+import 'package:expenditure_management/constants/list.dart';
+import 'package:expenditure_management/models/spending.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:table_calendar/table_calendar.dart';
 
-class ColumnChart extends StatelessWidget {
-  const ColumnChart({Key? key}) : super(key: key);
+class ColumnChart extends StatefulWidget {
+  const ColumnChart(
+      {Key? key,
+      required this.index,
+      required this.list,
+      required this.dateTime})
+      : super(key: key);
+  final int index;
+  final List<Spending> list;
+  final DateTime dateTime;
+
+  @override
+  State<StatefulWidget> createState() => ColumnChartState();
+}
+
+class ColumnChartState extends State<ColumnChart> {
+  final Color barBackgroundColor = const Color(0xff72d8bf);
+  final Duration animDuration = const Duration(milliseconds: 250);
+  int touchedIndex = -1;
+  double max = 0;
+  List<int> money = [];
+
+  @override
+  void initState() {
+    money = List.generate(7, (i) {
+      int weekDay = widget.dateTime.weekday;
+      DateTime firstDayOfWeek =
+          widget.dateTime.subtract(Duration(days: weekDay - 1));
+      List<Spending> spendingList = widget.list
+          .where((element) => isSameDay(
+              element.dateTime, firstDayOfWeek.add(Duration(days: i))))
+          .toList();
+      return spendingList.isEmpty
+          ? 0
+          : spendingList
+              .map((e) => e.money)
+              .reduce((value, element) => value + element);
+    });
+    max = (money.reduce((curr, next) => curr > next ? curr : next)).toDouble() +
+        10000;
+    super.initState();
+  }
+
+  final _barsGradient = const LinearGradient(
+    colors: [
+      Colors.lightBlueAccent,
+      Colors.greenAccent,
+    ],
+    begin: Alignment.bottomCenter,
+    end: Alignment.topCenter,
+  );
 
   @override
   Widget build(BuildContext context) {
-    return BarChart(
-      BarChartData(
-        barTouchData: barTouchData,
-        titlesData: titlesData,
-        borderData: borderData,
-        barGroups: barGroups,
-        gridData: FlGridData(show: false),
-        alignment: BarChartAlignment.spaceAround,
-        maxY: 20,
+    return AspectRatio(
+      aspectRatio: 1,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: BarChart(
+          mainBarData(),
+          swapAnimationDuration: animDuration,
+        ),
       ),
     );
   }
 
-  BarTouchData get barTouchData => BarTouchData(
-        enabled: false,
-        touchTooltipData: BarTouchTooltipData(
-          tooltipBgColor: Colors.transparent,
-          tooltipPadding: const EdgeInsets.all(0),
-          tooltipMargin: 8,
-          getTooltipItem: (
-            BarChartGroupData group,
-            int groupIndex,
-            BarChartRodData rod,
-            int rodIndex,
-          ) {
-            return BarTooltipItem(
-              rod.toY.round().toString(),
-              const TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
-            );
-          },
+  BarChartGroupData makeGroupData(
+    int x,
+    double y, {
+    bool isTouched = false,
+    Color barColor = Colors.white,
+    List<int> showTooltips = const [],
+  }) {
+    return BarChartGroupData(
+      x: x,
+      barRods: [
+        BarChartRodData(
+          toY: isTouched ? y + 1 : y,
+          gradient: _barsGradient,
+          borderSide: isTouched
+              ? const BorderSide(color: Colors.yellow, width: 1)
+              : const BorderSide(color: Colors.white, width: 0),
         ),
-      );
+      ],
+      showingTooltipIndicators: showTooltips,
+    );
+  }
 
-  Widget getTitles(double value, TitleMeta meta) {
+  List<BarChartGroupData> showingGroups() {
+    return List.generate(
+      7,
+      (i) =>
+          makeGroupData(i, money[i].toDouble(), isTouched: i == touchedIndex),
+    );
+  }
+
+  BarChartData mainBarData() {
+    return BarChartData(
+      maxY: max,
+      barTouchData: BarTouchData(
+        touchTooltipData: BarTouchTooltipData(
+            tooltipBgColor: Colors.blueGrey,
+            getTooltipItem: (group, groupIndex, rod, rodIndex) {
+              String weekDay = listDayOfWeek[group.x.toInt()];
+              return BarTooltipItem(
+                '$weekDay\n',
+                const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
+                children: [
+                  TextSpan(
+                    text: (rod.toY - 1).toString(),
+                    style: const TextStyle(
+                      color: Colors.yellow,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              );
+            }),
+        touchCallback: (FlTouchEvent event, barTouchResponse) {
+          setState(() {
+            if (!event.isInterestedForInteractions ||
+                barTouchResponse == null ||
+                barTouchResponse.spot == null) {
+              touchedIndex = -1;
+              return;
+            }
+            touchedIndex = barTouchResponse.spot!.touchedBarGroupIndex;
+          });
+        },
+      ),
+      titlesData: FlTitlesData(
+        show: true,
+        rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+        topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+        leftTitles: AxisTitles(
+          sideTitles: SideTitles(
+            showTitles: true,
+            getTitlesWidget: leftTitles,
+            reservedSize: 30,
+          ),
+        ),
+        bottomTitles: AxisTitles(
+          sideTitles: SideTitles(
+            showTitles: true,
+            getTitlesWidget: getTitles,
+            reservedSize: 38,
+          ),
+        ),
+      ),
+      borderData: FlBorderData(show: false),
+      barGroups: showingGroups(),
+      gridData: FlGridData(show: true),
+    );
+  }
+
+  Widget leftTitles(double value, TitleMeta meta) {
     const style = TextStyle(
       color: Color(0xff7589a2),
       fontWeight: FontWeight.bold,
       fontSize: 14,
     );
-    String text;
-    switch (value.toInt()) {
-      case 0:
-        text = 'Mn';
-        break;
-      case 1:
-        text = 'Te';
-        break;
-      case 2:
-        text = 'Wd';
-        break;
-      case 3:
-        text = 'Tu';
-        break;
-      case 4:
-        text = 'Fr';
-        break;
-      case 5:
-        text = 'St';
-        break;
-      case 6:
-        text = 'Sn';
-        break;
-      default:
-        text = '';
-        break;
-    }
     return SideTitleWidget(
       axisSide: meta.axisSide,
-      space: 4.0,
-      child: Text(text, style: style),
+      space: 0,
+      child: Text("${(value / 1000).toStringAsFixed(0)}K", style: style),
     );
   }
 
-  FlTitlesData get titlesData => FlTitlesData(
-        show: true,
-        bottomTitles: AxisTitles(
-          sideTitles: SideTitles(
-            showTitles: true,
-            reservedSize: 30,
-            getTitlesWidget: getTitles,
-          ),
-        ),
-        leftTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-        topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-        rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-      );
-
-  FlBorderData get borderData => FlBorderData(
-        show: false,
-      );
-
-  final _barsGradient = const LinearGradient(
-    colors: [Colors.lightBlueAccent, Colors.greenAccent],
-    begin: Alignment.bottomCenter,
-    end: Alignment.topCenter,
-  );
-
-  List<BarChartGroupData> get barGroups => [
-        BarChartGroupData(
-          x: 0,
-          barRods: [BarChartRodData(toY: 8, gradient: _barsGradient)],
-          showingTooltipIndicators: [0],
-        ),
-        BarChartGroupData(
-          x: 1,
-          barRods: [BarChartRodData(toY: 10, gradient: _barsGradient)],
-          showingTooltipIndicators: [0],
-        ),
-        BarChartGroupData(
-          x: 2,
-          barRods: [BarChartRodData(toY: 14, gradient: _barsGradient)],
-          showingTooltipIndicators: [0],
-        ),
-        BarChartGroupData(
-          x: 3,
-          barRods: [BarChartRodData(toY: 15, gradient: _barsGradient)],
-          showingTooltipIndicators: [0],
-        ),
-        BarChartGroupData(
-          x: 4,
-          barRods: [BarChartRodData(toY: 13, gradient: _barsGradient)],
-          showingTooltipIndicators: [0],
-        ),
-        BarChartGroupData(
-          x: 5,
-          barRods: [BarChartRodData(toY: 10, gradient: _barsGradient)],
-          showingTooltipIndicators: [0],
-        ),
-        BarChartGroupData(
-          x: 6,
-          barRods: [BarChartRodData(toY: 10, gradient: _barsGradient)],
-          showingTooltipIndicators: [0],
-        ),
-      ];
+  Widget getTitles(double value, TitleMeta meta) {
+    const style = TextStyle(
+      color: Colors.white,
+      fontWeight: FontWeight.bold,
+      fontSize: 14,
+    );
+    Widget text = Text(listDayOfWeekAcronym[value.toInt()], style: style);
+    return SideTitleWidget(axisSide: meta.axisSide, space: 16, child: text);
+  }
 }

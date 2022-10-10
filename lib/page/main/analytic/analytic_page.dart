@@ -114,7 +114,6 @@ class _AnalyticPageState extends State<AnalyticPage>
                                 print(element.toMap());
 
                               return Card(
-                                // elevation: 0,
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(4)),
                                 color: const Color(0xff2c4260),
@@ -134,9 +133,10 @@ class _AnalyticPageState extends State<AnalyticPage>
                                     ),
                                     spendingList.isNotEmpty
                                         ? (chart
-                                            ? const AspectRatio(
-                                                aspectRatio: 1.7,
-                                                child: ColumnChart(),
+                                            ? ColumnChart(
+                                                index: _tabController.index,
+                                                list: spendingList,
+                                                dateTime: now,
                                               )
                                             : MyPieChart(list: spendingList))
                                         : const SizedBox(

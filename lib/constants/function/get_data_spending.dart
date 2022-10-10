@@ -14,9 +14,10 @@ List<String> getDataSpending(
         .map((e) => e.toString())
         .toList();
     if (!isSameMonth(firstDayOfWeek, lastDayOfWeek)) {
-      list.addAll((data[lastDayOfWeek] as List<dynamic>)
-          .map((e) => e.toString())
-          .toList());
+      list.addAll(
+          (data[DateFormat("MM_yyyy").format(lastDayOfWeek)] as List<dynamic>)
+              .map((e) => e.toString())
+              .toList());
     }
   } else if (index == 1 && data[DateFormat("MM_yyyy").format(date)] != null) {
     list = (data[DateFormat("MM_yyyy").format(date)] as List<dynamic>)
