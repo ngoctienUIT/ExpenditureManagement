@@ -202,7 +202,6 @@ class ColumnChartState extends State<ColumnChart> {
       title = weekOfMonth[value.toInt()];
     } else {
       title = listMonthOfYearAcronym[value.toInt()];
-      // title = (value.toInt() + 1).toString();
     }
 
     Widget text = Text(title, style: style);

@@ -7,6 +7,7 @@ import 'package:expenditure_management/page/main/analytic/chart/column_chart.dar
 import 'package:expenditure_management/page/main/analytic/chart/pie_chart.dart';
 import 'package:expenditure_management/page/main/analytic/custom_tabbar.dart';
 import 'package:expenditure_management/page/main/analytic/show_date.dart';
+import 'package:expenditure_management/page/main/analytic/tabbar_chart.dart';
 import 'package:expenditure_management/page/main/calendar/widget/custom_table_calendar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,8 @@ class AnalyticPage extends StatefulWidget {
 class _AnalyticPageState extends State<AnalyticPage>
     with TickerProviderStateMixin {
   late TabController _tabController;
-  bool chart = true;
+  late TabController _chartController;
+  bool chart = false;
   DateTime now = DateTime.now();
   String date = "";
 
@@ -30,6 +32,7 @@ class _AnalyticPageState extends State<AnalyticPage>
   void initState() {
     date = getWeek(now);
     _tabController = TabController(length: 3, vsync: this);
+    _chartController = TabController(length: 2, vsync: this);
     _tabController.addListener(() {
       now = DateTime.now();
       setState(() {
@@ -42,7 +45,15 @@ class _AnalyticPageState extends State<AnalyticPage>
         }
       });
     });
-
+    _chartController.addListener(() {
+      setState(() {
+        if (_chartController.index == 0) {
+          chart = false;
+        } else {
+          chart = true;
+        }
+      });
+    });
     super.initState();
   }
 
@@ -110,9 +121,6 @@ class _AnalyticPageState extends State<AnalyticPage>
                                       (element) => checkDate(element.dateTime))
                                   .toList();
 
-                              for (var element in spendingList)
-                                print(element.toMap());
-
                               return Card(
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(4)),
@@ -133,12 +141,12 @@ class _AnalyticPageState extends State<AnalyticPage>
                                     ),
                                     spendingList.isNotEmpty
                                         ? (chart
-                                            ? ColumnChart(
+                                            ? MyPieChart(list: spendingList)
+                                            : ColumnChart(
                                                 index: _tabController.index,
                                                 list: spendingList,
                                                 dateTime: now,
-                                              )
-                                            : MyPieChart(list: spendingList))
+                                              ))
                                         : const SizedBox(
                                             height: 200,
                                             child: Center(
@@ -146,6 +154,8 @@ class _AnalyticPageState extends State<AnalyticPage>
                                                   Text("Không có dữ liệu!"),
                                             ),
                                           ),
+                                    tabBarChart(controller: _chartController),
+                                    const SizedBox(height: 10)
                                   ],
                                 ),
                               );
@@ -157,12 +167,6 @@ class _AnalyticPageState extends State<AnalyticPage>
 
                     return const Center(child: CircularProgressIndicator());
                   }),
-              ElevatedButton(
-                onPressed: () {
-                  setState(() => chart = !chart);
-                },
-                child: const Text("change"),
-              )
             ],
           ),
         ),
