@@ -26,8 +26,27 @@ class ColumnChartState extends State<ColumnChart> {
   double max = 0;
   List<int> money = [];
 
+  double roundNumber(double number) {
+    double div = 10;
+    while (number / div >= 10) {
+      div *= 10;
+    }
+    int y =
+        int.tryParse((number / div).toString().split('.')[0].substring(0, 1))!;
+    return (y + 1) * div;
+  }
+
+  final _barsGradient = const LinearGradient(
+    colors: [
+      Colors.lightBlueAccent,
+      Colors.greenAccent,
+    ],
+    begin: Alignment.bottomCenter,
+    end: Alignment.topCenter,
+  );
+
   @override
-  void initState() {
+  Widget build(BuildContext context) {
     money = List.generate(7, (i) {
       int weekDay = widget.dateTime.weekday;
       DateTime firstDayOfWeek =
@@ -42,22 +61,9 @@ class ColumnChartState extends State<ColumnChart> {
               .map((e) => e.money)
               .reduce((value, element) => value + element);
     });
-    max = (money.reduce((curr, next) => curr > next ? curr : next)).toDouble() +
-        10000;
-    super.initState();
-  }
+    max = (money.reduce((curr, next) => curr > next ? curr : next)).toDouble();
+    max = roundNumber(max);
 
-  final _barsGradient = const LinearGradient(
-    colors: [
-      Colors.lightBlueAccent,
-      Colors.greenAccent,
-    ],
-    begin: Alignment.bottomCenter,
-    end: Alignment.topCenter,
-  );
-
-  @override
-  Widget build(BuildContext context) {
     return AspectRatio(
       aspectRatio: 1,
       child: Padding(

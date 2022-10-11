@@ -10,10 +10,14 @@ List<String> getDataSpending(
     int weekDay = date.weekday;
     DateTime firstDayOfWeek = date.subtract(Duration(days: weekDay - 1));
     DateTime lastDayOfWeek = firstDayOfWeek.add(const Duration(days: 6));
-    list = (data[DateFormat("MM_yyyy").format(firstDayOfWeek)] as List<dynamic>)
-        .map((e) => e.toString())
-        .toList();
-    if (!isSameMonth(firstDayOfWeek, lastDayOfWeek)) {
+    if (data[DateFormat("MM_yyyy").format(firstDayOfWeek)] != null) {
+      list =
+          (data[DateFormat("MM_yyyy").format(firstDayOfWeek)] as List<dynamic>)
+              .map((e) => e.toString())
+              .toList();
+    }
+    if (!isSameMonth(firstDayOfWeek, lastDayOfWeek) &&
+        data[DateFormat("MM_yyyy").format(lastDayOfWeek)] != null) {
       list.addAll(
           (data[DateFormat("MM_yyyy").format(lastDayOfWeek)] as List<dynamic>)
               .map((e) => e.toString())
