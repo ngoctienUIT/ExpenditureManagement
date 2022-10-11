@@ -1,9 +1,9 @@
 import 'package:expenditure_management/constants/list.dart';
 import 'package:expenditure_management/models/spending.dart';
-import 'package:expenditure_management/page/main/calendar/widget/custom_table_calendar.dart';
+import 'package:expenditure_management/page/main/analytic/function/render_list_money.dart';
+import 'package:expenditure_management/page/main/analytic/function/round_number.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:table_calendar/table_calendar.dart';
 
 class ColumnChart extends StatefulWidget {
   const ColumnChart(
@@ -25,51 +25,9 @@ class ColumnChartState extends State<ColumnChart> {
   final Duration animDuration = const Duration(milliseconds: 250);
   int touchedIndex = -1;
   double max = 0;
+  double div = 0;
   List<int> money = [];
-
-  double roundNumber(double number) {
-    double div = 10;
-    while (number / div >= 10) {
-      div *= 10;
-    }
-    int y =
-        int.tryParse((number / div).toString().split('.')[0].substring(0, 1))!;
-    return (y + 1) * div;
-  }
-
-  List<int> renderListMoney() {
-    if (widget.index == 0) {
-      return List.generate(7, (index) {
-        int weekDay = widget.dateTime.weekday;
-        DateTime firstDayOfWeek =
-            widget.dateTime.subtract(Duration(days: weekDay - 1));
-        List<Spending> spendingList = widget.list
-            .where((element) => isSameDay(
-                element.dateTime, firstDayOfWeek.add(Duration(days: index))))
-            .toList();
-        return spendingList.isEmpty
-            ? 0
-            : spendingList
-                .map((e) => e.money)
-                .reduce((value, element) => value + element);
-      });
-    } else if (widget.index == 1) {
-    } else {
-      return List.generate(12, (index) {
-        List<Spending> spendingList = widget.list
-            .where((element) => isSameMonth(
-                element.dateTime, DateTime(widget.dateTime.year, (index + 1))))
-            .toList();
-        return spendingList.isEmpty
-            ? 0
-            : spendingList
-                .map((e) => e.money)
-                .reduce((value, element) => value + element);
-        // return 1;
-      });
-    }
-    return [];
-  }
+  List<String> weekOfMonth = [];
 
   final _barsGradient = const LinearGradient(
     colors: [
@@ -82,17 +40,30 @@ class ColumnChartState extends State<ColumnChart> {
 
   @override
   Widget build(BuildContext context) {
-    money = renderListMoney();
+    money = renderListMoney(
+      index: widget.index,
+      list: widget.list,
+      dateTime: widget.dateTime,
+      getList: (list) => weekOfMonth = list,
+    );
     max = (money.reduce((curr, next) => curr > next ? curr : next)).toDouble();
-    max = roundNumber(max);
+    max = roundNumber(number: max, get: (div) => this.div = div);
+    double width = 500;
+    if (widget.index != 0) {
+      width = 1000;
+    }
 
     return AspectRatio(
       aspectRatio: 1,
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: BarChart(
-          mainBarData(),
-          swapAnimationDuration: animDuration,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Container(
+          width: width,
+          padding: const EdgeInsets.all(16),
+          child: BarChart(
+            mainBarData(),
+            swapAnimationDuration: animDuration,
+          ),
         ),
       ),
     );
@@ -123,6 +94,7 @@ class ColumnChartState extends State<ColumnChart> {
   List<BarChartGroupData> showingGroups() {
     int column = 7;
     if (widget.index == 1) {
+      column = money.length;
     } else if (widget.index == 2) {
       column = 12;
     }
@@ -144,6 +116,7 @@ class ColumnChartState extends State<ColumnChart> {
               if (widget.index == 0) {
                 weekDay = listDayOfWeek[group.x.toInt()];
               } else if (widget.index == 1) {
+                weekDay = "Tuần ${group.x.toInt() + 1}";
               } else {
                 weekDay = listMonthOfYear[group.x.toInt()];
               }
@@ -186,7 +159,7 @@ class ColumnChartState extends State<ColumnChart> {
           sideTitles: SideTitles(
             showTitles: true,
             getTitlesWidget: leftTitles,
-            reservedSize: 30,
+            reservedSize: ((div.toString().length) + 1) * 5,
           ),
         ),
         bottomTitles: AxisTitles(
@@ -226,9 +199,10 @@ class ColumnChartState extends State<ColumnChart> {
     if (widget.index == 0) {
       title = listDayOfWeekAcronym[value.toInt()];
     } else if (widget.index == 1) {
+      title = weekOfMonth[value.toInt()];
     } else {
-      // title = listMonthOfYearAcronym[value.toInt()];
-      title = (value.toInt() + 1).toString();
+      title = listMonthOfYearAcronym[value.toInt()];
+      // title = (value.toInt() + 1).toString();
     }
 
     Widget text = Text(title, style: style);
