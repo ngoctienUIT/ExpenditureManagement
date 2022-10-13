@@ -5,10 +5,11 @@ import 'package:expenditure_management/controls/spending_firebase.dart';
 import 'package:expenditure_management/models/spending.dart';
 import 'package:expenditure_management/page/main/analytic/chart/column_chart.dart';
 import 'package:expenditure_management/page/main/analytic/chart/pie_chart.dart';
-import 'package:expenditure_management/page/main/analytic/custom_tabbar.dart';
-import 'package:expenditure_management/page/main/analytic/show_date.dart';
-import 'package:expenditure_management/page/main/analytic/tabbar_chart.dart';
-import 'package:expenditure_management/page/main/analytic/tabbar_type.dart';
+import 'package:expenditure_management/page/main/analytic/widget/custom_tabbar.dart';
+import 'package:expenditure_management/page/main/analytic/widget/my_search_delegate.dart';
+import 'package:expenditure_management/page/main/analytic/widget/show_date.dart';
+import 'package:expenditure_management/page/main/analytic/widget/tabbar_chart.dart';
+import 'package:expenditure_management/page/main/analytic/widget/tabbar_type.dart';
 import 'package:expenditure_management/page/main/calendar/widget/custom_table_calendar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -87,104 +88,112 @@ class _AnalyticPageState extends State<AnalyticPage>
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  const Text(
-                    "Spending",
-                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-                  ),
-                  const Spacer(),
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(
-                      FontAwesomeIcons.magnifyingGlass,
-                      size: 20,
-                      color: Color.fromRGBO(180, 190, 190, 1),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    const Text(
+                      "Spending",
+                      style:
+                          TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                     ),
-                  )
-                ],
-              ),
-              const SizedBox(height: 20),
-              customTabBar(controller: _tabController),
-              const SizedBox(height: 20),
-              StreamBuilder<DocumentSnapshot>(
-                  stream: FirebaseFirestore.instance
-                      .collection("data")
-                      .doc(FirebaseAuth.instance.currentUser!.uid)
-                      .snapshots(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      var data =
-                          snapshot.requireData.data() as Map<String, dynamic>;
-                      List<String> list = getDataSpending(
-                        data: data,
-                        index: _tabController.index,
-                        date: now,
-                      );
+                    const Spacer(),
+                    IconButton(
+                      onPressed: () {
+                        showSearch(
+                          context: context,
+                          delegate: MySearchDelegate(),
+                        );
+                      },
+                      icon: const Icon(
+                        FontAwesomeIcons.magnifyingGlass,
+                        size: 20,
+                        color: Color.fromRGBO(180, 190, 190, 1),
+                      ),
+                    )
+                  ],
+                ),
+                const SizedBox(height: 20),
+                customTabBar(controller: _tabController),
+                const SizedBox(height: 20),
+                StreamBuilder<DocumentSnapshot>(
+                    stream: FirebaseFirestore.instance
+                        .collection("data")
+                        .doc(FirebaseAuth.instance.currentUser!.uid)
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        var data =
+                            snapshot.requireData.data() as Map<String, dynamic>;
+                        List<String> list = getDataSpending(
+                          data: data,
+                          index: _tabController.index,
+                          date: now,
+                        );
 
-                      return FutureBuilder(
-                          future: SpendingFirebase.getSpendingList(list),
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              var dataSpending = snapshot.data;
+                        return FutureBuilder(
+                            future: SpendingFirebase.getSpendingList(list),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                var dataSpending = snapshot.data;
 
-                              List<Spending> spendingList = dataSpending!
-                                  .where(
-                                      (element) => checkDate(element.dateTime))
-                                  .toList();
+                                List<Spending> spendingList = dataSpending!
+                                    .where((element) =>
+                                        checkDate(element.dateTime))
+                                    .toList();
 
-                              return Card(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(4)),
-                                color: const Color(0xff2c4260),
-                                child: Column(
-                                  children: [
-                                    const SizedBox(height: 10),
-                                    showDate(
-                                      date: date,
-                                      index: _tabController.index,
-                                      now: now,
-                                      action: (date, now) {
-                                        setState(() {
-                                          this.date = date;
-                                          this.now = now;
-                                        });
-                                      },
-                                    ),
-                                    tabBarType(controller: _typeController),
-                                    spendingList.isNotEmpty
-                                        ? (chart
-                                            ? MyPieChart(list: spendingList)
-                                            : ColumnChart(
-                                                index: _tabController.index,
-                                                list: spendingList,
-                                                dateTime: now,
-                                              ))
-                                        : const SizedBox(
-                                            height: 200,
-                                            child: Center(
-                                              child:
-                                                  Text("Không có dữ liệu!"),
+                                return Card(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(4)),
+                                  color: const Color(0xff2c4260),
+                                  child: Column(
+                                    children: [
+                                      const SizedBox(height: 10),
+                                      showDate(
+                                        date: date,
+                                        index: _tabController.index,
+                                        now: now,
+                                        action: (date, now) {
+                                          setState(() {
+                                            this.date = date;
+                                            this.now = now;
+                                          });
+                                        },
+                                      ),
+                                      tabBarType(controller: _typeController),
+                                      spendingList.isNotEmpty
+                                          ? (chart
+                                              ? MyPieChart(list: spendingList)
+                                              : ColumnChart(
+                                                  index: _tabController.index,
+                                                  list: spendingList,
+                                                  dateTime: now,
+                                                ))
+                                          : const SizedBox(
+                                              height: 200,
+                                              child: Center(
+                                                child: Text(
+                                                    "Không có dữ liệu!"),
+                                              ),
                                             ),
-                                          ),
-                                    tabBarChart(controller: _chartController),
-                                    const SizedBox(height: 10)
-                                  ],
-                                ),
-                              );
-                            }
-                            return const Center(
-                                child: CircularProgressIndicator());
-                          });
-                    }
+                                      tabBarChart(controller: _chartController),
+                                      const SizedBox(height: 10)
+                                    ],
+                                  ),
+                                );
+                              }
+                              return const Center(
+                                  child: CircularProgressIndicator());
+                            });
+                      }
 
-                    return const Center(child: CircularProgressIndicator());
-                  }),
-            ],
+                      return const Center(child: CircularProgressIndicator());
+                    }),
+              ],
+            ),
           ),
         ),
       ),
