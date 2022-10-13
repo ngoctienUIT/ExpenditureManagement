@@ -30,16 +30,13 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.whisperBackground,
+      // backgroundColor: AppColors.whisperBackground,
       body: WillPopScope(
         onWillPop: () => onWillPop(
           action: (now) => currentBackPressTime = now,
           currentBackPressTime: currentBackPressTime,
         ),
-        child: PageStorage(
-          bucket: bucket,
-          child: screens[currentTab],
-        ),
+        child: PageStorage(bucket: bucket, child: screens[currentTab]),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

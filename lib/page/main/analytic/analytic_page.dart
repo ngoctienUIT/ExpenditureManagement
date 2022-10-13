@@ -8,10 +8,12 @@ import 'package:expenditure_management/page/main/analytic/chart/pie_chart.dart';
 import 'package:expenditure_management/page/main/analytic/custom_tabbar.dart';
 import 'package:expenditure_management/page/main/analytic/show_date.dart';
 import 'package:expenditure_management/page/main/analytic/tabbar_chart.dart';
+import 'package:expenditure_management/page/main/analytic/tabbar_type.dart';
 import 'package:expenditure_management/page/main/calendar/widget/custom_table_calendar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class AnalyticPage extends StatefulWidget {
   const AnalyticPage({Key? key}) : super(key: key);
@@ -24,6 +26,7 @@ class _AnalyticPageState extends State<AnalyticPage>
     with TickerProviderStateMixin {
   late TabController _tabController;
   late TabController _chartController;
+  late TabController _typeController;
   bool chart = false;
   DateTime now = DateTime.now();
   String date = "";
@@ -33,6 +36,7 @@ class _AnalyticPageState extends State<AnalyticPage>
     date = getWeek(now);
     _tabController = TabController(length: 3, vsync: this);
     _chartController = TabController(length: 2, vsync: this);
+    _typeController = TabController(length: 2, vsync: this);
     _tabController.addListener(() {
       now = DateTime.now();
       setState(() {
@@ -53,6 +57,9 @@ class _AnalyticPageState extends State<AnalyticPage>
           chart = true;
         }
       });
+    });
+    _typeController.addListener(() {
+      setState(() {});
     });
     super.initState();
   }
@@ -85,11 +92,20 @@ class _AnalyticPageState extends State<AnalyticPage>
           child: Column(
             children: [
               Row(
-                children: const [
-                  Text(
+                children: [
+                  const Text(
                     "Spending",
                     style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                   ),
+                  const Spacer(),
+                  IconButton(
+                    onPressed: () {},
+                    icon: const Icon(
+                      FontAwesomeIcons.magnifyingGlass,
+                      size: 20,
+                      color: Color.fromRGBO(180, 190, 190, 1),
+                    ),
+                  )
                 ],
               ),
               const SizedBox(height: 20),
@@ -139,6 +155,7 @@ class _AnalyticPageState extends State<AnalyticPage>
                                         });
                                       },
                                     ),
+                                    tabBarType(controller: _typeController),
                                     spendingList.isNotEmpty
                                         ? (chart
                                             ? MyPieChart(list: spendingList)
