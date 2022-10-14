@@ -25,7 +25,6 @@ class ColumnChartState extends State<ColumnChart> {
   final Duration animDuration = const Duration(milliseconds: 250);
   int touchedIndex = -1;
   double max = 0;
-  double div = 0;
   List<int> money = [];
   List<String> weekOfMonth = [];
 
@@ -47,7 +46,7 @@ class ColumnChartState extends State<ColumnChart> {
       getList: (list) => weekOfMonth = list,
     );
     max = (money.reduce((curr, next) => curr > next ? curr : next)).toDouble();
-    max = roundNumber(number: max, get: (div) => this.div = div);
+    max = roundNumber(number: max);
     double width = 500;
     if (widget.index != 0) {
       width = 1000;
@@ -159,7 +158,7 @@ class ColumnChartState extends State<ColumnChart> {
           sideTitles: SideTitles(
             showTitles: true,
             getTitlesWidget: leftTitles,
-            reservedSize: ((div.toString().length) + 1) * 5,
+            reservedSize: (max.toString().length) * 5,
           ),
         ),
         bottomTitles: AxisTitles(

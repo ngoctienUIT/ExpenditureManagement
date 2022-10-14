@@ -1,5 +1,6 @@
 import 'package:expenditure_management/constants/list.dart';
 import 'package:expenditure_management/models/spending.dart';
+import 'package:expenditure_management/page/main/home/view_list_spending_page.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -25,7 +26,15 @@ Widget showListSpending({required List<Spending> list}) {
 
           return InkWell(
             borderRadius: BorderRadius.circular(15),
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      ViewListSpendingPage(spendingList: spendingList),
+                ),
+              );
+            },
             child: Card(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15),
