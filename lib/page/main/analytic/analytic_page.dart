@@ -11,6 +11,7 @@ import 'package:expenditure_management/page/main/analytic/widget/show_date.dart'
 import 'package:expenditure_management/page/main/analytic/widget/show_list_spending.dart';
 import 'package:expenditure_management/page/main/analytic/widget/tabbar_chart.dart';
 import 'package:expenditure_management/page/main/analytic/widget/tabbar_type.dart';
+import 'package:expenditure_management/page/main/analytic/widget/total_report.dart';
 import 'package:expenditure_management/page/main/calendar/widget/custom_table_calendar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -203,6 +204,8 @@ class _AnalyticPageState extends State<AnalyticPage>
                                           ],
                                         ),
                                       ),
+                                      if (spendingList.isNotEmpty)
+                                        totalReport(list: spendingList),
                                       if (spendingList.isNotEmpty)
                                         showListSpending(list: spendingList)
                                     ],

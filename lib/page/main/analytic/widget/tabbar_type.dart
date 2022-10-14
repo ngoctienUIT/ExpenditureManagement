@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 Widget tabBarType({required TabController controller}) {
   return SizedBox(
     height: 45,
-    width: 150,
+    width: 220,
     child: TabBar(
         controller: controller,
         labelColor: Colors.white,
@@ -14,8 +14,8 @@ Widget tabBarType({required TabController controller}) {
         isScrollable: false,
         indicator: const CircleTabIndicator(color: Colors.black38, radius: 4),
         tabs: const [
-          Tab(text: "Chi"),
-          Tab(text: "Thu"),
+          Tab(text: "Chi Tiêu"),
+          Tab(text: "Thu Nhập"),
         ]),
   );
 }
