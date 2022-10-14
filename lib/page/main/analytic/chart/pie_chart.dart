@@ -19,9 +19,6 @@ class _MyPieChartState extends State<MyPieChart> {
 
   @override
   void initState() {
-    sum = widget.list
-        .map((e) => e.money)
-        .reduce((value, element) => value + element);
     for (int i = 0; i < listType.length; i++) {
       listColor.add(
           Color((Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0));
@@ -32,6 +29,10 @@ class _MyPieChartState extends State<MyPieChart> {
 
   @override
   Widget build(BuildContext context) {
+    sum = widget.list
+        .map((e) => e.money)
+        .reduce((value, element) => value + element);
+
     return AspectRatio(
       aspectRatio: 1,
       child: PieChart(
