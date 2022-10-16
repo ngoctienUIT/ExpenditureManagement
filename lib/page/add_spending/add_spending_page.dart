@@ -157,12 +157,7 @@ class _AddSpendingPageState extends State<AddSpendingPage> {
                                 ],
                               ),
                               const SizedBox(height: 10),
-                              const Divider(
-                                color: Colors.grey,
-                                thickness: 0.5,
-                                endIndent: 10,
-                                indent: 10,
-                              ),
+                              line(),
                               itemSpending(
                                 icon: Icons.calendar_month_rounded,
                                 text: DateFormat("dd/MM/yyyy")
@@ -171,12 +166,7 @@ class _AddSpendingPageState extends State<AddSpendingPage> {
                                   _selectDate(context);
                                 },
                               ),
-                              const Divider(
-                                color: Colors.grey,
-                                thickness: 0.5,
-                                endIndent: 10,
-                                indent: 10,
-                              ),
+                              line(),
                               itemSpending(
                                 icon: Icons.access_time_rounded,
                                 text:
@@ -185,12 +175,7 @@ class _AddSpendingPageState extends State<AddSpendingPage> {
                                   _selectTime(context);
                                 },
                               ),
-                              const Divider(
-                                color: Colors.grey,
-                                thickness: 0.5,
-                                endIndent: 10,
-                                indent: 10,
-                              ),
+                              line(),
                               Row(
                                 children: [
                                   const Icon(
@@ -231,6 +216,15 @@ class _AddSpendingPageState extends State<AddSpendingPage> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget line() {
+    return const Divider(
+      color: Colors.grey,
+      thickness: 0.5,
+      endIndent: 10,
+      indent: 10,
     );
   }
 

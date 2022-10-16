@@ -1,7 +1,40 @@
+import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
+import 'package:expenditure_management/page/main/analytic/widget/item_filter.dart';
 import 'package:flutter/material.dart';
 
-class FilterPage extends StatelessWidget {
+class FilterPage extends StatefulWidget {
   const FilterPage({Key? key}) : super(key: key);
+
+  @override
+  State<FilterPage> createState() => _FilterPageState();
+}
+
+class _FilterPageState extends State<FilterPage> {
+  List<String> moneyList = [
+    "Tất cả",
+    "Lớn hơn",
+    "Nhỏ hơn",
+    "Trong khoảng",
+    "Chính xác"
+  ];
+
+  List<String> timeList = [
+    "Tất cả",
+    "Sau",
+    "Trước",
+    "Trong khoảng",
+    "Chính xác"
+  ];
+
+  List<String> groupList = [
+    "Tất cả các khoản",
+    "Tất cả các khoàn thu",
+    "Tất cả các khoản chi"
+  ];
+
+  List<int> chooseIndex = [0, 0, 0, 0];
+  TextEditingController moneyController = TextEditingController();
+  DateTime dateTime = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -32,43 +65,142 @@ class FilterPage extends StatelessWidget {
           )
         ],
       ),
-      body: Container(
+      body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
+            itemFilter(
+              text: 'Số tiền',
+              value: moneyList[chooseIndex[0]],
+              list: moneyList,
+              action: (value) async {
+                if (value != 0) {
+                  await inputMoney();
+                }
+                setState(() => chooseIndex[0] = value);
+              },
+            ),
+            line(),
+            itemFilter(
+              text: 'Ví',
+              value: moneyList[chooseIndex[1]],
+              list: moneyList,
+              action: (value) {
+                setState(() => chooseIndex[1] = value);
+              },
+            ),
+            line(),
+            itemFilter(
+              text: 'Thời gian',
+              value: timeList[chooseIndex[2]],
+              list: timeList,
+              action: (value) async {
+                if (value != 0) {
+                  await chooseDate();
+                }
+                setState(() => chooseIndex[2] = value);
+              },
+            ),
+            line(),
             Row(
-              children: const [
-                SizedBox(width: 70, child: Text("Số tiền")),
-                Expanded(child: TextField())
+              children: [
+                const SizedBox(
+                  width: 70,
+                  child: Text(
+                    "Ghi chú",
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: TextField(
+                    textAlign: TextAlign.center,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5),
+                        borderSide:
+                            const BorderSide(width: 0, style: BorderStyle.none),
+                      ),
+                      hintStyle: const TextStyle(fontSize: 16),
+                      filled: true,
+                      fillColor: Colors.grey[300],
+                      hintText: "Ghi chú",
+                      contentPadding: const EdgeInsets.all(0),
+                    ),
+                  ),
+                ),
               ],
             ),
-            Row(
-              children: const [
-                SizedBox(width: 70, child: Text("Ví")),
-                Expanded(child: TextField())
-              ],
+            line(),
+            itemFilter(
+              text: 'Nhóm',
+              value: groupList[chooseIndex[3]],
+              list: groupList,
+              action: (value) {
+                setState(() => chooseIndex[3] = value);
+              },
             ),
-            Row(
-              children: const [
-                SizedBox(width: 70, child: Text("Thời gian")),
-                Expanded(child: TextField())
-              ],
-            ),
-            Row(
-              children: const [
-                SizedBox(width: 70, child: Text("Ghi chú")),
-                Expanded(child: TextField())
-              ],
-            ),
-            Row(
-              children: const [
-                SizedBox(width: 70, child: Text("Nhóm")),
-                Expanded(child: TextField())
-              ],
-            ),
+            line()
           ],
         ),
       ),
+    );
+  }
+
+  Widget line() {
+    return const Divider(
+      color: Colors.grey,
+      thickness: 0.5,
+      endIndent: 10,
+      indent: 10,
+    );
+  }
+
+  Future inputMoney() async {
+    await showDialog(
+      context: context,
+      builder: (context) {
+        return AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          child: AlertDialog(
+            content: SizedBox(
+              height: 150,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text("Nhập vào số tiền"),
+                  const SizedBox(height: 10),
+                  TextField(
+                    controller: moneyController,
+                    autofocus: true,
+                    textAlign: TextAlign.center,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [CurrencyTextInputFormatter(locale: "vi")],
+                    decoration: const InputDecoration(
+                      hintText: '30.000 VND',
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text("Ok"))
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<DateTime?> chooseDate() async {
+    return await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1990),
+      lastDate: DateTime.now(),
     );
   }
 }

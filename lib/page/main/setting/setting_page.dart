@@ -143,8 +143,8 @@ class _SettingPageState extends State<SettingPage> {
 
   void _showBottomSheet() {
     showModalBottomSheet(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
       ),
       context: context,
       builder: (context) {
