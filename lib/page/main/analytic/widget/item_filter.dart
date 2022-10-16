@@ -30,10 +30,19 @@ Widget itemFilter({
             ),
             child: DropdownButtonHideUnderline(
               child: DropdownButton2<String>(
+                hint: Center(
+                    child: Text(
+                  value,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                )),
                 underline: const SizedBox.shrink(),
                 icon: const SizedBox.shrink(),
                 isExpanded: true,
-                value: value,
+                // value: value,
                 items: list.map(buildMenuItem).toList(),
                 onChanged: (value) {
                   if (value != null) {

@@ -1,6 +1,7 @@
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:expenditure_management/page/main/analytic/widget/item_filter.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class FilterPage extends StatefulWidget {
   const FilterPage({Key? key}) : super(key: key);
@@ -34,7 +35,7 @@ class _FilterPageState extends State<FilterPage> {
 
   List<int> chooseIndex = [0, 0, 0, 0];
   TextEditingController moneyController = TextEditingController();
-  DateTime dateTime = DateTime.now();
+  DateTime? dateTime;
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +58,9 @@ class _FilterPageState extends State<FilterPage> {
         ),
         actions: [
           TextButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pop(context);
+            },
             child: const Text(
               "Tìm kiếm",
               style: TextStyle(fontSize: 16, color: Colors.black),
@@ -65,83 +68,100 @@ class _FilterPageState extends State<FilterPage> {
           )
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            itemFilter(
-              text: 'Số tiền',
-              value: moneyList[chooseIndex[0]],
-              list: moneyList,
-              action: (value) async {
-                if (value != 0) {
-                  await inputMoney();
-                }
-                setState(() => chooseIndex[0] = value);
-              },
-            ),
-            line(),
-            itemFilter(
-              text: 'Ví',
-              value: moneyList[chooseIndex[1]],
-              list: moneyList,
-              action: (value) {
-                setState(() => chooseIndex[1] = value);
-              },
-            ),
-            line(),
-            itemFilter(
-              text: 'Thời gian',
-              value: timeList[chooseIndex[2]],
-              list: timeList,
-              action: (value) async {
-                if (value != 0) {
-                  await chooseDate();
-                }
-                setState(() => chooseIndex[2] = value);
-              },
-            ),
-            line(),
-            Row(
-              children: [
-                const SizedBox(
-                  width: 70,
-                  child: Text(
-                    "Ghi chú",
-                    style: TextStyle(fontSize: 16),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: TextField(
-                    textAlign: TextAlign.center,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5),
-                        borderSide:
-                            const BorderSide(width: 0, style: BorderStyle.none),
-                      ),
-                      hintStyle: const TextStyle(fontSize: 16),
-                      filled: true,
-                      fillColor: Colors.grey[300],
-                      hintText: "Ghi chú",
-                      contentPadding: const EdgeInsets.all(0),
+      body: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              itemFilter(
+                text: 'Số tiền',
+                value: chooseIndex[0] == 0
+                    ? moneyList[chooseIndex[0]]
+                    : "${moneyList[chooseIndex[0]]} ${moneyController.text}",
+                list: moneyList,
+                action: (value) async {
+                  if (value != 0) {
+                    await inputMoney();
+                  }
+                  setState(() => chooseIndex[0] = value);
+                },
+              ),
+              line(),
+              itemFilter(
+                text: 'Ví',
+                value: moneyList[chooseIndex[1]],
+                list: moneyList,
+                action: (value) {
+                  setState(() => chooseIndex[1] = value);
+                },
+              ),
+              line(),
+              itemFilter(
+                text: 'Thời gian',
+                value: chooseIndex[2] == 0
+                    ? timeList[chooseIndex[2]]
+                    : "${timeList[chooseIndex[2]]} ${DateFormat("dd/MM/yyyy").format(dateTime!)}",
+                list: timeList,
+                action: (value) async {
+                  if (value != 0) {
+                    DateTime? picker = await chooseDate();
+                    if (picker != null) dateTime = picker;
+                  }
+                  setState(() {
+                    if (dateTime == null) {
+                      chooseIndex[2] = 0;
+                    } else {
+                      chooseIndex[2] = value;
+                    }
+                  });
+                },
+              ),
+              line(),
+              Row(
+                children: [
+                  const SizedBox(
+                    width: 70,
+                    child: Text(
+                      "Ghi chú",
+                      style: TextStyle(fontSize: 16),
                     ),
                   ),
-                ),
-              ],
-            ),
-            line(),
-            itemFilter(
-              text: 'Nhóm',
-              value: groupList[chooseIndex[3]],
-              list: groupList,
-              action: (value) {
-                setState(() => chooseIndex[3] = value);
-              },
-            ),
-            line()
-          ],
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: TextField(
+                      textAlign: TextAlign.center,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                          borderSide: const BorderSide(
+                              width: 0, style: BorderStyle.none),
+                        ),
+                        hintStyle: const TextStyle(fontSize: 16),
+                        filled: true,
+                        fillColor: Colors.grey[300],
+                        hintText: "Ghi chú",
+                        contentPadding: const EdgeInsets.all(0),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              line(),
+              itemFilter(
+                text: 'Nhóm',
+                value: groupList[chooseIndex[3]],
+                list: groupList,
+                action: (value) {
+                  setState(() => chooseIndex[3] = value);
+                },
+              ),
+              line()
+            ],
+          ),
         ),
       ),
     );
