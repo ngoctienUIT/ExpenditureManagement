@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class FilterPage extends StatefulWidget {
-  const FilterPage({Key? key}) : super(key: key);
+  const FilterPage({Key? key, required this.action}) : super(key: key);
+  final Function(List<int> list, int money, DateTime? dateTime, String note)
+      action;
 
   @override
   State<FilterPage> createState() => _FilterPageState();
@@ -35,6 +37,7 @@ class _FilterPageState extends State<FilterPage> {
 
   List<int> chooseIndex = [0, 0, 0, 0];
   TextEditingController moneyController = TextEditingController();
+  TextEditingController noteController = TextEditingController();
   DateTime? dateTime;
 
   @override
@@ -59,6 +62,12 @@ class _FilterPageState extends State<FilterPage> {
         actions: [
           TextButton(
             onPressed: () {
+              widget.action(
+                  chooseIndex,
+                  int.parse(
+                      moneyController.text.replaceAll(RegExp(r'[^0-9]'), '')),
+                  dateTime,
+                  noteController.text);
               Navigator.pop(context);
             },
             child: const Text(
@@ -133,6 +142,7 @@ class _FilterPageState extends State<FilterPage> {
                   const SizedBox(width: 10),
                   Expanded(
                     child: TextField(
+                      controller: noteController,
                       textAlign: TextAlign.center,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
