@@ -186,10 +186,9 @@ class MySearchDelegate extends SearchDelegate {
       var data = value.data() as Map<String, dynamic>;
       List<String> history =
           (data["history"] as List<dynamic>).map((e) => e.toString()).toList();
-      if (!history.contains(query)) {
-        history.add(query);
-        firestore.update({"history": history});
-      }
+      history.remove(query);
+      history.add(query);
+      firestore.update({"history": history});
     });
   }
 

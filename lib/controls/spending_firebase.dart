@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:expenditure_management/models/spending.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:expenditure_management/page/main/calendar/widget/custom_table_calendar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:intl/intl.dart';
@@ -39,6 +40,48 @@ class SpendingFirebase {
         dataSpending.add(firestoreSpending.id);
         firestoreData.set(
             {DateFormat("MM_yyyy").format(spending.dateTime): dataSpending});
+      }
+    });
+  }
+
+  static Future updateSpending(Spending spending, DateTime oldDay) async {
+    var firestoreSpending =
+        FirebaseFirestore.instance.collection("spending").doc(spending.id);
+
+    var firestoreData = FirebaseFirestore.instance
+        .collection("data")
+        .doc(FirebaseAuth.instance.currentUser!.uid);
+
+    firestoreSpending.update(spending.toMap());
+
+    await firestoreData.get().then((value) {
+      List<String> dataSpending = [];
+      var data = value.data() as Map<String, dynamic>;
+      if (!isSameMonth(spending.dateTime, oldDay)) {
+        //xóa cái id cũ ra khỏi tháng đó
+        dataSpending =
+            (data[DateFormat("MM_yyyy").format(oldDay)] as List<dynamic>)
+                .map((e) => e.toString())
+                .toList();
+        dataSpending.remove(spending.id!);
+        firestoreData
+            .update({DateFormat("MM_yyyy").format(oldDay): dataSpending});
+
+        // thêm id vào tháng mới
+        if (data[DateFormat("MM_yyyy").format(spending.dateTime)] != null) {
+          dataSpending = (data[DateFormat("MM_yyyy").format(spending.dateTime)]
+                  as List<dynamic>)
+              .map((e) => e.toString())
+              .toList();
+          dataSpending.add(spending.id!);
+          firestoreData.update(
+              {DateFormat("MM_yyyy").format(spending.dateTime): dataSpending});
+        } else {
+          dataSpending.add(spending.id!);
+          data.addAll(
+              {DateFormat("MM_yyyy").format(spending.dateTime): dataSpending});
+          firestoreData.set(data);
+        }
       }
     });
   }

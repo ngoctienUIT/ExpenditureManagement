@@ -18,11 +18,6 @@ class _HomePageState extends State<HomePage> {
   var numberFormat = NumberFormat.currency(locale: "vi_VI");
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.whisperBackground,

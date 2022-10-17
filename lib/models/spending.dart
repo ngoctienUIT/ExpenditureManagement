@@ -36,4 +36,20 @@ class Spending {
       image: data["image"],
     );
   }
+
+  Spending copyWith({
+    int? money,
+    int? type,
+    DateTime? dateTime,
+    String? note,
+    String? image,
+  }) {
+    return Spending(
+      money: money ?? this.money,
+      type: type ?? this.type,
+      dateTime: dateTime ?? this.dateTime,
+      note: note ?? this.note,
+      image: image ?? this.image,
+    );
+  }
 }

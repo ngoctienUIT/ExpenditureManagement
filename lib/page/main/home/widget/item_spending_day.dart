@@ -6,6 +6,8 @@ import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 Widget itemSpendingDay(List<Spending> spendingList) {
+  var numberFormat = NumberFormat.currency(locale: "vi_VI");
+
   spendingList.sort(
     (a, b) => b.dateTime.compareTo(a.dateTime),
   );
@@ -19,7 +21,6 @@ Widget itemSpendingDay(List<Spending> spendingList) {
   return ListView.builder(
     itemCount: listDate.length,
     itemBuilder: (context, index) {
-      var numberFormat = NumberFormat.currency(locale: "vi_VI");
       var list = spendingList
           .where((element) => isSameDay(element.dateTime, listDate[index]))
           .toList();
@@ -79,7 +80,7 @@ Widget itemSpendingDay(List<Spending> spendingList) {
                         context,
                         MaterialPageRoute(
                           builder: (context) =>
-                              EditSpendingPage(spending: spendingList[index]),
+                              EditSpendingPage(spending: list[index]),
                         ),
                       );
                     },

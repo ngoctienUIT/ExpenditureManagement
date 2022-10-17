@@ -28,6 +28,23 @@ class _EditSpendingPageState extends State<EditSpendingPage> {
   XFile? image;
 
   @override
+  void initState() {
+    print(widget.spending.id);
+    _money.text =
+        NumberFormat.currency(locale: "vi_VI").format(widget.spending.money);
+    if (widget.spending.note != null) {
+      _note.text = widget.spending.note!;
+    }
+    selectedDate = widget.spending.dateTime;
+    selectedTime = TimeOfDay(
+      hour: widget.spending.dateTime.hour,
+      minute: widget.spending.dateTime.minute,
+    );
+    type = widget.spending.type;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.whisperBackground,
@@ -44,6 +61,7 @@ class _EditSpendingPageState extends State<EditSpendingPage> {
           TextButton(
             onPressed: () async {
               Spending spending = Spending(
+                id: widget.spending.id,
                 money: int.parse(_money.text.replaceAll(RegExp(r'[^0-9]'), '')),
                 type: type!,
                 dateTime: DateTime(
@@ -56,7 +74,8 @@ class _EditSpendingPageState extends State<EditSpendingPage> {
                 note: _note.text,
               );
 
-              await SpendingFirebase.addSpending(spending);
+              await SpendingFirebase.updateSpending(
+                  spending, widget.spending.dateTime);
               if (!mounted) return;
               Navigator.pop(context);
             },
