@@ -1,5 +1,6 @@
 import 'package:expenditure_management/constants/list.dart';
 import 'package:expenditure_management/models/spending.dart';
+import 'package:expenditure_management/page/edit_spending/edit_spending_page.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
@@ -30,7 +31,15 @@ Widget showListSpending(List<Spending> spendingList) {
     itemBuilder: (context, index) {
       return InkWell(
         borderRadius: BorderRadius.circular(15),
-        onTap: () {},
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  EditSpendingPage(spending: spendingList[index]),
+            ),
+          );
+        },
         child: Card(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),

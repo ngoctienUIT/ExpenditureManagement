@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Spending {
+  String? id;
   int money;
   int type;
   String? note;
@@ -8,6 +9,7 @@ class Spending {
   String? image;
 
   Spending({
+    this.id,
     required this.money,
     required this.type,
     required this.dateTime,
@@ -26,6 +28,7 @@ class Spending {
   factory Spending.fromFirebase(DocumentSnapshot snapshot) {
     var data = snapshot.data() as Map<String, dynamic>;
     return Spending(
+      id: snapshot.id,
       money: data["money"],
       type: data["type"],
       dateTime: (data["date"] as Timestamp).toDate(),

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expenditure_management/constants/app_colors.dart';
 import 'package:expenditure_management/controls/spending_firebase.dart';
-import 'package:expenditure_management/page/main/home/item_spending_widget.dart';
+import 'package:expenditure_management/page/main/home/widget/item_spending_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
