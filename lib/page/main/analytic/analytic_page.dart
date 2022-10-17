@@ -152,6 +152,15 @@ class _AnalyticPageState extends State<AnalyticPage>
                                       (element) => checkDate(element.dateTime))
                                   .toList();
 
+                              List<Spending> classifySpending =
+                                  spendingList.where((element) {
+                                if (_typeController.index == 0 &&
+                                    element.money > 0) return false;
+                                if (_typeController.index == 1 &&
+                                    element.money < 0) return false;
+                                return true;
+                              }).toList();
+
                               return SingleChildScrollView(
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
@@ -181,14 +190,14 @@ class _AnalyticPageState extends State<AnalyticPage>
                                             ),
                                             tabBarType(
                                                 controller: _typeController),
-                                            spendingList.isNotEmpty
+                                            classifySpending.isNotEmpty
                                                 ? (chart
                                                     ? MyPieChart(
-                                                        list: spendingList)
+                                                        list: classifySpending)
                                                     : ColumnChart(
                                                         index: _tabController
                                                             .index,
-                                                        list: spendingList,
+                                                        list: classifySpending,
                                                         dateTime: now,
                                                       ))
                                                 : const SizedBox(

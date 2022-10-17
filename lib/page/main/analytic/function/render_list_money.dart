@@ -21,7 +21,7 @@ List<int> renderListMoney(
       return spendingList.isEmpty
           ? 0
           : spendingList
-              .map((e) => e.money)
+              .map((e) => e.money.abs())
               .reduce((value, element) => value + element);
     });
   } else if (index == 1) {
@@ -53,7 +53,7 @@ List<int> renderListMoney(
       listMoney.add(spendingList.isEmpty
           ? 0
           : spendingList
-              .map((e) => e.money)
+              .map((e) => e.money.abs())
               .reduce((value, element) => value + element));
       if (check) {
         date = lastWeek.add(const Duration(days: 1));
@@ -71,7 +71,7 @@ List<int> renderListMoney(
       return spendingList.isEmpty
           ? 0
           : spendingList
-              .map((e) => e.money)
+              .map((e) => e.money.abs())
               .reduce((value, element) => value + element);
     });
   }

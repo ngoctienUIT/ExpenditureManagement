@@ -43,7 +43,8 @@ class _AddSpendingPageState extends State<AddSpendingPage> {
           TextButton(
             onPressed: () async {
               Spending spending = Spending(
-                money: int.parse(_money.text.replaceAll(RegExp(r'[^0-9]'), '')),
+                money: ([29, 30, 34, 36, 37, 40].contains(type!) ? 1 : (-1)) *
+                    int.parse(_money.text.replaceAll(RegExp(r'[^0-9]'), '')),
                 type: type!,
                 dateTime: DateTime(
                   selectedDate.year,

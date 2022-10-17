@@ -30,7 +30,7 @@ class _MyPieChartState extends State<MyPieChart> {
   @override
   Widget build(BuildContext context) {
     sum = widget.list
-        .map((e) => e.money)
+        .map((e) => e.money.abs())
         .reduce((value, element) => value + element);
 
     return AspectRatio(
@@ -71,7 +71,7 @@ class _MyPieChartState extends State<MyPieChart> {
           final widgetSize = isTouched ? 55.0 : 40.0;
 
           int sumSpending = spendingList
-              .map((e) => e.money)
+              .map((e) => e.money.abs())
               .reduce((value, element) => value + element);
 
           pieChartList.add(
