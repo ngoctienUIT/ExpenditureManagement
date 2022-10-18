@@ -1,13 +1,17 @@
 import 'package:expenditure_management/constants/app_styles.dart';
 import 'package:flutter/material.dart';
 
-Widget itemSpending(
-    {required IconData icon, required String text, required Function action}) {
+Widget itemSpending({
+  required IconData icon,
+  required String text,
+  required Function action,
+  Color? color,
+}) {
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: 10),
     child: Row(
       children: [
-        Icon(icon, size: 35, color: Colors.grey),
+        Icon(icon, size: 35, color: color ?? Colors.grey),
         Expanded(
           child: InkWell(
             splashColor: Colors.transparent,

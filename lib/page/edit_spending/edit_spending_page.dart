@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:expenditure_management/constants/app_colors.dart';
 import 'package:expenditure_management/constants/app_styles.dart';
@@ -26,6 +27,7 @@ class _EditSpendingPageState extends State<EditSpendingPage> {
   TimeOfDay selectedTime = TimeOfDay.now();
   int? type;
   XFile? image;
+  bool more = false;
 
   @override
   void initState() {
@@ -225,9 +227,70 @@ class _EditSpendingPageState extends State<EditSpendingPage> {
                         ),
                       ),
                     ),
+                    if (more)
+                      Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Column(
+                              children: [
+                                itemSpending(
+                                  icon: Icons.location_on_outlined,
+                                  text: "Khánh Hòa",
+                                  action: () {},
+                                ),
+                                line(),
+                                const SizedBox(height: 10),
+                                if (image != null)
+                                  Column(
+                                    children: [
+                                      Image.file(
+                                        File(image!.path),
+                                        width: double.infinity,
+                                        fit: BoxFit.fitWidth,
+                                      ),
+                                      const SizedBox(height: 10)
+                                    ],
+                                  ),
+                                SizedBox(
+                                  height: 40,
+                                  child: ElevatedButton.icon(
+                                    onPressed: () => pickImage(),
+                                    icon: const Icon(Icons.image, size: 35),
+                                    label: const Text(
+                                      "Thêm ảnh",
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 10),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
                     TextButton(
-                      onPressed: () {},
-                      child: Text("Thêm chi tiết", style: AppStyles.p),
+                      onPressed: () {
+                        setState(() => more = !more);
+                      },
+                      style: ButtonStyle(
+                        overlayColor:
+                            MaterialStateProperty.all(Colors.transparent),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(more ? "Ẩn bớt" : "Thêm chi tiết",
+                              style: AppStyles.p),
+                          Icon(
+                            more ? Icons.arrow_drop_up : Icons.arrow_drop_down,
+                          )
+                        ],
+                      ),
                     )
                   ],
                 ),
