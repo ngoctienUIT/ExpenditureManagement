@@ -201,10 +201,17 @@ class _AnalyticPageState extends State<AnalyticPage>
                                                         dateTime: now,
                                                       ))
                                                 : const SizedBox(
-                                                    height: 200,
+                                                    height: 350,
                                                     child: Center(
                                                       child: Text(
-                                                          "Không có dữ liệu!"),
+                                                        "Không có dữ liệu!",
+                                                        style: TextStyle(
+                                                          color: Colors.blue,
+                                                          fontSize: 20,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
                                                     ),
                                                   ),
                                             tabBarChart(
@@ -222,16 +229,40 @@ class _AnalyticPageState extends State<AnalyticPage>
                                 ),
                               );
                             }
-                            return const Center(
-                                child: CircularProgressIndicator());
+                            return loading();
                           });
                     }
 
-                    return const Center(child: CircularProgressIndicator());
+                    return loading();
                   }),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget loading() {
+    return Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+      color: const Color(0xff2c4260),
+      child: Column(
+        children: [
+          const SizedBox(height: 10),
+          showDate(
+            date: date,
+            index: 0,
+            now: now,
+            action: (date, now) {},
+          ),
+          tabBarType(controller: TabController(length: 2, vsync: this)),
+          const SizedBox(
+            height: 350,
+            child: Center(child: CircularProgressIndicator()),
+          ),
+          tabBarChart(controller: TabController(length: 2, vsync: this)),
+          const SizedBox(height: 10),
+        ],
       ),
     );
   }

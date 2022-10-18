@@ -55,11 +55,14 @@ Widget itemSpendingWidget({List<Spending>? spendingList}) {
                             ),
                           ),
                           const Spacer(),
-                          Text(
-                            numberFormat.format(list
-                                .map((e) => e.money)
-                                .reduce((value, element) => value + element)),
-                            style: const TextStyle(fontSize: 16),
+                          Flexible(
+                            child: Text(
+                              numberFormat.format(list
+                                  .map((e) => e.money)
+                                  .reduce((value, element) => value + element)),
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(fontSize: 16),
+                            ),
                           ),
                           const SizedBox(width: 10),
                           const Icon(Icons.arrow_forward_ios_outlined)

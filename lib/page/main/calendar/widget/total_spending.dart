@@ -19,8 +19,27 @@ Widget shimmerAnimation() {
   );
 }
 
-Widget totalSpending({List<Spending>? spendingList}) {
+Widget totalSpending({List<Spending>? list}) {
   var numberFormat = NumberFormat.currency(locale: "vi_VI");
+  int income = 0;
+  int spending = 0;
+
+  if (list != null) {
+    List<Spending> incomeList =
+        list.where((element) => element.money > 0).toList();
+    if (incomeList.isNotEmpty) {
+      income = incomeList
+          .map((e) => e.money)
+          .reduce((value, element) => value + element);
+    }
+    List<Spending> spendingList =
+        list.where((element) => element.money < 0).toList();
+    if (spendingList.isNotEmpty) {
+      spending = spendingList
+          .map((e) => e.money)
+          .reduce((value, element) => value + element);
+    }
+  }
 
   return Card(
     child: Container(
@@ -28,55 +47,56 @@ Widget totalSpending({List<Spending>? spendingList}) {
       color: Colors.white,
       child: Row(
         children: [
-          const Spacer(),
-          Column(
-            children: [
-              const Text("Thu nhập", style: TextStyle(fontSize: 16)),
-              const SizedBox(height: 5),
-              spendingList != null
-                  ? const Text(
-                      "0",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    )
-                  : shimmerAnimation()
-            ],
+          Expanded(
+            child: Column(
+              children: [
+                const Text("Thu nhập", style: TextStyle(fontSize: 16)),
+                const SizedBox(height: 5),
+                list != null
+                    ? Text(
+                        numberFormat.format(income),
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      )
+                    : shimmerAnimation()
+              ],
+            ),
           ),
-          const Spacer(),
-          Column(
-            children: [
-              const Text("Chi tiêu", style: TextStyle(fontSize: 16)),
-              const SizedBox(height: 5),
-              spendingList != null
-                  ? Text(
-                      spendingList.isNotEmpty
-                          ? numberFormat.format(spendingList
-                              .map((e) => e.money)
-                              .reduce((value, element) => value + element))
-                          : "0",
-                      style: const TextStyle(
-                          fontSize: 20, fontWeight: FontWeight.bold),
-                    )
-                  : shimmerAnimation()
-            ],
+          Expanded(
+            child: Column(
+              children: [
+                const Text("Chi tiêu", style: TextStyle(fontSize: 16)),
+                const SizedBox(height: 5),
+                list != null
+                    ? Text(
+                        list.isNotEmpty ? numberFormat.format(spending) : "0",
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      )
+                    : shimmerAnimation()
+              ],
+            ),
           ),
-          const Spacer(),
-          Column(
-            children: [
-              const Text("Tổng", style: TextStyle(fontSize: 16)),
-              const SizedBox(height: 5),
-              spendingList != null
-                  ? Text(
-                      spendingList.isNotEmpty
-                          ? "-${numberFormat.format(spendingList.map((e) => e.money).reduce((value, element) => value + element))}"
-                          : "0",
-                      style: const TextStyle(
-                          fontSize: 20, fontWeight: FontWeight.bold),
-                    )
-                  : shimmerAnimation()
-            ],
+          Expanded(
+            child: Column(
+              children: [
+                const Text("Tổng", style: TextStyle(fontSize: 16)),
+                const SizedBox(height: 5),
+                list != null
+                    ? Text(
+                        list.isNotEmpty
+                            ? numberFormat.format(income + spending)
+                            : "0",
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      )
+                    : shimmerAnimation()
+              ],
+            ),
           ),
-          const Spacer(),
         ],
       ),
     ),

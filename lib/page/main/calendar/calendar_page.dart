@@ -85,7 +85,7 @@ class _CalendarPageState extends State<CalendarPage> {
                                   }),
                               if (_currentSpendingList!.isNotEmpty)
                                 totalSpending(
-                                  spendingList: _currentSpendingList,
+                                  list: _currentSpendingList,
                                 ),
                               Expanded(
                                 child: buildSpending(

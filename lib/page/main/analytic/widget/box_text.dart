@@ -20,10 +20,13 @@ Widget boxText({required String text, required int number}) {
           style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
         const SizedBox(width: 5),
-        Text(
-          numberFormat.format(number),
-          style: const TextStyle(fontSize: 16),
-        )
+        Flexible(
+          child: Text(
+            overflow: TextOverflow.ellipsis,
+            numberFormat.format(number),
+            style: const TextStyle(fontSize: 16),
+          ),
+        ),
       ],
     ),
   );
