@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:expenditure_management/constants/list.dart';
 import 'package:expenditure_management/models/spending.dart';
 import 'package:expenditure_management/page/main/home/view_list_spending_page.dart';
@@ -72,27 +74,63 @@ Widget itemSpendingWidget({List<Spending>? spendingList}) {
             }
           },
         )
-      : ListView.builder(
-          padding: const EdgeInsets.all(10),
-          itemCount: 5,
-          itemBuilder: (context, index) {
-            return Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: Shimmer.fromColors(
+      : loadingItemSpending();
+}
+
+Widget loadingItemSpending() {
+  return ListView.builder(
+    padding: const EdgeInsets.all(10),
+    itemCount: 5,
+    itemBuilder: (context, index) {
+      return Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+          child: Row(
+            children: [
+              Shimmer.fromColors(
                 baseColor: Colors.grey[300]!,
                 highlightColor: Colors.grey[100]!,
                 child: Container(
-                  height: 80,
-                  width: double.infinity,
+                  height: 40,
+                  width: 40,
                   decoration: BoxDecoration(
                     color: Colors.grey,
-                    borderRadius: BorderRadius.circular(5),
+                    borderRadius: BorderRadius.circular(90),
                   ),
                 ),
               ),
-            );
-          },
-        );
+              const SizedBox(width: 10),
+              textLoading(Random().nextInt(50) + 50),
+              const Spacer(),
+              textLoading(Random().nextInt(50) + 70),
+              const SizedBox(width: 10),
+              Shimmer.fromColors(
+                baseColor: Colors.grey[300]!,
+                highlightColor: Colors.grey[100]!,
+                child: const Icon(Icons.arrow_forward_ios_outlined),
+              ),
+            ],
+          ),
+        ),
+      );
+    },
+  );
+}
+
+Widget textLoading(int width) {
+  return Shimmer.fromColors(
+    baseColor: Colors.grey[300]!,
+    highlightColor: Colors.grey[100]!,
+    child: Container(
+      height: 25,
+      width: width.toDouble(),
+      decoration: BoxDecoration(
+        color: Colors.grey,
+        borderRadius: BorderRadius.circular(5),
+      ),
+    ),
+  );
 }

@@ -1,9 +1,9 @@
 import 'package:expenditure_management/constants/list.dart';
 import 'package:expenditure_management/models/spending.dart';
 import 'package:expenditure_management/page/edit_spending/edit_spending_page.dart';
+import 'package:expenditure_management/page/main/home/widget/item_spending_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:shimmer/shimmer.dart';
 
 Widget buildSpending({List<Spending>? spendingList, DateTime? date}) {
   return spendingList != null
@@ -20,7 +20,7 @@ Widget buildSpending({List<Spending>? spendingList, DateTime? date}) {
               ),
             )
           : showListSpending(spendingList))
-      : loadingListSpending();
+      : loadingItemSpending();
 }
 
 Widget showListSpending(List<Spending> spendingList) {
@@ -68,29 +68,6 @@ Widget showListSpending(List<Spending> spendingList) {
                 const SizedBox(width: 10),
                 const Icon(Icons.arrow_forward_ios_outlined)
               ],
-            ),
-          ),
-        ),
-      );
-    },
-  );
-}
-
-Widget loadingListSpending() {
-  return ListView.builder(
-    itemCount: 5,
-    itemBuilder: (context, index) {
-      return Card(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-        child: Shimmer.fromColors(
-          baseColor: Colors.grey[300]!,
-          highlightColor: Colors.grey[100]!,
-          child: Container(
-            height: 80,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: Colors.grey,
-              borderRadius: BorderRadius.circular(5),
             ),
           ),
         ),
