@@ -1,4 +1,5 @@
 import 'package:expenditure_management/constants/function/loading_animation.dart';
+import 'package:expenditure_management/language/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -80,14 +81,14 @@ class _SignupFormState extends State<SignupForm> {
                   const Text("Welcome to App", style: TextStyle(fontSize: 20)),
                   const SizedBox(height: 50),
                   inputText(
-                    hint: "Name",
+                    hint: AppLocalizations.of(context).translate('full_name'),
                     validator: 1,
                     controller: _nameController,
                     inputType: TextInputType.name,
                   ),
                   const SizedBox(height: 20),
                   inputText(
-                    hint: "Username",
+                    hint: "Email",
                     validator: 0,
                     controller: _userController,
                     inputType: TextInputType.emailAddress,
@@ -161,7 +162,7 @@ class _SignupFormState extends State<SignupForm> {
                         hide = !hide;
                       });
                     },
-                    hint: "Password",
+                    hint: AppLocalizations.of(context).translate('password'),
                     controller: _passwordController,
                     hide: hide,
                   ),
@@ -172,7 +173,8 @@ class _SignupFormState extends State<SignupForm> {
                         hide = !hide;
                       });
                     },
-                    hint: "Confirm Password",
+                    hint: AppLocalizations.of(context)
+                        .translate('confirm_password'),
                     controller: _confirmPasswordController,
                     password: _passwordController,
                     hide: hide,
@@ -199,18 +201,24 @@ class _SignupFormState extends State<SignupForm> {
                         return;
                       }
                     },
-                    text: 'Sign Up',
+                    text: AppLocalizations.of(context).translate('sign_up'),
                   ),
                   const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("Have an account?", style: AppStyles.p),
+                      Text(
+                        AppLocalizations.of(context).translate('have_account'),
+                        style: AppStyles.p,
+                      ),
                       TextButton(
                         onPressed: () {
                           Navigator.pushReplacementNamed(context, '/login');
                         },
-                        child: Text("Login now", style: AppStyles.p),
+                        child: Text(
+                          AppLocalizations.of(context).translate('login_now'),
+                          style: AppStyles.p,
+                        ),
                       )
                     ],
                   ),

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expenditure_management/constants/function/get_data_spending.dart';
 import 'package:expenditure_management/constants/function/get_date.dart';
 import 'package:expenditure_management/controls/spending_firebase.dart';
+import 'package:expenditure_management/language/localization/app_localizations.dart';
 import 'package:expenditure_management/models/spending.dart';
 import 'package:expenditure_management/page/main/analytic/chart/column_chart.dart';
 import 'package:expenditure_management/page/main/analytic/chart/pie_chart.dart';
@@ -120,7 +121,7 @@ class _AnalyticPageState extends State<AnalyticPage>
                     ],
                   ),
                   const SizedBox(height: 20),
-                  customTabBar(controller: _tabController),
+                  CustomTabBar(controller: _tabController),
                 ],
               ),
             ),
@@ -188,7 +189,7 @@ class _AnalyticPageState extends State<AnalyticPage>
                                                 });
                                               },
                                             ),
-                                            tabBarType(
+                                            TabBarType(
                                                 controller: _typeController),
                                             classifySpending.isNotEmpty
                                                 ? (chart
@@ -200,12 +201,15 @@ class _AnalyticPageState extends State<AnalyticPage>
                                                         list: classifySpending,
                                                         dateTime: now,
                                                       ))
-                                                : const SizedBox(
+                                                : SizedBox(
                                                     height: 350,
                                                     child: Center(
                                                       child: Text(
-                                                        "Không có dữ liệu!",
-                                                        style: TextStyle(
+                                                        AppLocalizations.of(
+                                                                context)
+                                                            .translate(
+                                                                'no_data'),
+                                                        style: const TextStyle(
                                                           color: Colors.blue,
                                                           fontSize: 20,
                                                           fontWeight:
@@ -221,7 +225,7 @@ class _AnalyticPageState extends State<AnalyticPage>
                                         ),
                                       ),
                                       if (spendingList.isNotEmpty)
-                                        totalReport(list: spendingList),
+                                        TotalReport(list: spendingList),
                                       if (spendingList.isNotEmpty)
                                         showListSpending(list: spendingList)
                                     ],
@@ -255,7 +259,7 @@ class _AnalyticPageState extends State<AnalyticPage>
             now: now,
             action: (date, now) {},
           ),
-          tabBarType(controller: TabController(length: 2, vsync: this)),
+          TabBarType(controller: TabController(length: 2, vsync: this)),
           const SizedBox(
             height: 350,
             child: Center(child: CircularProgressIndicator()),

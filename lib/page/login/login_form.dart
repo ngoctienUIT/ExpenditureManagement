@@ -1,4 +1,5 @@
 import 'package:expenditure_management/constants/function/loading_animation.dart';
+import 'package:expenditure_management/language/localization/app_localizations.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -79,7 +80,7 @@ class _LoginFormState extends State<LoginForm> {
                   ),
                   const SizedBox(height: 50),
                   inputText(
-                    hint: "Username",
+                    hint: "Email",
                     validator: 0,
                     controller: _userController,
                     inputType: TextInputType.emailAddress,
@@ -91,7 +92,7 @@ class _LoginFormState extends State<LoginForm> {
                         hide = !hide;
                       });
                     },
-                    hint: "Password",
+                    hint: AppLocalizations.of(context).translate('password'),
                     controller: _passwordController,
                     hide: hide,
                   ),
@@ -102,7 +103,8 @@ class _LoginFormState extends State<LoginForm> {
                           onPressed: () {
                             Navigator.pushNamed(context, '/forgot');
                           },
-                          child: const Text("Forgot Password?")),
+                          child: Text(AppLocalizations.of(context)
+                              .translate('forgot_password'))),
                     ],
                   ),
                   const SizedBox(height: 20),
@@ -119,7 +121,7 @@ class _LoginFormState extends State<LoginForm> {
                         return;
                       }
                     },
-                    text: 'Sign In',
+                    text: AppLocalizations.of(context).translate('sign_in'),
                   ),
                   const SizedBox(height: 30),
                   textContinue(),
@@ -184,7 +186,8 @@ class _LoginFormState extends State<LoginForm> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "Do not have an account?",
+                        AppLocalizations.of(context)
+                            .translate('do_not_have_account'),
                         style: AppStyles.p,
                       ),
                       TextButton(
@@ -192,7 +195,8 @@ class _LoginFormState extends State<LoginForm> {
                           Navigator.pushReplacementNamed(context, '/signup');
                         },
                         child: Text(
-                          "Register now",
+                          AppLocalizations.of(context)
+                              .translate('register_now'),
                           style: AppStyles.p,
                         ),
                       )

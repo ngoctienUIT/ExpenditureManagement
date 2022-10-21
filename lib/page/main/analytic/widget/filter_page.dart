@@ -1,4 +1,5 @@
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
+import 'package:expenditure_management/language/localization/app_localizations.dart';
 import 'package:expenditure_management/page/main/analytic/widget/item_filter.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -45,9 +46,9 @@ class _FilterPageState extends State<FilterPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: const Text(
-          "Bộ lọc",
-          style: TextStyle(color: Colors.black),
+        title: Text(
+          AppLocalizations.of(context).translate('filter'),
+          style: const TextStyle(color: Colors.black),
         ),
         centerTitle: true,
         leading: IconButton(
@@ -70,9 +71,9 @@ class _FilterPageState extends State<FilterPage> {
                   noteController.text);
               Navigator.pop(context);
             },
-            child: const Text(
-              "Tìm kiếm",
-              style: TextStyle(fontSize: 16, color: Colors.black),
+            child: Text(
+              AppLocalizations.of(context).translate('search'),
+              style: const TextStyle(fontSize: 16, color: Colors.black),
             ),
           )
         ],
@@ -87,7 +88,7 @@ class _FilterPageState extends State<FilterPage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               itemFilter(
-                text: 'Số tiền',
+                text: AppLocalizations.of(context).translate('money'),
                 value: chooseIndex[0] == 0
                     ? moneyList[chooseIndex[0]]
                     : "${moneyList[chooseIndex[0]]} ${moneyController.text}",
@@ -101,7 +102,7 @@ class _FilterPageState extends State<FilterPage> {
               ),
               line(),
               itemFilter(
-                text: 'Ví',
+                text: AppLocalizations.of(context).translate('wallet'),
                 value: moneyList[chooseIndex[1]],
                 list: moneyList,
                 action: (value) {
@@ -110,7 +111,7 @@ class _FilterPageState extends State<FilterPage> {
               ),
               line(),
               itemFilter(
-                text: 'Thời gian',
+                text: AppLocalizations.of(context).translate('time'),
                 value: chooseIndex[2] == 0
                     ? timeList[chooseIndex[2]]
                     : "${timeList[chooseIndex[2]]} ${DateFormat("dd/MM/yyyy").format(dateTime!)}",
@@ -132,11 +133,11 @@ class _FilterPageState extends State<FilterPage> {
               line(),
               Row(
                 children: [
-                  const SizedBox(
+                  SizedBox(
                     width: 70,
                     child: Text(
-                      "Ghi chú",
-                      style: TextStyle(fontSize: 16),
+                      AppLocalizations.of(context).translate('note'),
+                      style: const TextStyle(fontSize: 16),
                     ),
                   ),
                   const SizedBox(width: 10),
@@ -153,7 +154,8 @@ class _FilterPageState extends State<FilterPage> {
                         hintStyle: const TextStyle(fontSize: 16),
                         filled: true,
                         fillColor: Colors.grey[300],
-                        hintText: "Ghi chú",
+                        hintText:
+                            AppLocalizations.of(context).translate('note'),
                         contentPadding: const EdgeInsets.all(0),
                       ),
                     ),
@@ -162,7 +164,7 @@ class _FilterPageState extends State<FilterPage> {
               ),
               line(),
               itemFilter(
-                text: 'Nhóm',
+                text: AppLocalizations.of(context).translate('group'),
                 value: groupList[chooseIndex[3]],
                 list: groupList,
                 action: (value) {

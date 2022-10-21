@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:expenditure_management/language/localization/app_localizations.dart';
 import 'package:expenditure_management/models/spending.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -19,86 +20,110 @@ Widget shimmerAnimation() {
   );
 }
 
-Widget totalSpending({List<Spending>? list}) {
-  var numberFormat = NumberFormat.currency(locale: "vi_VI");
-  int income = 0;
-  int spending = 0;
+class TotalSpending extends StatelessWidget {
+  const TotalSpending({Key? key, this.list}) : super(key: key);
+  final List<Spending>? list;
 
-  if (list != null) {
-    List<Spending> incomeList =
-        list.where((element) => element.money > 0).toList();
-    if (incomeList.isNotEmpty) {
-      income = incomeList
-          .map((e) => e.money)
-          .reduce((value, element) => value + element);
-    }
-    List<Spending> spendingList =
-        list.where((element) => element.money < 0).toList();
-    if (spendingList.isNotEmpty) {
-      spending = spendingList
-          .map((e) => e.money)
-          .reduce((value, element) => value + element);
-    }
-  }
+  @override
+  Widget build(BuildContext context) {
+    final numberFormat = NumberFormat.currency(locale: "vi_VI");
 
-  return Card(
-    child: Container(
-      padding: const EdgeInsets.symmetric(vertical: 20),
-      color: Colors.white,
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              children: [
-                const Text("Thu nhập", style: TextStyle(fontSize: 16)),
-                const SizedBox(height: 5),
-                list != null
-                    ? Text(
-                        numberFormat.format(income),
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      )
-                    : shimmerAnimation()
-              ],
+    int income = 0;
+    int spending = 0;
+
+    if (list != null) {
+      List<Spending> incomeList =
+          list!.where((element) => element.money > 0).toList();
+      if (incomeList.isNotEmpty) {
+        income = incomeList
+            .map((e) => e.money)
+            .reduce((value, element) => value + element);
+      }
+      List<Spending> spendingList =
+          list!.where((element) => element.money < 0).toList();
+      if (spendingList.isNotEmpty) {
+        spending = spendingList
+            .map((e) => e.money)
+            .reduce((value, element) => value + element);
+      }
+    }
+
+    return Card(
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 20),
+        color: Colors.white,
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                children: [
+                  Text(
+                    AppLocalizations.of(context).translate('income'),
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                  const SizedBox(height: 5),
+                  list != null
+                      ? Text(
+                          numberFormat.format(income),
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )
+                      : shimmerAnimation()
+                ],
+              ),
             ),
-          ),
-          Expanded(
-            child: Column(
-              children: [
-                const Text("Chi tiêu", style: TextStyle(fontSize: 16)),
-                const SizedBox(height: 5),
-                list != null
-                    ? Text(
-                        list.isNotEmpty ? numberFormat.format(spending) : "0",
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      )
-                    : shimmerAnimation()
-              ],
+            Expanded(
+              child: Column(
+                children: [
+                  Text(
+                    AppLocalizations.of(context).translate('spending'),
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                  const SizedBox(height: 5),
+                  list != null
+                      ? Text(
+                          list!.isNotEmpty
+                              ? numberFormat.format(spending)
+                              : "0",
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )
+                      : shimmerAnimation()
+                ],
+              ),
             ),
-          ),
-          Expanded(
-            child: Column(
-              children: [
-                const Text("Tổng", style: TextStyle(fontSize: 16)),
-                const SizedBox(height: 5),
-                list != null
-                    ? Text(
-                        list.isNotEmpty
-                            ? numberFormat.format(income + spending)
-                            : "0",
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      )
-                    : shimmerAnimation()
-              ],
+            Expanded(
+              child: Column(
+                children: [
+                  Text(
+                    AppLocalizations.of(context).translate('total'),
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                  const SizedBox(height: 5),
+                  list != null
+                      ? Text(
+                          list!.isNotEmpty
+                              ? numberFormat.format(income + spending)
+                              : "0",
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )
+                      : shimmerAnimation()
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-    ),
-  );
+    );
+  }
 }

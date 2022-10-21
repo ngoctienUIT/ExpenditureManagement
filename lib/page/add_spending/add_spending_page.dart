@@ -4,6 +4,7 @@ import 'package:expenditure_management/constants/app_colors.dart';
 import 'package:expenditure_management/constants/app_styles.dart';
 import 'package:expenditure_management/constants/list.dart';
 import 'package:expenditure_management/controls/spending_firebase.dart';
+import 'package:expenditure_management/language/localization/app_localizations.dart';
 import 'package:expenditure_management/models/spending.dart';
 import 'package:expenditure_management/page/add_spending/choose_type.dart';
 import 'package:expenditure_management/page/add_spending/widget/item_spending.dart';
@@ -36,9 +37,9 @@ class _AddSpendingPageState extends State<AddSpendingPage> {
         elevation: 0,
         backgroundColor: Colors.white,
         iconTheme: const IconThemeData(color: Colors.black),
-        title: const Text(
-          "Thêm giao dịch",
-          style: TextStyle(color: Colors.black),
+        title: Text(
+          AppLocalizations.of(context).translate('add_spending'),
+          style: const TextStyle(color: Colors.black),
         ),
         centerTitle: true,
         actions: [
@@ -62,7 +63,10 @@ class _AddSpendingPageState extends State<AddSpendingPage> {
               if (!mounted) return;
               Navigator.pop(context);
             },
-            child: Text("Lưu", style: AppStyles.p),
+            child: Text(
+              AppLocalizations.of(context).translate('save'),
+              style: AppStyles.p,
+            ),
           )
         ],
         leading: IconButton(
@@ -146,7 +150,8 @@ class _AddSpendingPageState extends State<AddSpendingPage> {
                                           const SizedBox(width: 10),
                                           Text(
                                             type == null
-                                                ? "Loại"
+                                                ? AppLocalizations.of(context)
+                                                    .translate('type')
                                                 : listType[type!]["title"]!,
                                             style: AppStyles.p,
                                           ),
@@ -196,7 +201,8 @@ class _AddSpendingPageState extends State<AddSpendingPage> {
                                       keyboardType: TextInputType.multiline,
                                       decoration: InputDecoration(
                                         border: InputBorder.none,
-                                        hintText: "Ghi chú",
+                                        hintText: AppLocalizations.of(context)
+                                            .translate('note'),
                                         hintStyle: AppStyles.p,
                                       ),
                                     ),
@@ -265,7 +271,12 @@ class _AddSpendingPageState extends State<AddSpendingPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(more ? "Ẩn bớt" : "Thêm chi tiết",
+                          Text(
+                              more
+                                  ? AppLocalizations.of(context)
+                                      .translate('hide_away')
+                                  : AppLocalizations.of(context)
+                                      .translate('more_details'),
                               style: AppStyles.p),
                           Icon(
                             more ? Icons.arrow_drop_up : Icons.arrow_drop_down,

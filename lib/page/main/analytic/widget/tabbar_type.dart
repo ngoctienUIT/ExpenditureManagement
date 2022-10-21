@@ -1,23 +1,31 @@
 import 'package:expenditure_management/constants/app_styles.dart';
+import 'package:expenditure_management/language/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
 
-Widget tabBarType({required TabController controller}) {
-  return SizedBox(
-    height: 45,
-    width: 220,
-    child: TabBar(
-        controller: controller,
-        labelColor: Colors.white,
-        labelStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-        unselectedLabelColor: const Color.fromRGBO(45, 216, 198, 1),
-        unselectedLabelStyle: AppStyles.p,
-        isScrollable: false,
-        indicator: const CircleTabIndicator(color: Colors.black38, radius: 4),
-        tabs: const [
-          Tab(text: "Chi Tiêu"),
-          Tab(text: "Thu Nhập"),
-        ]),
-  );
+class TabBarType extends StatelessWidget {
+  const TabBarType({Key? key, required this.controller}) : super(key: key);
+  final TabController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 45,
+      width: 220,
+      child: TabBar(
+          controller: controller,
+          labelColor: Colors.white,
+          labelStyle:
+              const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          unselectedLabelColor: const Color.fromRGBO(45, 216, 198, 1),
+          unselectedLabelStyle: AppStyles.p,
+          isScrollable: false,
+          indicator: const CircleTabIndicator(color: Colors.black38, radius: 4),
+          tabs: [
+            Tab(text: AppLocalizations.of(context).translate('spending')),
+            Tab(text: AppLocalizations.of(context).translate('income')),
+          ]),
+    );
+  }
 }
 
 class CircleTabIndicator extends Decoration {

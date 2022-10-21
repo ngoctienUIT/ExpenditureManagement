@@ -89,7 +89,7 @@ class _CalendarPageState extends State<CalendarPage> {
                                 child: Column(
                                   children: [
                                     if (_currentSpendingList!.isNotEmpty)
-                                      totalSpending(
+                                      TotalSpending(
                                         list: _currentSpendingList,
                                       ),
                                     buildSpending(
@@ -119,7 +119,7 @@ class _CalendarPageState extends State<CalendarPage> {
           focusedDay: _focusedDay,
           selectedDay: _selectedDay,
         ),
-        totalSpending(),
+        const TotalSpending(),
         Expanded(child: buildSpending())
       ],
     );
