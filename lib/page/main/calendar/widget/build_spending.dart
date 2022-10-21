@@ -27,6 +27,8 @@ Widget showListSpending(List<Spending> spendingList) {
   var numberFormat = NumberFormat.currency(locale: "vi_VI");
 
   return ListView.builder(
+    shrinkWrap: true,
+    physics: const NeverScrollableScrollPhysics(),
     itemCount: spendingList.length,
     itemBuilder: (context, index) {
       return InkWell(

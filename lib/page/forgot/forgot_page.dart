@@ -1,4 +1,5 @@
 import 'package:expenditure_management/constants/app_colors.dart';
+import 'package:expenditure_management/language/localization/app_localizations.dart';
 import 'package:expenditure_management/page/login/widget/custom_button.dart';
 import 'package:expenditure_management/page/login/widget/input_text.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -36,9 +37,10 @@ class _ForgotPageState extends State<ForgotPage> {
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             children: [
-              const Text(
-                "Forgot Password?",
-                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+              Text(
+                AppLocalizations.of(context).translate('forgot_password'),
+                style:
+                    const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 20),
               const Text(
@@ -71,7 +73,7 @@ class _ForgotPageState extends State<ForgotPage> {
                     return;
                   }
                 },
-                text: 'Submit',
+                text: AppLocalizations.of(context).translate('submit'),
               ),
             ],
           ),

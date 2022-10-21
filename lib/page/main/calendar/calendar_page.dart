@@ -83,16 +83,22 @@ class _CalendarPageState extends State<CalendarPage> {
                                       check = true;
                                     });
                                   }),
-                              if (_currentSpendingList!.isNotEmpty)
-                                totalSpending(
-                                  list: _currentSpendingList,
-                                ),
+                              const SizedBox(height: 5),
                               Expanded(
-                                child: buildSpending(
-                                  spendingList: _currentSpendingList,
-                                  date: _selectedDay,
+                                  child: SingleChildScrollView(
+                                child: Column(
+                                  children: [
+                                    if (_currentSpendingList!.isNotEmpty)
+                                      TotalSpending(
+                                        list: _currentSpendingList,
+                                      ),
+                                    buildSpending(
+                                      spendingList: _currentSpendingList,
+                                      date: _selectedDay,
+                                    )
+                                  ],
                                 ),
-                              )
+                              ))
                             ],
                           );
                         }
@@ -113,7 +119,7 @@ class _CalendarPageState extends State<CalendarPage> {
           focusedDay: _focusedDay,
           selectedDay: _selectedDay,
         ),
-        totalSpending(),
+        const TotalSpending(),
         Expanded(child: buildSpending())
       ],
     );

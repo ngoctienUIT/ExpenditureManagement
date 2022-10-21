@@ -12,6 +12,8 @@ Widget itemSpendingWidget({List<Spending>? spendingList}) {
 
   return spendingList != null
       ? ListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
           padding: const EdgeInsets.all(10),
           itemCount: listType.length,
           itemBuilder: (context, index) {
@@ -82,8 +84,10 @@ Widget itemSpendingWidget({List<Spending>? spendingList}) {
 
 Widget loadingItemSpending() {
   return ListView.builder(
+    shrinkWrap: true,
+    physics: const NeverScrollableScrollPhysics(),
     padding: const EdgeInsets.all(10),
-    itemCount: 5,
+    itemCount: 10,
     itemBuilder: (context, index) {
       return Card(
         shape: RoundedRectangleBorder(

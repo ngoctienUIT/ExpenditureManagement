@@ -1,4 +1,5 @@
 import 'package:expenditure_management/constants/function/on_will_pop.dart';
+import 'package:expenditure_management/language/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:expenditure_management/constants/app_colors.dart';
@@ -58,7 +59,7 @@ class _MainPageState extends State<MainPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   itemBottomTab(
-                    text: "Home",
+                    text: AppLocalizations.of(context).translate('home'),
                     index: 0,
                     current: currentTab,
                     icon: FontAwesomeIcons.house,
@@ -67,7 +68,7 @@ class _MainPageState extends State<MainPage> {
                     },
                   ),
                   itemBottomTab(
-                    text: "Calendar",
+                    text: AppLocalizations.of(context).translate('calendar'),
                     index: 1,
                     current: currentTab,
                     size: 28,
@@ -82,7 +83,7 @@ class _MainPageState extends State<MainPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   itemBottomTab(
-                    text: "Analytic",
+                    text: AppLocalizations.of(context).translate('analytic'),
                     index: 2,
                     current: currentTab,
                     icon: FontAwesomeIcons.chartPie,
@@ -91,7 +92,7 @@ class _MainPageState extends State<MainPage> {
                     },
                   ),
                   itemBottomTab(
-                    text: "Setting",
+                    text: AppLocalizations.of(context).translate('setting'),
                     index: 3,
                     current: currentTab,
                     icon: FontAwesomeIcons.gear,

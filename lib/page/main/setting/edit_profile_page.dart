@@ -4,6 +4,7 @@ import 'package:currency_text_input_formatter/currency_text_input_formatter.dart
 import 'package:expenditure_management/constants/app_colors.dart';
 import 'package:expenditure_management/constants/app_styles.dart';
 import 'package:expenditure_management/controls/spending_firebase.dart';
+import 'package:expenditure_management/language/localization/app_localizations.dart';
 import 'package:expenditure_management/page/main/setting/widget/show_birthday.dart';
 import 'package:expenditure_management/page/signup/gender_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -25,7 +26,10 @@ class EditProfilePage extends StatelessWidget {
         elevation: 2,
         iconTheme: const IconThemeData(color: Colors.black),
         backgroundColor: Colors.white,
-        title: const Text("Account", style: TextStyle(color: Colors.black)),
+        title: Text(AppLocalizations.of(context).translate('account'),
+            style: const TextStyle(
+              color: Colors.black,
+            )),
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
@@ -100,7 +104,8 @@ class EditProfilePage extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            textProfile("Họ tên"),
+                            textProfile(AppLocalizations.of(context)
+                                .translate('full_name')),
                             TextField(
                               controller: nameController,
                               style: const TextStyle(
@@ -110,7 +115,8 @@ class EditProfilePage extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(height: 30),
-                            textProfile("Tiền hàng tháng"),
+                            textProfile(AppLocalizations.of(context)
+                                .translate('monthly_money')),
                             TextField(
                               controller: moneyController,
                               style: const TextStyle(
@@ -123,7 +129,8 @@ class EditProfilePage extends StatelessWidget {
                               ],
                             ),
                             const SizedBox(height: 30),
-                            textProfile("Ngày sinh"),
+                            textProfile(AppLocalizations.of(context)
+                                .translate('birthday')),
                             const SizedBox(height: 20),
                             InkWell(
                               onTap: () async {
@@ -140,7 +147,8 @@ class EditProfilePage extends StatelessWidget {
                               child: showBirthday(selectedDate),
                             ),
                             const SizedBox(height: 30),
-                            textProfile("Giới tính"),
+                            textProfile(AppLocalizations.of(context)
+                                .translate('gender')),
                             const SizedBox(height: 30),
                             Row(
                               children: [
@@ -189,7 +197,11 @@ class EditProfilePage extends StatelessWidget {
                                     image: image,
                                   );
                                 },
-                                child: Text("Lưu", style: AppStyles.p),
+                                child: Text(
+                                  AppLocalizations.of(context)
+                                      .translate('save'),
+                                  style: AppStyles.p,
+                                ),
                               ),
                             ),
                           ],

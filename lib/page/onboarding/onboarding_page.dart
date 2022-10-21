@@ -1,4 +1,5 @@
 import 'package:expenditure_management/constants/app_colors.dart';
+import 'package:expenditure_management/language/localization/app_localizations.dart';
 import 'package:expenditure_management/page/onboarding/item_onboarding.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -67,9 +68,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
               onPressed: () {
                 Navigator.pushReplacementNamed(context, '/login');
               },
-              child: const Text(
-                "Get Started",
-                style: TextStyle(fontSize: 20),
+              child: Text(
+                AppLocalizations.of(context).translate('get_started'),
+                style: const TextStyle(fontSize: 20),
               ),
             )
           : Container(
@@ -80,9 +81,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
                 children: [
                   TextButton(
                     onPressed: () => controller.jumpToPage(2),
-                    child: const Text(
-                      "Skip",
-                      style: TextStyle(fontSize: 16),
+                    child: Text(
+                      AppLocalizations.of(context).translate('skip'),
+                      style: const TextStyle(fontSize: 16),
                     ),
                   ),
                   Center(
@@ -110,9 +111,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
                         curve: Curves.easeIn,
                       );
                     },
-                    child: const Text(
-                      "Next",
-                      style: TextStyle(fontSize: 16),
+                    child: Text(
+                      AppLocalizations.of(context).translate('next'),
+                      style: const TextStyle(fontSize: 16),
                     ),
                   ),
                 ],
