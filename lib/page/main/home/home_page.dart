@@ -42,31 +42,31 @@ class _HomePageState extends State<HomePage> {
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     var spendingList = snapshot.data;
-                    return Column(
-                      children: [
-                        const SizedBox(height: 10),
-                        const Text(
-                          "Tháng này",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.grey,
+                    return SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 10),
+                          const Text(
+                            "Tháng này",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey,
+                            ),
                           ),
-                        ),
-                        summarySpending(spendingList: spendingList),
-                        const SizedBox(height: 10),
-                        const Text(
-                          "Danh sách chi tiêu tháng này",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.grey,
+                          summarySpending(spendingList: spendingList),
+                          const SizedBox(height: 10),
+                          const Text(
+                            "Danh sách chi tiêu tháng này",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey,
+                            ),
                           ),
-                        ),
-                        Expanded(
-                          child: itemSpendingWidget(spendingList: spendingList),
-                        ),
-                      ],
+                          itemSpendingWidget(spendingList: spendingList),
+                        ],
+                      ),
                     );
                   }
 
@@ -82,29 +82,31 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget loading() {
-    return Column(
-      children: [
-        const SizedBox(height: 10),
-        const Text(
-          "Tháng này",
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: Colors.grey,
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          const SizedBox(height: 10),
+          const Text(
+            "Tháng này",
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.grey,
+            ),
           ),
-        ),
-        summarySpending(),
-        const SizedBox(height: 10),
-        const Text(
-          "Danh sách chi tiêu tháng này",
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: Colors.grey,
+          summarySpending(),
+          const SizedBox(height: 10),
+          const Text(
+            "Danh sách chi tiêu tháng này",
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.grey,
+            ),
           ),
-        ),
-        Expanded(child: itemSpendingWidget()),
-      ],
+          itemSpendingWidget(),
+        ],
+      ),
     );
   }
 }
