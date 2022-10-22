@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expenditure_management/constants/function/get_data_spending.dart';
 import 'package:expenditure_management/constants/function/get_date.dart';
 import 'package:expenditure_management/controls/spending_firebase.dart';
-import 'package:expenditure_management/language/localization/app_localizations.dart';
 import 'package:expenditure_management/models/spending.dart';
 import 'package:expenditure_management/page/main/analytic/chart/column_chart.dart';
 import 'package:expenditure_management/page/main/analytic/chart/pie_chart.dart';
@@ -14,6 +13,7 @@ import 'package:expenditure_management/page/main/analytic/widget/tabbar_chart.da
 import 'package:expenditure_management/page/main/analytic/widget/tabbar_type.dart';
 import 'package:expenditure_management/page/main/analytic/widget/total_report.dart';
 import 'package:expenditure_management/page/main/calendar/widget/custom_table_calendar.dart';
+import 'package:expenditure_management/setting/localization/app_localizations.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';

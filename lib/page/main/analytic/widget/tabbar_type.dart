@@ -1,5 +1,5 @@
 import 'package:expenditure_management/constants/app_styles.dart';
-import 'package:expenditure_management/language/localization/app_localizations.dart';
+import 'package:expenditure_management/setting/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 class TabBarType extends StatelessWidget {

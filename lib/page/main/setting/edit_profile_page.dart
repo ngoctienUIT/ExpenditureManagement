@@ -4,9 +4,9 @@ import 'package:currency_text_input_formatter/currency_text_input_formatter.dart
 import 'package:expenditure_management/constants/app_colors.dart';
 import 'package:expenditure_management/constants/app_styles.dart';
 import 'package:expenditure_management/controls/spending_firebase.dart';
-import 'package:expenditure_management/language/localization/app_localizations.dart';
 import 'package:expenditure_management/page/main/setting/widget/show_birthday.dart';
 import 'package:expenditure_management/page/signup/gender_widget.dart';
+import 'package:expenditure_management/setting/localization/app_localizations.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

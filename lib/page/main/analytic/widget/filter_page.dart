@@ -1,6 +1,6 @@
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
-import 'package:expenditure_management/language/localization/app_localizations.dart';
 import 'package:expenditure_management/page/main/analytic/widget/item_filter.dart';
+import 'package:expenditure_management/setting/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 

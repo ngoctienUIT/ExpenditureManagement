@@ -1,5 +1,5 @@
 import 'package:expenditure_management/constants/function/on_will_pop.dart';
-import 'package:expenditure_management/language/localization/app_localizations.dart';
+import 'package:expenditure_management/setting/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:expenditure_management/constants/app_colors.dart';

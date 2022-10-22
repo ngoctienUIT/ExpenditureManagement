@@ -1,7 +1,7 @@
 import 'package:expenditure_management/constants/app_colors.dart';
-import 'package:expenditure_management/language/localization/app_localizations.dart';
 import 'package:expenditure_management/page/login/widget/custom_button.dart';
 import 'package:expenditure_management/page/login/widget/input_text.dart';
+import 'package:expenditure_management/setting/localization/app_localizations.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 

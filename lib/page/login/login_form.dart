@@ -1,5 +1,5 @@
 import 'package:expenditure_management/constants/function/loading_animation.dart';
-import 'package:expenditure_management/language/localization/app_localizations.dart';
+import 'package:expenditure_management/setting/localization/app_localizations.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';

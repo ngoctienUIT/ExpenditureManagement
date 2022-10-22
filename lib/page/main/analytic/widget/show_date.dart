@@ -1,11 +1,12 @@
 import 'package:expenditure_management/constants/function/get_date.dart';
 import 'package:flutter/material.dart';
 
-Widget showDate(
-    {required String date,
-    required int index,
-    required DateTime now,
-    required Function(String, DateTime) action}) {
+Widget showDate({
+  required String date,
+  required int index,
+  required DateTime now,
+  required Function(String, DateTime) action,
+}) {
   return SizedBox(
     width: double.infinity,
     child: Row(
