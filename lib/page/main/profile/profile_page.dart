@@ -2,9 +2,9 @@ import 'dart:io' show Platform;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expenditure_management/constants/app_colors.dart';
 import 'package:expenditure_management/constants/app_styles.dart';
-import 'package:expenditure_management/page/main/setting/edit_profile_page.dart';
-import 'package:expenditure_management/page/main/setting/widget/info_widget.dart';
-import 'package:expenditure_management/page/main/setting/widget/setting_item.dart';
+import 'package:expenditure_management/page/main/profile/edit_profile_page.dart';
+import 'package:expenditure_management/page/main/profile/widget/info_widget.dart';
+import 'package:expenditure_management/page/main/profile/widget/setting_item.dart';
 import 'package:expenditure_management/setting/bloc/setting_cubit.dart';
 import 'package:expenditure_management/setting/localization/app_localizations.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -18,14 +18,14 @@ import 'package:expenditure_management/models/user.dart' as myuser;
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SettingPage extends StatefulWidget {
-  const SettingPage({Key? key}) : super(key: key);
+class ProfilePage extends StatefulWidget {
+  const ProfilePage({Key? key}) : super(key: key);
 
   @override
-  State<SettingPage> createState() => _SettingPageState();
+  State<ProfilePage> createState() => _ProfilePageState();
 }
 
-class _SettingPageState extends State<SettingPage> {
+class _ProfilePageState extends State<ProfilePage> {
   var numberFormat = NumberFormat.currency(locale: "vi_VI");
   int language = 0;
   bool darkMode = false;

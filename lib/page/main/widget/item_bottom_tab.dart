@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
-Widget itemBottomTab(
-    {required String text,
-    required int index,
-    required int current,
-    required IconData icon,
-    required Function action,
-    double? size}) {
+Widget itemBottomTab({
+  required String text,
+  required int index,
+  required int current,
+  required IconData icon,
+  required Function action,
+  double? size,
+}) {
   return MaterialButton(
     minWidth: 40,
     onPressed: () {
