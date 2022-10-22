@@ -1,7 +1,4 @@
 import 'package:expenditure_management/firebase_options.dart';
-import 'package:expenditure_management/language/bloc/locale_cubit.dart';
-import 'package:expenditure_management/language/bloc/locale_state.dart';
-import 'package:expenditure_management/language/localization/app_localizations_setup.dart';
 import 'package:expenditure_management/page/add_spending/add_spending_page.dart';
 import 'package:expenditure_management/page/forgot/forgot_page.dart';
 import 'package:expenditure_management/page/forgot/success_page.dart';
@@ -11,6 +8,9 @@ import 'package:expenditure_management/page/main/main_page.dart';
 import 'package:expenditure_management/page/onboarding/onboarding_page.dart';
 import 'package:expenditure_management/page/signup/signup_page.dart';
 import 'package:expenditure_management/page/signup/verify/verify_page.dart';
+import 'package:expenditure_management/setting/bloc/setting_cubit.dart';
+import 'package:expenditure_management/setting/bloc/setting_state.dart';
+import 'package:expenditure_management/setting/localization/app_localizations_setup.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -24,36 +24,44 @@ void main() async {
   );
   final prefs = await SharedPreferences.getInstance();
   final int? language = prefs.getInt('language');
-  runApp(MyApp(language: language));
+  final bool isDark = prefs.getBool("isDark") ?? false;
+  runApp(MyApp(language: language, isDark: isDark));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key, this.language});
+  const MyApp({super.key, this.language, required this.isDark});
   final int? language;
+  final bool isDark;
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<LocaleCubit>(
-          create: (_) => LocaleCubit(language: language),
+        BlocProvider<SettingCubit>(
+          create: (_) => SettingCubit(language: language, isDark: isDark),
         ),
       ],
-      child: BlocBuilder<LocaleCubit, LocaleState>(
+      child: BlocBuilder<SettingCubit, SettingState>(
           buildWhen: (previous, current) => previous != current,
-          builder: (_, localeState) {
+          builder: (_, settingState) {
             return MaterialApp(
               supportedLocales: AppLocalizationsSetup.supportedLocales,
               localizationsDelegates:
                   AppLocalizationsSetup.localizationsDelegates,
               localeResolutionCallback:
                   AppLocalizationsSetup.localeResolutionCallback,
-              locale: localeState.locale,
+              locale: settingState.locale,
               debugShowCheckedModeBanner: false,
               title: 'Spending Management',
-              theme: ThemeData(
-                primarySwatch: Colors.blue,
-              ),
+              theme: settingState.isDark
+                  ? ThemeData(
+                      brightness: Brightness.dark,
+                      primarySwatch: Colors.blue,
+                    )
+                  : ThemeData(
+                      brightness: Brightness.light,
+                      primarySwatch: Colors.blue,
+                    ),
               initialRoute: FirebaseAuth.instance.currentUser == null
                   ? "/"
                   : (FirebaseAuth.instance.currentUser!.emailVerified

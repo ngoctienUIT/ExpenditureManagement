@@ -1,6 +1,6 @@
 import 'package:expenditure_management/constants/app_colors.dart';
-import 'package:expenditure_management/language/localization/app_localizations.dart';
 import 'package:expenditure_management/page/onboarding/item_onboarding.dart';
+import 'package:expenditure_management/setting/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 

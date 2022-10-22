@@ -1,4 +1,4 @@
-import 'package:expenditure_management/language/localization/app_localizations.dart';
+import 'package:expenditure_management/setting/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 

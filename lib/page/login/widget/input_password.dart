@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:expenditure_management/constants/app_styles.dart';
 
-Widget inputPassword(
-    {required String hint,
-    String? error,
-    required TextEditingController controller,
-    TextEditingController? password,
-    required bool hide,
-    required Function action}) {
+Widget inputPassword({
+  required String hint,
+  String? error,
+  required TextEditingController controller,
+  TextEditingController? password,
+  required bool hide,
+  required Function action,
+}) {
   return TextFormField(
     controller: controller,
     obscureText: hide,

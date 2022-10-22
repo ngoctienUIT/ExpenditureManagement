@@ -2,11 +2,11 @@ import 'dart:io' show Platform;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expenditure_management/constants/app_colors.dart';
 import 'package:expenditure_management/constants/app_styles.dart';
-import 'package:expenditure_management/language/bloc/locale_cubit.dart';
-import 'package:expenditure_management/language/localization/app_localizations.dart';
-import 'package:expenditure_management/page/main/setting/edit_profile_page.dart';
-import 'package:expenditure_management/page/main/setting/widget/info_widget.dart';
-import 'package:expenditure_management/page/main/setting/widget/setting_item.dart';
+import 'package:expenditure_management/page/main/profile/edit_profile_page.dart';
+import 'package:expenditure_management/page/main/profile/widget/info_widget.dart';
+import 'package:expenditure_management/page/main/profile/widget/setting_item.dart';
+import 'package:expenditure_management/setting/bloc/setting_cubit.dart';
+import 'package:expenditure_management/setting/localization/app_localizations.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,23 +18,26 @@ import 'package:expenditure_management/models/user.dart' as myuser;
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SettingPage extends StatefulWidget {
-  const SettingPage({Key? key}) : super(key: key);
+class ProfilePage extends StatefulWidget {
+  const ProfilePage({Key? key}) : super(key: key);
 
   @override
-  State<SettingPage> createState() => _SettingPageState();
+  State<ProfilePage> createState() => _ProfilePageState();
 }
 
-class _SettingPageState extends State<SettingPage> {
+class _ProfilePageState extends State<ProfilePage> {
   var numberFormat = NumberFormat.currency(locale: "vi_VI");
   int language = 0;
-  bool darkMode = true;
+  bool darkMode = false;
 
   @override
   void initState() {
     SharedPreferences.getInstance().then((value) {
-      language = value.getInt('language') ??
-          (Platform.localeName.split('_')[0] == "vi" ? 0 : 1);
+      setState(() {
+        language = value.getInt('language') ??
+            (Platform.localeName.split('_')[0] == "vi" ? 0 : 1);
+        darkMode = value.getBool("isDark") ?? false;
+      });
     });
     super.initState();
   }
@@ -112,8 +115,13 @@ class _SettingPageState extends State<SettingPage> {
                             height: 30,
                             width: 60,
                             value: darkMode,
-                            onToggle: (value) {
+                            onToggle: (value) async {
+                              BlocProvider.of<SettingCubit>(context)
+                                  .changeTheme();
                               setState(() => darkMode = value);
+                              final prefs =
+                                  await SharedPreferences.getInstance();
+                              await prefs.setBool('isDark', darkMode);
                             },
                           ),
                         ],
@@ -229,17 +237,19 @@ class _SettingPageState extends State<SettingPage> {
   }
 
   Future changeLanguage(int lang) async {
-    if (lang == 0) {
-      BlocProvider.of<LocaleCubit>(context).toVietnamese();
-    } else {
-      BlocProvider.of<LocaleCubit>(context).toEnglish();
+    if (lang != language) {
+      if (lang == 0) {
+        BlocProvider.of<SettingCubit>(context).toVietnamese();
+      } else {
+        BlocProvider.of<SettingCubit>(context).toEnglish();
+      }
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setInt('language', lang);
+      if (!mounted) return;
+      setState(() => language = lang);
     }
 
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setInt('language', lang);
     if (!mounted) return;
-
-    setState(() => language = lang);
     Navigator.pop(context);
   }
 }

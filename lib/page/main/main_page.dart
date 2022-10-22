@@ -1,12 +1,12 @@
 import 'package:expenditure_management/constants/function/on_will_pop.dart';
-import 'package:expenditure_management/language/localization/app_localizations.dart';
+import 'package:expenditure_management/page/main/profile/profile_page.dart';
+import 'package:expenditure_management/setting/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:expenditure_management/constants/app_colors.dart';
 import 'package:expenditure_management/page/main/analytic/analytic_page.dart';
 import 'package:expenditure_management/page/main/calendar/calendar_page.dart';
 import 'package:expenditure_management/page/main/home/home_page.dart';
-import 'package:expenditure_management/page/main/setting/setting_page.dart';
 import 'package:expenditure_management/page/main/widget/item_bottom_tab.dart';
 
 class MainPage extends StatefulWidget {
@@ -22,7 +22,7 @@ class _MainPageState extends State<MainPage> {
     const HomePage(),
     const CalendarPage(),
     const AnalyticPage(),
-    const SettingPage()
+    const ProfilePage()
   ];
 
   DateTime? currentBackPressTime;

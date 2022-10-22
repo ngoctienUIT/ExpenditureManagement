@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:expenditure_management/constants/app_styles.dart';
 
-Widget inputText(
-    {required String hint,
-    String? error,
-    required TextEditingController controller,
-    required int validator,
-    TextInputType? inputType}) {
+Widget inputText({
+  required String hint,
+  String? error,
+  required TextEditingController controller,
+  required int validator,
+  TextInputType? inputType,
+}) {
   return TextFormField(
     controller: controller,
     style: AppStyles.p,
