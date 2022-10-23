@@ -1,3 +1,4 @@
+import 'package:expenditure_management/constants/app_colors.dart';
 import 'package:expenditure_management/firebase_options.dart';
 import 'package:expenditure_management/page/add_spending/add_spending_page.dart';
 import 'package:expenditure_management/page/forgot/forgot_page.dart';
@@ -61,6 +62,8 @@ class MyApp extends StatelessWidget {
                   : ThemeData(
                       brightness: Brightness.light,
                       primarySwatch: Colors.blue,
+                      scaffoldBackgroundColor: AppColors.whisperBackground,
+                      bottomAppBarColor: AppColors.whisperBackground,
                     ),
               initialRoute: FirebaseAuth.instance.currentUser == null
                   ? "/"

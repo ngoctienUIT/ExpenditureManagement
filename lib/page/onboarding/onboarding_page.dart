@@ -41,7 +41,6 @@ class _OnboardingPageState extends State<OnboardingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.whisperBackground,
       body: SafeArea(
         child: Container(
           padding: const EdgeInsets.only(bottom: 60),

@@ -27,7 +27,6 @@ class _CalendarPageState extends State<CalendarPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.whisperBackground,
       body: SafeArea(
         child: StreamBuilder<DocumentSnapshot>(
             stream: FirebaseFirestore.instance

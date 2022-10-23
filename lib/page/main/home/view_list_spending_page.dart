@@ -12,7 +12,6 @@ class ViewListSpendingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: AppColors.whisperBackground,
         appBar: AppBar(
           elevation: 2,
           iconTheme: const IconThemeData(color: Colors.black),

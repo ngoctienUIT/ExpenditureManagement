@@ -32,7 +32,6 @@ class _AddSpendingPageState extends State<AddSpendingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.whisperBackground,
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white,
