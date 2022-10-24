@@ -1,121 +1,46 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:expenditure_management/constants/list.dart';
-import 'package:expenditure_management/controls/spending_firebase.dart';
-import 'package:expenditure_management/models/spending.dart';
-import 'package:expenditure_management/page/main/analytic/widget/filter_page.dart';
-import 'package:expenditure_management/page/main/home/widget/item_spending_day.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:table_calendar/table_calendar.dart';
 
-class MySearchDelegate extends SearchDelegate {
-  List<int> chooseIndex = [0, 0, 0, 0];
-  int money = 0;
-  DateTime? dateTime;
-  String note = "";
+class MySearchDelegate extends SearchDelegate<String> {
+  String q;
+  bool check = true;
+  String text;
 
-  bool checkResult(Spending spending) {
-    if (!listType[spending.type]["title"]!
-        .toUpperCase()
-        .contains(query.toUpperCase())) return false;
-
-    if (chooseIndex[0] == 1 && spending.money < money) {
-      return false;
-    } else if (chooseIndex[0] == 2 && spending.money > money) {
-      return false;
-    } else if (chooseIndex[0] == 4 && spending.money == money) {
-      return false;
-    }
-
-    if (chooseIndex[1] == 1 && dateTime!.isAfter(spending.dateTime)) {
-      return false;
-    } else if (chooseIndex[1] == 2 && dateTime!.isBefore(spending.dateTime)) {
-      return false;
-    } else if (chooseIndex[1] == 4 && isSameDay(spending.dateTime, dateTime)) {
-      return false;
-    }
-
-    if (spending.note != null && !spending.note!.contains(note)) return false;
-    return true;
+  MySearchDelegate({required this.text, required this.q}) {
+    query = q;
   }
 
   @override
   List<Widget>? buildActions(BuildContext context) => [
-        IconButton(
+        TextButton(
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => FilterPage(
-                  action: (list, money, dateTime, note) {
-                    this.dateTime = dateTime;
-                    this.money = money;
-                    this.note = note;
-                    chooseIndex = list;
-                  },
-                ),
-              ),
-            );
+            close(context, query);
           },
-          icon: const Icon(
-            Icons.tune_rounded,
-            color: Colors.black,
-          ),
+          child: const Text("Tìm kiếm"),
         )
       ];
 
   @override
   Widget? buildLeading(BuildContext context) => IconButton(
         onPressed: () {
-          close(context, "result");
+          close(context, q);
         },
-        icon: const Icon(
-          Icons.arrow_back_ios_new_rounded,
-          color: Colors.black,
-        ),
+        icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.black),
       );
 
   @override
   Widget buildResults(BuildContext context) {
-    return FutureBuilder(
-        future: FirebaseFirestore.instance
-            .collection("data")
-            .doc(FirebaseAuth.instance.currentUser!.uid)
-            .get(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            var data = snapshot.requireData.data() as Map<String, dynamic>;
-            List<String> list = [];
-            for (var element in data.entries) {
-              list.addAll((element.value as List<dynamic>)
-                  .map((e) => e.toString())
-                  .toList());
-            }
-            return FutureBuilder(
-                future: SpendingFirebase.getSpendingList(list),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    var spendingList = snapshot.data;
-                    var list = spendingList!.where(checkResult).toList();
-                    if (list.isEmpty) {
-                      return const Center(
-                        child: Text(
-                          "Không có gì ở đây!",
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      );
-                    }
-                    return itemSpendingDay(list);
-                  }
-                  return const Center(child: CircularProgressIndicator());
-                });
-          }
-          return const Center(child: CircularProgressIndicator());
-        });
+    return Container();
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
+    if (check) {
+      query = q;
+      check = false;
+    }
+
     return FutureBuilder(
       future: FirebaseFirestore.instance
           .collection("history")
@@ -177,23 +102,27 @@ class MySearchDelegate extends SearchDelegate {
 
   @override
   void showResults(BuildContext context) {
-    super.showResults(context);
-    var firestore = FirebaseFirestore.instance
-        .collection("history")
-        .doc(FirebaseAuth.instance.currentUser!.uid);
+    // super.showResults(context);
+    if (query.isNotEmpty) {
+      var firestore = FirebaseFirestore.instance
+          .collection("history")
+          .doc(FirebaseAuth.instance.currentUser!.uid);
 
-    firestore.get().then((value) {
-      var data = value.data() as Map<String, dynamic>;
-      List<String> history =
-          (data["history"] as List<dynamic>).map((e) => e.toString()).toList();
-      history.remove(query);
-      history.add(query);
-      firestore.update({"history": history});
-    });
+      firestore.get().then((value) {
+        var data = value.data() as Map<String, dynamic>;
+        List<String> history = (data["history"] as List<dynamic>)
+            .map((e) => e.toString())
+            .toList();
+        history.remove(query);
+        history.add(query);
+        firestore.update({"history": history});
+      });
+      close(context, query);
+    }
   }
 
   @override
-  String? get searchFieldLabel => "Tìm kiếm";
+  String? get searchFieldLabel => text;
 
   @override
   TextStyle? get searchFieldStyle =>

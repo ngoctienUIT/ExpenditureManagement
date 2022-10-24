@@ -1,7 +1,6 @@
 import 'package:expenditure_management/constants/function/on_will_pop.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:expenditure_management/constants/app_colors.dart';
 import 'package:expenditure_management/page/login/bloc/login_bloc.dart';
 import 'package:expenditure_management/page/login/login_form.dart';
 

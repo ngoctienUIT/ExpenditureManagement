@@ -1,6 +1,5 @@
 import 'package:expenditure_management/constants/function/on_will_pop.dart';
 import 'package:flutter/material.dart';
-import 'package:expenditure_management/constants/app_colors.dart';
 import 'package:expenditure_management/page/login/widget/custom_button.dart';
 
 class SuccessPage extends StatefulWidget {

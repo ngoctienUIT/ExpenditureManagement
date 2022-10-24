@@ -23,12 +23,10 @@ class EditProfilePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 2,
-        iconTheme: const IconThemeData(color: Colors.black),
-        backgroundColor: Colors.white,
-        title: Text(AppLocalizations.of(context).translate('account'),
-            style: const TextStyle(
-              color: Colors.black,
-            )),
+        title: Text(
+          AppLocalizations.of(context).translate('account'),
+          style: const TextStyle(color: Colors.black),
+        ),
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);

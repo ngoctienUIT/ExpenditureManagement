@@ -1,4 +1,3 @@
-import 'package:expenditure_management/constants/app_colors.dart';
 import 'package:expenditure_management/constants/list.dart';
 import 'package:expenditure_management/models/spending.dart';
 import 'package:expenditure_management/page/main/home/widget/item_spending_day.dart';
@@ -14,8 +13,6 @@ class ViewListSpendingPage extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           elevation: 2,
-          iconTheme: const IconThemeData(color: Colors.black),
-          backgroundColor: Colors.white,
           title: Text(
             listType[spendingList[0].type]["title"]!,
             style: const TextStyle(color: Colors.black),

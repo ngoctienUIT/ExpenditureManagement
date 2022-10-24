@@ -64,6 +64,10 @@ class MyApp extends StatelessWidget {
                       primarySwatch: Colors.blue,
                       scaffoldBackgroundColor: AppColors.whisperBackground,
                       bottomAppBarColor: AppColors.whisperBackground,
+                      appBarTheme: const AppBarTheme(
+                        backgroundColor: Colors.white,
+                        iconTheme: IconThemeData(color: Colors.black),
+                      ),
                     ),
               initialRoute: FirebaseAuth.instance.currentUser == null
                   ? "/"

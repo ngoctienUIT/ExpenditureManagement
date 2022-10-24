@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:expenditure_management/constants/app_colors.dart';
 import 'package:expenditure_management/controls/spending_firebase.dart';
 import 'package:expenditure_management/models/spending.dart';
 import 'package:expenditure_management/page/main/calendar/widget/build_spending.dart';

@@ -5,8 +5,8 @@ import 'package:expenditure_management/controls/spending_firebase.dart';
 import 'package:expenditure_management/models/spending.dart';
 import 'package:expenditure_management/page/main/analytic/chart/column_chart.dart';
 import 'package:expenditure_management/page/main/analytic/chart/pie_chart.dart';
+import 'package:expenditure_management/page/main/analytic/search_page.dart';
 import 'package:expenditure_management/page/main/analytic/widget/custom_tabbar.dart';
-import 'package:expenditure_management/page/main/analytic/widget/my_search_delegate.dart';
 import 'package:expenditure_management/page/main/analytic/widget/show_date.dart';
 import 'package:expenditure_management/page/main/analytic/widget/show_list_spending.dart';
 import 'package:expenditure_management/page/main/analytic/widget/tabbar_chart.dart';
@@ -107,9 +107,11 @@ class _AnalyticPageState extends State<AnalyticPage>
                       const Spacer(),
                       IconButton(
                         onPressed: () {
-                          showSearch(
-                            context: context,
-                            delegate: MySearchDelegate(),
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const SearchPage(),
+                            ),
                           );
                         },
                         icon: const Icon(
