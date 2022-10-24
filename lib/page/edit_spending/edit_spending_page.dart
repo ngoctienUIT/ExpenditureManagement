@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
-import 'package:expenditure_management/constants/app_colors.dart';
 import 'package:expenditure_management/constants/app_styles.dart';
 import 'package:expenditure_management/constants/list.dart';
 import 'package:expenditure_management/controls/spending_firebase.dart';
@@ -50,11 +49,8 @@ class _EditSpendingPageState extends State<EditSpendingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.whisperBackground,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.white,
-        iconTheme: const IconThemeData(color: Colors.black),
         title: Text(
           AppLocalizations.of(context).translate('edit_spending'),
           style: const TextStyle(color: Colors.black),

@@ -1,4 +1,3 @@
-import 'package:expenditure_management/constants/app_colors.dart';
 import 'package:expenditure_management/constants/app_styles.dart';
 import 'package:expenditure_management/constants/list.dart';
 import 'package:flutter/material.dart';
@@ -10,11 +9,8 @@ class ChooseType extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.whisperBackground,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.white,
-        iconTheme: const IconThemeData(color: Colors.black),
         title: const Text(
           "Loại chi tiêu",
           style: TextStyle(color: Colors.black),

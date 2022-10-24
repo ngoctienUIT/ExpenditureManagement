@@ -25,11 +25,9 @@ class _ForgotPageState extends State<ForgotPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.whisperBackground,
       appBar: AppBar(
         backgroundColor: AppColors.whisperBackground,
         elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.grey),
       ),
       body: Form(
         key: _formKey,

@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:expenditure_management/constants/app_colors.dart';
 import 'package:expenditure_management/controls/spending_firebase.dart';
 import 'package:expenditure_management/page/main/home/widget/item_spending_widget.dart';
 import 'package:expenditure_management/page/main/home/widget/summary_spending.dart';
@@ -18,7 +17,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.whisperBackground,
       body: SafeArea(
         child: StreamBuilder(
           stream: FirebaseFirestore.instance

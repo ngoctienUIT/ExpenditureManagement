@@ -3,7 +3,6 @@ import 'package:expenditure_management/page/main/profile/profile_page.dart';
 import 'package:expenditure_management/setting/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:expenditure_management/constants/app_colors.dart';
 import 'package:expenditure_management/page/main/analytic/analytic_page.dart';
 import 'package:expenditure_management/page/main/calendar/calendar_page.dart';
 import 'package:expenditure_management/page/main/home/home_page.dart';
@@ -31,7 +30,6 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.whisperBackground,
       body: WillPopScope(
         onWillPop: () => onWillPop(
           action: (now) => currentBackPressTime = now,
@@ -47,7 +45,6 @@ class _MainPageState extends State<MainPage> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
-        color: AppColors.whisperBackground,
         shape: const CircularNotchedRectangle(),
         notchMargin: 10,
         child: SizedBox(

@@ -45,7 +45,6 @@ class _FilterPageState extends State<FilterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
         title: Text(
           AppLocalizations.of(context).translate('filter'),
           style: const TextStyle(color: Colors.black),
@@ -55,20 +54,20 @@ class _FilterPageState extends State<FilterPage> {
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: const Icon(
-            Icons.close_rounded,
-            color: Colors.black,
-          ),
+          icon: const Icon(Icons.close_rounded),
         ),
         actions: [
           TextButton(
             onPressed: () {
               widget.action(
-                  chooseIndex,
-                  int.parse(
-                      moneyController.text.replaceAll(RegExp(r'[^0-9]'), '')),
-                  dateTime,
-                  noteController.text);
+                chooseIndex,
+                moneyController.text.isEmpty
+                    ? 0
+                    : int.parse(
+                        moneyController.text.replaceAll(RegExp(r'[^0-9]'), '')),
+                dateTime,
+                noteController.text,
+              );
               Navigator.pop(context);
             },
             child: Text(
