@@ -6,6 +6,10 @@ import 'package:expenditure_management/page/forgot/success_page.dart';
 import 'package:expenditure_management/page/login/login_page.dart';
 import 'package:expenditure_management/page/main/home/home_page.dart';
 import 'package:expenditure_management/page/main/main_page.dart';
+import 'package:expenditure_management/page/main/profile/about_page.dart';
+import 'package:expenditure_management/page/main/profile/change_password.dart';
+import 'package:expenditure_management/page/main/profile/edit_profile_page.dart';
+import 'package:expenditure_management/page/main/profile/new_password.dart';
 import 'package:expenditure_management/page/onboarding/onboarding_page.dart';
 import 'package:expenditure_management/page/signup/signup_page.dart';
 import 'package:expenditure_management/page/signup/verify/verify_page.dart';
@@ -26,16 +30,26 @@ void main() async {
   final prefs = await SharedPreferences.getInstance();
   final int? language = prefs.getInt('language');
   final bool isDark = prefs.getBool("isDark") ?? false;
-  runApp(MyApp(language: language, isDark: isDark));
+  final bool isFirstStart = prefs.getBool("firstStart") ?? true;
+  runApp(MyApp(language: language, isDark: isDark, isFirstStart: isFirstStart));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key, this.language, required this.isDark});
+  const MyApp({
+    super.key,
+    this.language,
+    required this.isDark,
+    required this.isFirstStart,
+  });
   final int? language;
   final bool isDark;
+  final bool isFirstStart;
 
   @override
   Widget build(BuildContext context) {
+    SharedPreferences.getInstance().then((value) {
+      value.setBool("firstStart", false);
+    });
     return MultiBlocProvider(
       providers: [
         BlocProvider<SettingCubit>(
@@ -70,7 +84,7 @@ class MyApp extends StatelessWidget {
                       ),
                     ),
               initialRoute: FirebaseAuth.instance.currentUser == null
-                  ? "/"
+                  ? (isFirstStart ? "/" : "/login")
                   : (FirebaseAuth.instance.currentUser!.emailVerified
                       ? '/main'
                       : '/verify'),
@@ -83,7 +97,11 @@ class MyApp extends StatelessWidget {
                 '/forgot': (context) => const ForgotPage(),
                 '/success': (context) => const SuccessPage(),
                 '/verify': (context) => const VerifyPage(),
-                '/add': (context) => const AddSpendingPage()
+                '/add': (context) => const AddSpendingPage(),
+                '/edit': (context) => const EditProfilePage(),
+                '/password': (context) => const ChangePassword(),
+                '/new': (context) => const NewPassword(),
+                '/about': (context) => const AboutPage()
               },
             );
           }),

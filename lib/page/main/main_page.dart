@@ -89,10 +89,10 @@ class _MainPageState extends State<MainPage> {
                     },
                   ),
                   itemBottomTab(
-                    text: AppLocalizations.of(context).translate('setting'),
+                    text: AppLocalizations.of(context).translate('account'),
                     index: 3,
                     current: currentTab,
-                    icon: FontAwesomeIcons.gear,
+                    icon: FontAwesomeIcons.user,
                     action: () {
                       setState(() => currentTab = 3);
                     },

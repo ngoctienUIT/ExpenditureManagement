@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:expenditure_management/page/signup/bloc/signup_event.dart';
 import 'package:expenditure_management/page/signup/bloc/singup_state.dart';
 import 'package:expenditure_management/models/user.dart' as myuser;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignupBloc extends Bloc<SignupEvent, SignupState> {
   SignupBloc() : super(InitState()) {
@@ -11,6 +12,9 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
       bool check =
           await createAccount(email: event.email, password: event.password);
       if (check) {
+        SharedPreferences.getInstance().then((value) {
+          value.setBool("login", true);
+        });
         await initInfoUser(event.user);
         emit(SignupSuccessState());
       } else {

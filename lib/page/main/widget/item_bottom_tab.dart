@@ -21,6 +21,7 @@ Widget itemBottomTab({
           color: current == index ? Colors.red : Colors.grey,
           size: size,
         ),
+        const SizedBox(height: 5),
         Text(
           text,
           style: TextStyle(color: current == index ? Colors.red : Colors.grey),

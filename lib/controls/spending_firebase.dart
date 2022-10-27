@@ -16,6 +16,13 @@ class SpendingFirebase {
         .collection("data")
         .doc(FirebaseAuth.instance.currentUser!.uid);
 
+    if (spending.image != null) {
+      spending.image = await uploadImage(
+          folder: "spending",
+          name: "${firestoreSpending.id}.png",
+          image: File(spending.image!));
+    }
+
     await firestoreSpending.set(spending.toMap());
 
     await firestoreData.get().then((value) {
@@ -115,10 +122,11 @@ class SpendingFirebase {
         .update(user.toMap());
   }
 
-  static Future<String> uploadImage(
-      {required String folder,
-      required String name,
-      required File image}) async {
+  static Future<String> uploadImage({
+    required String folder,
+    required String name,
+    required File image,
+  }) async {
     Reference upload = FirebaseStorage.instance.ref().child("$folder/$name");
     await upload.putFile(image);
     return await upload.getDownloadURL();
