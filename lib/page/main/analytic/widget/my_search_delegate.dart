@@ -48,7 +48,10 @@ class MySearchDelegate extends SearchDelegate<String> {
           .get(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          var data = snapshot.requireData.data() as Map<String, dynamic>;
+          var snapshotData = snapshot.requireData.data();
+          if (snapshotData == null) return Container();
+
+          var data = snapshotData;
           List<String> history = (data["history"] as List<dynamic>)
               .map((e) => e.toString())
               .where((element) =>
@@ -56,6 +59,7 @@ class MySearchDelegate extends SearchDelegate<String> {
               .toList()
               .reversed
               .toList();
+
           return ListView.builder(
             itemCount: history.length,
             itemBuilder: (context, index) {
