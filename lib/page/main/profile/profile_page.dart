@@ -2,7 +2,7 @@ import 'dart:io' show Platform;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expenditure_management/constants/app_colors.dart';
 import 'package:expenditure_management/constants/app_styles.dart';
-import 'package:expenditure_management/page/main/profile/edit_profile_page.dart';
+import 'package:expenditure_management/page/main/profile/about_page.dart';
 import 'package:expenditure_management/page/main/profile/widget/info_widget.dart';
 import 'package:expenditure_management/page/main/profile/widget/setting_item.dart';
 import 'package:expenditure_management/setting/bloc/setting_cubit.dart';
@@ -29,6 +29,7 @@ class _ProfilePageState extends State<ProfilePage> {
   var numberFormat = NumberFormat.currency(locale: "vi_VI");
   int language = 0;
   bool darkMode = false;
+  bool loginMethod = false;
 
   @override
   void initState() {
@@ -37,6 +38,7 @@ class _ProfilePageState extends State<ProfilePage> {
         language = value.getInt('language') ??
             (Platform.localeName.split('_')[0] == "vi" ? 0 : 1);
         darkMode = value.getBool("isDark") ?? false;
+        loginMethod = value.getBool("login") ?? false;
       });
     });
     super.initState();
@@ -62,33 +64,39 @@ class _ProfilePageState extends State<ProfilePage> {
                 return infoWidget();
               },
             ),
+            const SizedBox(height: 10),
             Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: SingleChildScrollView(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 10, 20, 40),
                   child: Column(
                     children: [
                       const SizedBox(height: 10),
                       settingItem(
                         text: AppLocalizations.of(context).translate('account'),
                         action: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const EditProfilePage(),
-                            ),
-                          );
+                          Navigator.pushNamed(context, '/edit');
                         },
                         icon: FontAwesomeIcons.solidUser,
                         color: const Color.fromRGBO(0, 150, 255, 1),
                       ),
+                      if (loginMethod) const SizedBox(height: 20),
+                      if (loginMethod)
+                        settingItem(
+                          text: "Đổi Mật Khẩu",
+                          action: () {
+                            Navigator.pushNamed(context, '/password');
+                          },
+                          icon: FontAwesomeIcons.lock,
+                          color: const Color.fromRGBO(233, 116, 81, 1),
+                        ),
                       const SizedBox(height: 20),
                       settingItem(
                         text:
                             AppLocalizations.of(context).translate('language'),
                         action: _showBottomSheet,
                         icon: Icons.translate_outlined,
-                        color: const Color.fromRGBO(233, 116, 81, 1),
+                        color: const Color.fromRGBO(218, 165, 32, 1),
                       ),
                       const SizedBox(height: 20),
                       Row(
@@ -128,7 +136,9 @@ class _ProfilePageState extends State<ProfilePage> {
                       const SizedBox(height: 20),
                       settingItem(
                         text: AppLocalizations.of(context).translate('about'),
-                        action: () {},
+                        action: () {
+                          Navigator.pushNamed(context, '/about');
+                        },
                         icon: FontAwesomeIcons.circleInfo,
                         color: const Color.fromRGBO(79, 121, 66, 1),
                       ),
@@ -149,7 +159,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             await FacebookAuth.instance.logOut();
                             if (!mounted) return;
                             Navigator.pushNamedAndRemoveUntil(
-                                context, '/', (route) => false);
+                                context, '/login', (route) => false);
                           },
                           child: Text(
                             AppLocalizations.of(context).translate('logout'),
@@ -161,7 +171,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

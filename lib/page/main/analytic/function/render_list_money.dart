@@ -48,7 +48,7 @@ List<int> renderListMoney(
               date.isBefore(element.dateTime) &&
                   lastWeek.isAfter(element.dateTime) ||
               isSameDay(element.dateTime, date) ||
-              isSameDay(element.dateTime, date))
+              isSameDay(element.dateTime, lastWeek))
           .toList();
       listMoney.add(spendingList.isEmpty
           ? 0

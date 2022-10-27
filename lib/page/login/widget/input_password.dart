@@ -43,7 +43,7 @@ Widget inputPassword({
         },
         splashColor: Colors.transparent,
         icon: Icon(
-          hide ? FontAwesomeIcons.eye : FontAwesomeIcons.eyeSlash,
+          hide ? FontAwesomeIcons.eyeSlash : FontAwesomeIcons.eye,
           size: 20,
         ),
       ),

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:expenditure_management/constants/app_styles.dart';
+import 'package:expenditure_management/constants/function/loading_animation.dart';
 import 'package:expenditure_management/constants/list.dart';
 import 'package:expenditure_management/controls/spending_firebase.dart';
 import 'package:expenditure_management/models/spending.dart';
@@ -42,20 +43,22 @@ class _AddSpendingPageState extends State<AddSpendingPage> {
           TextButton(
             onPressed: () async {
               Spending spending = Spending(
-                money: ([29, 30, 34, 36, 37, 40].contains(type!) ? 1 : (-1)) *
-                    int.parse(_money.text.replaceAll(RegExp(r'[^0-9]'), '')),
-                type: type!,
-                dateTime: DateTime(
-                  selectedDate.year,
-                  selectedDate.month,
-                  selectedDate.day,
-                  selectedTime.hour,
-                  selectedTime.minute,
-                ),
-                note: _note.text,
-              );
-
+                  money: ([29, 30, 34, 36, 37, 40].contains(type!) ? 1 : (-1)) *
+                      int.parse(_money.text.replaceAll(RegExp(r'[^0-9]'), '')),
+                  type: type!,
+                  dateTime: DateTime(
+                    selectedDate.year,
+                    selectedDate.month,
+                    selectedDate.day,
+                    selectedTime.hour,
+                    selectedTime.minute,
+                  ),
+                  note: _note.text,
+                  image: image!.path);
+              loadingAnimation(context);
               await SpendingFirebase.addSpending(spending);
+              if (!mounted) return;
+              Navigator.pop(context);
               if (!mounted) return;
               Navigator.pop(context);
             },
@@ -244,9 +247,9 @@ class _AddSpendingPageState extends State<AddSpendingPage> {
                                   child: ElevatedButton.icon(
                                     onPressed: () => pickImage(),
                                     icon: const Icon(Icons.image, size: 35),
-                                    label: const Text(
-                                      "Thêm ảnh",
-                                      style: TextStyle(fontSize: 16),
+                                    label: Text(
+                                      image == null ? "Thêm ảnh" : "Thay thế",
+                                      style: const TextStyle(fontSize: 16),
                                     ),
                                   ),
                                 ),
@@ -279,7 +282,8 @@ class _AddSpendingPageState extends State<AddSpendingPage> {
                           )
                         ],
                       ),
-                    )
+                    ),
+                    const SizedBox(height: 10)
                   ],
                 ),
               ),

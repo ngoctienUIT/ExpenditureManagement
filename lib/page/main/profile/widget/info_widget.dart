@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:expenditure_management/constants/app_colors.dart';
 import 'package:expenditure_management/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -28,7 +29,8 @@ Widget infoWidget({User? user}) {
     children: [
       Material(
         elevation: 2,
-        child: SizedBox(
+        child: Container(
+          color: AppColors.whisperBackground,
           width: double.infinity,
           height: 50,
           child: Center(
