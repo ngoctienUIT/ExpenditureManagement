@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expenditure_management/controls/spending_firebase.dart';
+import 'package:expenditure_management/models/spending.dart';
 import 'package:expenditure_management/page/main/home/widget/item_spending_widget.dart';
 import 'package:expenditure_management/page/main/home/widget/summary_spending.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -40,32 +41,12 @@ class _HomePageState extends State<HomePage> {
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     var spendingList = snapshot.data;
-                    return SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          const SizedBox(height: 10),
-                          const Text(
-                            "Tháng này",
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.grey,
-                            ),
-                          ),
-                          summarySpending(spendingList: spendingList),
-                          const SizedBox(height: 10),
-                          const Text(
-                            "Danh sách chi tiêu tháng này",
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.grey,
-                            ),
-                          ),
-                          itemSpendingWidget(spendingList: spendingList),
-                        ],
-                      ),
-                    );
+                    if (spendingList != null && spendingList.isEmpty) {
+                      return body(spendingList: spendingList);
+                    } else {
+                      return SingleChildScrollView(
+                          child: body(spendingList: spendingList));
+                    }
                   }
 
                   return loading();
@@ -76,6 +57,42 @@ class _HomePageState extends State<HomePage> {
           },
         ),
       ),
+    );
+  }
+
+  Widget body({List<Spending>? spendingList}) {
+    return Column(
+      children: [
+        const SizedBox(height: 10),
+        const Text(
+          "Tháng này",
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Colors.grey,
+          ),
+        ),
+        SummarySpending(spendingList: spendingList),
+        const SizedBox(height: 10),
+        const Text(
+          "Danh sách chi tiêu tháng này",
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Colors.grey,
+          ),
+        ),
+        spendingList!.isNotEmpty
+            ? itemSpendingWidget(spendingList: spendingList)
+            : const Expanded(
+                child: Center(
+                  child: Text(
+                    "Không có dữ liệu tháng này!",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+      ],
     );
   }
 
@@ -92,7 +109,7 @@ class _HomePageState extends State<HomePage> {
               color: Colors.grey,
             ),
           ),
-          summarySpending(),
+          const SummarySpending(),
           const SizedBox(height: 10),
           const Text(
             "Danh sách chi tiêu tháng này",

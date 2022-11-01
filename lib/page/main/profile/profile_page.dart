@@ -2,7 +2,6 @@ import 'dart:io' show Platform;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expenditure_management/constants/app_colors.dart';
 import 'package:expenditure_management/constants/app_styles.dart';
-import 'package:expenditure_management/page/main/profile/about_page.dart';
 import 'package:expenditure_management/page/main/profile/widget/info_widget.dart';
 import 'package:expenditure_management/page/main/profile/widget/setting_item.dart';
 import 'package:expenditure_management/setting/bloc/setting_cubit.dart';
@@ -59,9 +58,9 @@ class _ProfilePageState extends State<ProfilePage> {
                 if (snapshot.hasData) {
                   myuser.User user =
                       myuser.User.fromFirebase(snapshot.requireData);
-                  return infoWidget(user: user);
+                  return InfoWidget(user: user);
                 }
-                return infoWidget();
+                return const InfoWidget();
               },
             ),
             const SizedBox(height: 10),

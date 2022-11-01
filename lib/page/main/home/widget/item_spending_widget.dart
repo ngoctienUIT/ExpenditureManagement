@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:expenditure_management/constants/list.dart';
 import 'package:expenditure_management/models/spending.dart';
 import 'package:expenditure_management/page/main/home/view_list_spending_page.dart';

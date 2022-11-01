@@ -57,9 +57,7 @@ class _VerifyPageState extends State<VerifyPage> {
       setState(() => canResendEmail = false);
       Future.delayed(const Duration(seconds: 5));
       setState(() => canResendEmail = true);
-    } catch (e) {
-      print(e);
-    }
+    } catch (_) {}
   }
 
   @override

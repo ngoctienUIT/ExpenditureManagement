@@ -1,4 +1,3 @@
-import 'package:expenditure_management/constants/app_colors.dart';
 import 'package:expenditure_management/page/login/widget/custom_button.dart';
 import 'package:expenditure_management/page/login/widget/input_password.dart';
 import 'package:expenditure_management/setting/localization/app_localizations.dart';
@@ -28,10 +27,7 @@ class _NewPasswordState extends State<NewPassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: AppColors.whisperBackground,
-      ),
+      appBar: AppBar(elevation: 0),
       body: Form(
         key: _formKey,
         child: Padding(

@@ -1,4 +1,3 @@
-import 'package:expenditure_management/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -11,7 +10,6 @@ class AboutPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: AppColors.whisperBackground,
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
