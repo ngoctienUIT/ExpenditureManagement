@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:expenditure_management/constants/app_colors.dart';
 import 'package:expenditure_management/constants/app_styles.dart';
 
-Widget genderWidget(
-    {required bool currentGender,
-    required bool gender,
-    required Function action}) {
+Widget genderWidget({
+  required bool currentGender,
+  required bool gender,
+  required Function action,
+}) {
   return InkWell(
     splashColor: Colors.transparent,
     onTap: () {

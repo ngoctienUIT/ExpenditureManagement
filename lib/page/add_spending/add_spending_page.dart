@@ -34,27 +34,26 @@ class _AddSpendingPageState extends State<AddSpendingPage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        title: Text(
-          AppLocalizations.of(context).translate('add_spending'),
-          style: const TextStyle(color: Colors.black),
-        ),
+        backgroundColor: Colors.white,
+        title: Text(AppLocalizations.of(context).translate('add_spending')),
         centerTitle: true,
         actions: [
           TextButton(
             onPressed: () async {
               Spending spending = Spending(
-                  money: ([29, 30, 34, 36, 37, 40].contains(type!) ? 1 : (-1)) *
-                      int.parse(_money.text.replaceAll(RegExp(r'[^0-9]'), '')),
-                  type: type!,
-                  dateTime: DateTime(
-                    selectedDate.year,
-                    selectedDate.month,
-                    selectedDate.day,
-                    selectedTime.hour,
-                    selectedTime.minute,
-                  ),
-                  note: _note.text,
-                  image: image!.path);
+                money: ([29, 30, 34, 36, 37, 40].contains(type!) ? 1 : (-1)) *
+                    int.parse(_money.text.replaceAll(RegExp(r'[^0-9]'), '')),
+                type: type!,
+                dateTime: DateTime(
+                  selectedDate.year,
+                  selectedDate.month,
+                  selectedDate.day,
+                  selectedTime.hour,
+                  selectedTime.minute,
+                ),
+                note: _note.text,
+                image: image != null ? image!.path : null,
+              );
               loadingAnimation(context);
               await SpendingFirebase.addSpending(spending);
               if (!mounted) return;

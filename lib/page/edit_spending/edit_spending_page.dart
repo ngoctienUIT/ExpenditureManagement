@@ -31,7 +31,6 @@ class _EditSpendingPageState extends State<EditSpendingPage> {
 
   @override
   void initState() {
-    print(widget.spending.id);
     _money.text =
         NumberFormat.currency(locale: "vi_VI").format(widget.spending.money);
     if (widget.spending.note != null) {
@@ -51,10 +50,7 @@ class _EditSpendingPageState extends State<EditSpendingPage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        title: Text(
-          AppLocalizations.of(context).translate('edit_spending'),
-          style: const TextStyle(color: Colors.black),
-        ),
+        title: Text(AppLocalizations.of(context).translate('edit_spending')),
         centerTitle: true,
         actions: [
           TextButton(

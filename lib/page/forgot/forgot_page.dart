@@ -1,4 +1,3 @@
-import 'package:expenditure_management/constants/app_colors.dart';
 import 'package:expenditure_management/page/login/widget/custom_button.dart';
 import 'package:expenditure_management/page/login/widget/input_text.dart';
 import 'package:expenditure_management/setting/localization/app_localizations.dart';
@@ -25,10 +24,7 @@ class _ForgotPageState extends State<ForgotPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColors.whisperBackground,
-        elevation: 0,
-      ),
+      appBar: AppBar(elevation: 0),
       body: Form(
         key: _formKey,
         child: Padding(
@@ -65,9 +61,7 @@ class _ForgotPageState extends State<ForgotPage> {
                       if (!mounted) return;
                       Navigator.pushNamedAndRemoveUntil(
                           context, '/success', (route) => false);
-                    } catch (e) {
-                      print(e);
-                    }
+                    } catch (_) {}
                     return;
                   }
                 },
