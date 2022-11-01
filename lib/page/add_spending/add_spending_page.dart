@@ -247,7 +247,11 @@ class _AddSpendingPageState extends State<AddSpendingPage> {
                                     onPressed: () => pickImage(),
                                     icon: const Icon(Icons.image, size: 35),
                                     label: Text(
-                                      image == null ? "Thêm ảnh" : "Thay thế",
+                                      image == null
+                                          ? AppLocalizations.of(context)
+                                              .translate('add_picture')
+                                          : AppLocalizations.of(context)
+                                              .translate('replace'),
                                       style: const TextStyle(fontSize: 16),
                                     ),
                                   ),

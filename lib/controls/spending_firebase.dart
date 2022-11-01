@@ -51,13 +51,21 @@ class SpendingFirebase {
     });
   }
 
-  static Future updateSpending(Spending spending, DateTime oldDay) async {
+  static Future updateSpending(
+      Spending spending, DateTime oldDay, File? image) async {
     var firestoreSpending =
         FirebaseFirestore.instance.collection("spending").doc(spending.id);
 
     var firestoreData = FirebaseFirestore.instance
         .collection("data")
         .doc(FirebaseAuth.instance.currentUser!.uid);
+
+    if (image != null) {
+      spending.image = await uploadImage(
+          folder: "spending",
+          name: "${firestoreSpending.id}.png",
+          image: image);
+    }
 
     firestoreSpending.update(spending.toMap());
 

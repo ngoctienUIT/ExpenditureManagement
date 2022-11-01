@@ -51,5 +51,6 @@
   "wallet": "Wallet",
   "time": "Time",
   "group": "Group",
-  "all": "All"
+  "all": "All",
+  "replace": "Replace"
 }

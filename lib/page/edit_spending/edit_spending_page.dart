@@ -1,6 +1,8 @@
 import 'dart:io';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:expenditure_management/constants/app_styles.dart';
+import 'package:expenditure_management/constants/function/loading_animation.dart';
 import 'package:expenditure_management/constants/list.dart';
 import 'package:expenditure_management/controls/spending_firebase.dart';
 import 'package:expenditure_management/models/spending.dart';
@@ -11,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:shimmer/shimmer.dart';
 
 class EditSpendingPage extends StatefulWidget {
   const EditSpendingPage({Key? key, required this.spending}) : super(key: key);
@@ -31,8 +34,8 @@ class _EditSpendingPageState extends State<EditSpendingPage> {
 
   @override
   void initState() {
-    _money.text =
-        NumberFormat.currency(locale: "vi_VI").format(widget.spending.money);
+    _money.text = NumberFormat.currency(locale: "vi_VI")
+        .format(widget.spending.money.abs());
     if (widget.spending.note != null) {
       _note.text = widget.spending.note!;
     }
@@ -57,7 +60,8 @@ class _EditSpendingPageState extends State<EditSpendingPage> {
             onPressed: () async {
               Spending spending = Spending(
                 id: widget.spending.id,
-                money: int.parse(_money.text.replaceAll(RegExp(r'[^0-9]'), '')),
+                money: ([29, 30, 34, 36, 37, 40].contains(type!) ? 1 : (-1)) *
+                    int.parse(_money.text.replaceAll(RegExp(r'[^0-9]'), '')),
                 type: type!,
                 dateTime: DateTime(
                   selectedDate.year,
@@ -67,10 +71,15 @@ class _EditSpendingPageState extends State<EditSpendingPage> {
                   selectedTime.minute,
                 ),
                 note: _note.text,
+                image: widget.spending.image,
               );
-
+              loadingAnimation(context);
               await SpendingFirebase.updateSpending(
-                  spending, widget.spending.dateTime);
+                  spending,
+                  widget.spending.dateTime,
+                  image != null ? File(image!.path) : null);
+              if (!mounted) return;
+              Navigator.pop(context);
               if (!mounted) return;
               Navigator.pop(context);
             },
@@ -254,14 +263,42 @@ class _EditSpendingPageState extends State<EditSpendingPage> {
                                       const SizedBox(height: 10)
                                     ],
                                   ),
+                                if (image == null &&
+                                    widget.spending.image != null)
+                                  Column(
+                                    children: [
+                                      CachedNetworkImage(
+                                        imageUrl: widget.spending.image!,
+                                        width: double.infinity,
+                                        fit: BoxFit.fitWidth,
+                                        placeholder: (context, url) =>
+                                            Shimmer.fromColors(
+                                          baseColor: Colors.grey[300]!,
+                                          highlightColor: Colors.grey[100]!,
+                                          child: Container(
+                                            height: 150,
+                                            width: double.infinity,
+                                            color: Colors.grey,
+                                          ),
+                                        ),
+                                        errorWidget: (context, url, error) =>
+                                            const Icon(Icons.error),
+                                      ),
+                                      const SizedBox(height: 10)
+                                    ],
+                                  ),
                                 SizedBox(
                                   height: 40,
                                   child: ElevatedButton.icon(
                                     onPressed: () => pickImage(),
                                     icon: const Icon(Icons.image, size: 35),
                                     label: Text(
-                                      AppLocalizations.of(context)
-                                          .translate('add_picture'),
+                                      image == null &&
+                                              widget.spending.image == null
+                                          ? AppLocalizations.of(context)
+                                              .translate('add_picture')
+                                          : AppLocalizations.of(context)
+                                              .translate('replace'),
                                       style: const TextStyle(fontSize: 16),
                                     ),
                                   ),
