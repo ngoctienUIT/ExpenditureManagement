@@ -35,6 +35,13 @@ class _EditSpendingPageState extends State<EditSpendingPage> {
   bool more = false;
 
   @override
+  void dispose() {
+    _money.dispose();
+    _note.dispose();
+    super.dispose();
+  }
+
+  @override
   void initState() {
     _money.text = NumberFormat.currency(locale: "vi_VI")
         .format(widget.spending.money.abs());
