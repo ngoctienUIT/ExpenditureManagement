@@ -133,7 +133,7 @@ class _SearchPageState extends State<SearchPage> {
                               ),
                             );
                           }
-                          return itemSpendingDay(list);
+                          return ItemSpendingDay(spendingList: list);
                         }
                         return const Center(child: CircularProgressIndicator());
                       });
