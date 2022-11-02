@@ -30,6 +30,13 @@ class _AddSpendingPageState extends State<AddSpendingPage> {
   bool more = false;
 
   @override
+  void dispose() {
+    _money.dispose();
+    _note.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(

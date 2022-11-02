@@ -25,6 +25,12 @@ class _SearchPageState extends State<SearchPage> {
   DateTime? dateTime;
   String note = "";
 
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
   bool checkResult(Spending spending) {
     if (!listType[spending.type]["title"]!
         .toUpperCase()
@@ -133,7 +139,7 @@ class _SearchPageState extends State<SearchPage> {
                               ),
                             );
                           }
-                          return itemSpendingDay(list);
+                          return ItemSpendingDay(spendingList: list);
                         }
                         return const Center(child: CircularProgressIndicator());
                       });

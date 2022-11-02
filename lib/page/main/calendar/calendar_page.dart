@@ -5,6 +5,7 @@ import 'package:expenditure_management/page/main/calendar/widget/build_spending.
 import 'package:expenditure_management/page/main/calendar/widget/custom_table_calendar.dart';
 import 'package:expenditure_management/page/main/calendar/widget/total_spending.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -90,9 +91,28 @@ class _CalendarPageState extends State<CalendarPage> {
                                       TotalSpending(
                                         list: _currentSpendingList,
                                       ),
-                                    buildSpending(
+                                    BuildSpending(
                                       spendingList: _currentSpendingList,
                                       date: _selectedDay,
+                                      change: (spending) async {
+                                        try {
+                                          spending.image = await FirebaseStorage
+                                              .instance
+                                              .ref()
+                                              .child(
+                                                  "spending/${spending.id}.png")
+                                              .getDownloadURL();
+                                        } catch (_) {}
+
+                                        _currentSpendingList!.removeWhere(
+                                            (element) =>
+                                                element.id!
+                                                    .compareTo(spending.id!) ==
+                                                0);
+                                        setState(() {
+                                          _currentSpendingList!.add(spending);
+                                        });
+                                      },
                                     )
                                   ],
                                 ),
@@ -118,7 +138,7 @@ class _CalendarPageState extends State<CalendarPage> {
           selectedDay: _selectedDay,
         ),
         const TotalSpending(),
-        Expanded(child: buildSpending())
+        const Expanded(child: BuildSpending())
       ],
     );
   }

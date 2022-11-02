@@ -6,79 +6,86 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
 
-Widget itemSpendingWidget({List<Spending>? spendingList}) {
-  var numberFormat = NumberFormat.currency(locale: "vi_VI");
+class ItemSpendingWidget extends StatelessWidget {
+  const ItemSpendingWidget({Key? key, this.spendingList}) : super(key: key);
+  final List<Spending>? spendingList;
 
-  return spendingList != null
-      ? ListView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          padding: const EdgeInsets.all(10),
-          itemCount: listType.length,
-          itemBuilder: (context, index) {
-            if ([0, 10, 21, 27, 35, 38].contains(index)) {
-              return const SizedBox.shrink();
-            } else {
-              var list = spendingList
-                  .where((element) => element.type == index)
-                  .toList();
-              if (list.isNotEmpty) {
-                return InkWell(
-                  borderRadius: BorderRadius.circular(15),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            ViewListSpendingPage(spendingList: list),
-                      ),
-                    );
-                  },
-                  child: Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 20, horizontal: 15),
-                      child: Row(
-                        children: [
-                          Image.asset(
-                            listType[index]["image"]!,
-                            width: 40,
-                          ),
-                          const SizedBox(width: 10),
-                          Text(
-                            listType[index]["title"]!,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const Spacer(),
-                          Flexible(
-                            child: Text(
-                              numberFormat.format(list
-                                  .map((e) => e.money)
-                                  .reduce((value, element) => value + element)),
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(fontSize: 16),
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          const Icon(Icons.arrow_forward_ios_outlined)
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              } else {
+  @override
+  Widget build(BuildContext context) {
+    var numberFormat = NumberFormat.currency(locale: "vi_VI");
+
+    return spendingList != null
+        ? ListView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            padding: const EdgeInsets.all(10),
+            itemCount: listType.length,
+            itemBuilder: (context, index) {
+              if ([0, 10, 21, 27, 35, 38].contains(index)) {
                 return const SizedBox.shrink();
+              } else {
+                var list = spendingList!
+                    .where((element) => element.type == index)
+                    .toList();
+                if (list.isNotEmpty) {
+                  return InkWell(
+                    borderRadius: BorderRadius.circular(15),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              ViewListSpendingPage(spendingList: list),
+                        ),
+                      );
+                    },
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 20, horizontal: 15),
+                        child: Row(
+                          children: [
+                            Image.asset(
+                              listType[index]["image"]!,
+                              width: 40,
+                            ),
+                            const SizedBox(width: 10),
+                            Text(
+                              listType[index]["title"]!,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const Spacer(),
+                            Flexible(
+                              child: Text(
+                                numberFormat.format(list
+                                    .map((e) => e.money)
+                                    .reduce(
+                                        (value, element) => value + element)),
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(fontSize: 16),
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            const Icon(Icons.arrow_forward_ios_outlined)
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                } else {
+                  return const SizedBox.shrink();
+                }
               }
-            }
-          },
-        )
-      : loadingItemSpending();
+            },
+          )
+        : loadingItemSpending();
+  }
 }
 
 Widget loadingItemSpending() {

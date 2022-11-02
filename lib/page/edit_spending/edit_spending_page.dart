@@ -16,8 +16,10 @@ import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
 
 class EditSpendingPage extends StatefulWidget {
-  const EditSpendingPage({Key? key, required this.spending}) : super(key: key);
+  const EditSpendingPage({Key? key, required this.spending, this.change})
+      : super(key: key);
   final Spending spending;
+  final Function(Spending spending)? change;
 
   @override
   State<EditSpendingPage> createState() => _EditSpendingPageState();
@@ -31,6 +33,13 @@ class _EditSpendingPageState extends State<EditSpendingPage> {
   int? type;
   XFile? image;
   bool more = false;
+
+  @override
+  void dispose() {
+    _money.dispose();
+    _note.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -78,6 +87,9 @@ class _EditSpendingPageState extends State<EditSpendingPage> {
                   spending,
                   widget.spending.dateTime,
                   image != null ? File(image!.path) : null);
+              if (widget.change != null) {
+                widget.change!(spending);
+              }
               if (!mounted) return;
               Navigator.pop(context);
               if (!mounted) return;

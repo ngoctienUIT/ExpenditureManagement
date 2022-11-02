@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:expenditure_management/controls/spending_firebase.dart';
 import 'package:expenditure_management/models/spending.dart';
 import 'package:expenditure_management/page/main/home/widget/item_spending_widget.dart';
 import 'package:expenditure_management/page/main/home/widget/summary_spending.dart';
@@ -7,14 +6,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,19 +30,24 @@ class _HomePageState extends State<HomePage> {
                     .toList();
               }
 
-              return FutureBuilder(
-                future: SpendingFirebase.getSpendingList(list),
+              return StreamBuilder(
+                stream: FirebaseFirestore.instance
+                    .collection("spending")
+                    .snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    var spendingList = snapshot.data;
-                    if (spendingList != null && spendingList.isEmpty) {
+                    var spendingList = snapshot.data!.docs
+                        .where((element) => list.contains(element.id))
+                        .map((e) => Spending.fromFirebase(e))
+                        .toList();
+
+                    if (spendingList.isEmpty) {
                       return body(spendingList: spendingList);
                     } else {
                       return SingleChildScrollView(
                           child: body(spendingList: spendingList));
                     }
                   }
-
                   return loading();
                 },
               );
@@ -83,7 +82,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         spendingList!.isNotEmpty
-            ? itemSpendingWidget(spendingList: spendingList)
+            ? ItemSpendingWidget(spendingList: spendingList)
             : const Expanded(
                 child: Center(
                   child: Text(
@@ -99,9 +98,9 @@ class _HomePageState extends State<HomePage> {
   Widget loading() {
     return SingleChildScrollView(
       child: Column(
-        children: [
-          const SizedBox(height: 10),
-          const Text(
+        children: const [
+          SizedBox(height: 10),
+          Text(
             "Tháng này",
             style: TextStyle(
               fontSize: 18,
@@ -109,9 +108,9 @@ class _HomePageState extends State<HomePage> {
               color: Colors.grey,
             ),
           ),
-          const SummarySpending(),
-          const SizedBox(height: 10),
-          const Text(
+          SummarySpending(),
+          SizedBox(height: 10),
+          Text(
             "Danh sách chi tiêu tháng này",
             style: TextStyle(
               fontSize: 18,
@@ -119,7 +118,7 @@ class _HomePageState extends State<HomePage> {
               color: Colors.grey,
             ),
           ),
-          itemSpendingWidget(),
+          ItemSpendingWidget(),
         ],
       ),
     );
