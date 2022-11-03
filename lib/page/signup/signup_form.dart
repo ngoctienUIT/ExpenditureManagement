@@ -3,6 +3,7 @@ import 'package:expenditure_management/setting/localization/app_localizations.da
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:expenditure_management/constants/app_styles.dart';
 import 'package:expenditure_management/models/user.dart';
@@ -31,6 +32,7 @@ class _SignupFormState extends State<SignupForm> {
   DateTime birthday = DateTime.now();
   bool hide = true;
   bool gender = true;
+  bool check = true;
 
   @override
   void dispose() {
@@ -45,28 +47,24 @@ class _SignupFormState extends State<SignupForm> {
   Widget build(BuildContext context) {
     return BlocBuilder<SignupBloc, SignupState>(
       builder: (context, state) {
-        if (state is SignupSuccessState) {
+        if (state is SignupSuccessState && check) {
           Navigator.pop(context);
+          Fluttertoast.showToast(
+              msg: AppLocalizations.of(context)
+                  .translate("create-account-success"));
           SchedulerBinding.instance.addPostFrameCallback((_) {
-            var snackBar = SnackBar(
-                content: Text(AppLocalizations.of(context)
-                    .translate("create-account-success")));
-            ScaffoldMessenger.of(context).showSnackBar(snackBar);
             Future.delayed(const Duration(seconds: 3), () {
               Navigator.pushReplacementNamed(context, "/verify");
             });
           });
         }
 
-        if (state is SignupErrorState) {
+        if (state is SignupErrorState && check) {
           Navigator.pop(context);
-          SchedulerBinding.instance.addPostFrameCallback((_) {
-            var snackBar = SnackBar(
-                content:
-                    Text(AppLocalizations.of(context).translate(state.status)));
-            ScaffoldMessenger.of(context).showSnackBar(snackBar);
-          });
+          Fluttertoast.showToast(
+              msg: AppLocalizations.of(context).translate(state.status));
         }
+        check = true;
 
         return Form(
           key: _formKey,
@@ -104,6 +102,7 @@ class _SignupFormState extends State<SignupForm> {
                           gender: true,
                           action: () {
                             if (!gender) {
+                              check = false;
                               setState(() => gender = true);
                             }
                           }),
@@ -113,6 +112,7 @@ class _SignupFormState extends State<SignupForm> {
                           gender: false,
                           action: () {
                             if (gender) {
+                              check = false;
                               setState(() => gender = false);
                             }
                           }),
@@ -129,6 +129,7 @@ class _SignupFormState extends State<SignupForm> {
                         lastDate: DateTime.now(),
                       );
                       if (picked != null && picked != birthday) {
+                        check = false;
                         setState(() => birthday = picked);
                       }
                     },
@@ -160,9 +161,8 @@ class _SignupFormState extends State<SignupForm> {
                   const SizedBox(height: 20),
                   inputPassword(
                     action: () {
-                      setState(() {
-                        hide = !hide;
-                      });
+                      check = false;
+                      setState(() => hide = !hide);
                     },
                     hint: AppLocalizations.of(context).translate('password'),
                     controller: _passwordController,
@@ -171,9 +171,8 @@ class _SignupFormState extends State<SignupForm> {
                   const SizedBox(height: 20),
                   inputPassword(
                     action: () {
-                      setState(() {
-                        hide = !hide;
-                      });
+                      check = false;
+                      setState(() => hide = !hide);
                     },
                     hint: AppLocalizations.of(context)
                         .translate('confirm_password'),

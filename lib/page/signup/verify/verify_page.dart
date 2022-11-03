@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:expenditure_management/constants/function/on_will_pop.dart';
+import 'package:expenditure_management/setting/localization/app_localizations.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -73,9 +74,9 @@ class _VerifyPageState extends State<VerifyPage> {
             padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 40),
             child: Column(
               children: [
-                const Text(
-                  "Verify Email",
-                  style: TextStyle(
+                Text(
+                  AppLocalizations.of(context).translate("verify_email"),
+                  style: const TextStyle(
                     fontSize: 25,
                     color: Colors.red,
                     fontWeight: FontWeight.bold,
@@ -106,7 +107,10 @@ class _VerifyPageState extends State<VerifyPage> {
                         Navigator.pushReplacementNamed(context, '/main');
                       },
                       icon: const Icon(FontAwesomeIcons.house),
-                      label: Text("Go to Home", style: AppStyles.p),
+                      label: Text(
+                        AppLocalizations.of(context).translate("go_to_home"),
+                        style: AppStyles.p,
+                      ),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.buttonLogin,
                         shape: RoundedRectangleBorder(
@@ -126,7 +130,10 @@ class _VerifyPageState extends State<VerifyPage> {
                             }
                           : null,
                       icon: const Icon(FontAwesomeIcons.envelope),
-                      label: Text("Resend email", style: AppStyles.p),
+                      label: Text(
+                          AppLocalizations.of(context)
+                              .translate("resend_email"),
+                          style: AppStyles.p),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.buttonLogin,
                         shape: RoundedRectangleBorder(
@@ -141,9 +148,12 @@ class _VerifyPageState extends State<VerifyPage> {
                     onPressed: () {
                       FirebaseAuth.instance.signOut();
                       Navigator.pushNamedAndRemoveUntil(
-                          context, '/', (route) => false);
+                          context, '/login', (route) => false);
                     },
-                    child: Text("Cancel", style: AppStyles.p),
+                    child: Text(
+                      AppLocalizations.of(context).translate("cancel"),
+                      style: AppStyles.p,
+                    ),
                   )
               ],
             ),
