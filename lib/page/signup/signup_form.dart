@@ -48,8 +48,9 @@ class _SignupFormState extends State<SignupForm> {
         if (state is SignupSuccessState) {
           Navigator.pop(context);
           SchedulerBinding.instance.addPostFrameCallback((_) {
-            var snackBar =
-                const SnackBar(content: Text('Tạo tài khoản thành công'));
+            var snackBar = SnackBar(
+                content: Text(AppLocalizations.of(context)
+                    .translate("create-account-success")));
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
             Future.delayed(const Duration(seconds: 3), () {
               Navigator.pushReplacementNamed(context, "/verify");
@@ -60,8 +61,9 @@ class _SignupFormState extends State<SignupForm> {
         if (state is SignupErrorState) {
           Navigator.pop(context);
           SchedulerBinding.instance.addPostFrameCallback((_) {
-            var snackBar =
-                const SnackBar(content: Text('Không thể tạo tài khoản'));
+            var snackBar = SnackBar(
+                content:
+                    Text(AppLocalizations.of(context).translate(state.status)));
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
           });
         }

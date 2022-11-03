@@ -53,8 +53,9 @@ class _LoginFormState extends State<LoginForm> {
         if (state is LoginErrorState) {
           Navigator.pop(context);
           SchedulerBinding.instance.addPostFrameCallback((_) {
-            var snackBar = const SnackBar(
-                content: Text('Tài khoản hoặc mật khẩu không đúng'));
+            var snackBar = SnackBar(
+                content:
+                    Text(AppLocalizations.of(context).translate(state.status)));
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
           });
         }
