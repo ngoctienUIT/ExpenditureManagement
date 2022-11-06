@@ -16,10 +16,15 @@ import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
 
 class EditSpendingPage extends StatefulWidget {
-  const EditSpendingPage({Key? key, required this.spending, this.change})
-      : super(key: key);
+  const EditSpendingPage({
+    Key? key,
+    required this.spending,
+    this.change,
+    this.delete,
+  }) : super(key: key);
   final Spending spending;
   final Function(Spending spending)? change;
+  final Function(String id)? delete;
 
   @override
   State<EditSpendingPage> createState() => _EditSpendingPageState();
@@ -344,6 +349,18 @@ class _EditSpendingPageState extends State<EditSpendingPage> {
                           )
                         ],
                       ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () async {
+                        loadingAnimation(context);
+                        await SpendingFirebase.deleteSpending(widget.spending);
+                        widget.delete!(widget.spending.id!);
+                        if (!mounted) return;
+                        Navigator.pop(context);
+                        if (!mounted) return;
+                        Navigator.pop(context);
+                      },
+                      child: const Text("Xóa"),
                     )
                   ],
                 ),
