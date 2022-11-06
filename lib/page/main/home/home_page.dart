@@ -20,14 +20,18 @@ class HomePage extends StatelessWidget {
               .snapshots(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              var data = snapshot.requireData.data() as Map<String, dynamic>;
               List<String> list = [];
 
-              if (data[DateFormat("MM_yyyy").format(DateTime.now())] != null) {
-                list = (data[DateFormat("MM_yyyy").format(DateTime.now())]
-                        as List<dynamic>)
-                    .map((e) => e.toString())
-                    .toList();
+              if (snapshot.requireData.data() != null) {
+                var data = snapshot.requireData.data() as Map<String, dynamic>;
+
+                if (data[DateFormat("MM_yyyy").format(DateTime.now())] !=
+                    null) {
+                  list = (data[DateFormat("MM_yyyy").format(DateTime.now())]
+                          as List<dynamic>)
+                      .map((e) => e.toString())
+                      .toList();
+                }
               }
 
               return StreamBuilder(
