@@ -101,6 +101,39 @@ class SpendingFirebase {
     });
   }
 
+  static Future deleteSpending(Spending spending) async {
+    var firestoreData = FirebaseFirestore.instance
+        .collection("data")
+        .doc(FirebaseAuth.instance.currentUser!.uid);
+
+    await firestoreData.get().then((value) async {
+      List<String> dataSpending = [];
+
+      var data = value.data() as Map<String, dynamic>;
+      if (data[DateFormat("MM_yyyy").format(spending.dateTime)] != null) {
+        dataSpending = (data[DateFormat("MM_yyyy").format(spending.dateTime)]
+                as List<dynamic>)
+            .map((e) => e.toString())
+            .toList();
+        dataSpending.remove(spending.id);
+        firestoreData.update(
+            {DateFormat("MM_yyyy").format(spending.dateTime): dataSpending});
+      }
+
+      if (spending.image != null) {
+        await FirebaseStorage.instance
+            .ref()
+            .child("spending/${spending.id}.png")
+            .delete();
+      }
+
+      await FirebaseFirestore.instance
+          .collection("spending")
+          .doc(spending.id)
+          .delete();
+    });
+  }
+
   static Future<List<Spending>> getSpendingList(List<String> list) async {
     List<Spending> spendingList = [];
     for (var element in list) {
