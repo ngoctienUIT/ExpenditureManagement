@@ -33,10 +33,13 @@ class _CalendarPageState extends State<CalendarPage> {
                 .collection("data")
                 .doc(FirebaseAuth.instance.currentUser!.uid)
                 .snapshots(),
-            builder: (context, streamSnapshot) {
-              if (streamSnapshot.hasData) {
-                var data =
-                    streamSnapshot.requireData.data() as Map<String, dynamic>;
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                var data = {};
+
+                if (snapshot.requireData.data() != null) {
+                  data = snapshot.requireData.data() as Map<String, dynamic>;
+                }
                 List<String> list = [];
                 check = true;
 

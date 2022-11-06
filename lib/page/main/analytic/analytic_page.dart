@@ -153,7 +153,10 @@ class _AnalyticPageState extends State<AnalyticPage>
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            var data = snapshot.requireData.data() as Map<String, dynamic>;
+            Map<String, dynamic> data = {};
+            if (snapshot.requireData.data() != null) {
+              data = snapshot.requireData.data() as Map<String, dynamic>;
+            }
             List<String> list = getDataSpending(
               data: data,
               index: _tabController.index,
