@@ -65,5 +65,8 @@
   "resend_email": "Resend email",
   "go_to_home": "Go to Home",
   "verify_email": "Verify Email",
-  "login_success": "Login success"
+  "login_success": "Login success",
+  "type_name": "Type name",
+  "new_type": "New type",
+  "friend": "Friend"
 }
