@@ -2,6 +2,7 @@ import 'package:expenditure_management/constants/list.dart';
 import 'package:expenditure_management/models/spending.dart';
 import 'package:expenditure_management/page/edit_spending/edit_spending_page.dart';
 import 'package:expenditure_management/page/main/home/widget/item_spending_widget.dart';
+import 'package:expenditure_management/page/view_spending/view_spending_page.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -45,9 +46,8 @@ class BuildSpending extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => EditSpendingPage(
+                builder: (context) => ViewSpendingPage(
                   spending: spendingList[index],
-                  change: change,
                 ),
               ),
             );

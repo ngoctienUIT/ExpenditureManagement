@@ -17,13 +17,13 @@ class ViewListSpendingPage extends StatelessWidget {
             listType[spendingList[0].type]["title"]!,
             style: const TextStyle(color: Colors.black),
           ),
+          centerTitle: true,
           leading: IconButton(
             onPressed: () {
               Navigator.pop(context);
             },
             icon: const Icon(Icons.arrow_back_ios_new_rounded),
           ),
-          centerTitle: true,
         ),
         body: ItemSpendingDay(spendingList: spendingList));
   }

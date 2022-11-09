@@ -65,5 +65,8 @@
   "resend_email": "Gửi lại email",
   "go_to_home": "Đi đến Trang Chủ",
   "verify_email": "Xác Nhận Email",
-  "login_success": "Đăng nhập thành công"
+  "login_success": "Đăng nhập thành công",
+  "type_name": "Tên loại",
+  "new_type": "Loại mới",
+  "friend": "Bạn bè"
 }

@@ -1,6 +1,6 @@
 import 'package:expenditure_management/constants/list.dart';
 import 'package:expenditure_management/models/spending.dart';
-import 'package:expenditure_management/page/edit_spending/edit_spending_page.dart';
+import 'package:expenditure_management/page/view_spending/view_spending_page.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -92,7 +92,7 @@ class _ItemSpendingDayState extends State<ItemSpendingDay> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => EditSpendingPage(
+                                  builder: (context) => ViewSpendingPage(
                                     spending: list[index],
                                     change: (spending) async {
                                       try {
@@ -103,7 +103,6 @@ class _ItemSpendingDayState extends State<ItemSpendingDay> {
                                                 "spending/${spending.id}.png")
                                             .getDownloadURL();
                                       } catch (_) {}
-
                                       widget.spendingList.removeWhere(
                                           (element) =>
                                               element.id!
