@@ -1,6 +1,5 @@
 import 'package:expenditure_management/constants/list.dart';
 import 'package:expenditure_management/models/spending.dart';
-import 'package:expenditure_management/page/edit_spending/edit_spending_page.dart';
 import 'package:expenditure_management/page/view_spending/view_spending_page.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -93,44 +92,36 @@ class _ItemSpendingDayState extends State<ItemSpendingDay> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) =>
-                                      ViewSpendingPage(spending: list[index]),
+                                  builder: (context) => ViewSpendingPage(
+                                    spending: list[index],
+                                    change: (spending) async {
+                                      try {
+                                        spending.image = await FirebaseStorage
+                                            .instance
+                                            .ref()
+                                            .child(
+                                                "spending/${spending.id}.png")
+                                            .getDownloadURL();
+                                      } catch (_) {}
+                                      widget.spendingList.removeWhere(
+                                          (element) =>
+                                              element.id!
+                                                  .compareTo(spending.id!) ==
+                                              0);
+                                      setState(() {
+                                        widget.spendingList.add(spending);
+                                      });
+                                    },
+                                    delete: (id) {
+                                      setState(() {
+                                        widget.spendingList.removeWhere(
+                                            (element) =>
+                                                element.id!.compareTo(id) == 0);
+                                      });
+                                    },
+                                  ),
                                 ),
                               );
-                              // Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(
-                              //     builder: (context) => EditSpendingPage(
-                              //       spending: list[index],
-                              //       change: (spending) async {
-                              //         try {
-                              //           spending.image = await FirebaseStorage
-                              //               .instance
-                              //               .ref()
-                              //               .child(
-                              //                   "spending/${spending.id}.png")
-                              //               .getDownloadURL();
-                              //         } catch (_) {}
-                              //
-                              //         widget.spendingList.removeWhere(
-                              //             (element) =>
-                              //                 element.id!
-                              //                     .compareTo(spending.id!) ==
-                              //                 0);
-                              //         setState(() {
-                              //           widget.spendingList.add(spending);
-                              //         });
-                              //       },
-                              //       delete: (id) {
-                              //         setState(() {
-                              //           widget.spendingList.removeWhere(
-                              //               (element) =>
-                              //                   element.id!.compareTo(id) == 0);
-                              //         });
-                              //       },
-                              //     ),
-                              //   ),
-                              // );
                             },
                             child: Container(
                               padding: const EdgeInsets.all(10),

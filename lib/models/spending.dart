@@ -61,6 +61,7 @@ class Spending {
     List<String>? friends,
   }) {
     return Spending(
+      id: id,
       money: money ?? this.money,
       type: type ?? this.type,
       dateTime: dateTime ?? this.dateTime,

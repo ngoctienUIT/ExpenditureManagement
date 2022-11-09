@@ -26,11 +26,9 @@ class EditSpendingPage extends StatefulWidget {
     Key? key,
     required this.spending,
     this.change,
-    this.delete,
   }) : super(key: key);
   final Spending spending;
   final Function(Spending spending)? change;
-  final Function(String id)? delete;
 
   @override
   State<EditSpendingPage> createState() => _EditSpendingPageState();

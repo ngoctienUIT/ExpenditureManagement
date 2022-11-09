@@ -6,12 +6,20 @@ import 'package:expenditure_management/controls/spending_firebase.dart';
 import 'package:expenditure_management/models/spending.dart';
 import 'package:expenditure_management/page/add_spending/widget/circle_text.dart';
 import 'package:expenditure_management/page/edit_spending/edit_spending_page.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class ViewSpendingPage extends StatefulWidget {
-  const ViewSpendingPage({Key? key, required this.spending}) : super(key: key);
+  const ViewSpendingPage({
+    Key? key,
+    required this.spending,
+    this.delete,
+    this.change,
+  }) : super(key: key);
   final Spending spending;
+  final Function(String id)? delete;
+  final Function(Spending spending)? change;
 
   @override
   State<ViewSpendingPage> createState() => _ViewSpendingPageState();
@@ -19,6 +27,8 @@ class ViewSpendingPage extends StatefulWidget {
 
 class _ViewSpendingPageState extends State<ViewSpendingPage> {
   List<Color> colors = [];
+  final numberFormat = NumberFormat.currency(locale: "vi_VI");
+  late Spending spending;
 
   @override
   void initState() {
@@ -26,6 +36,7 @@ class _ViewSpendingPageState extends State<ViewSpendingPage> {
       colors.add(Color.fromRGBO(Random().nextInt(255), Random().nextInt(255),
           Random().nextInt(255), 1));
     }
+    spending = widget.spending.copyWith();
     super.initState();
   }
 
@@ -43,21 +54,39 @@ class _ViewSpendingPageState extends State<ViewSpendingPage> {
         actions: [
           IconButton(onPressed: () {}, icon: const Icon(Icons.share)),
           IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        EditSpendingPage(spending: widget.spending),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => EditSpendingPage(
+                    spending: spending,
+                    change: (spending) async {
+                      try {
+                        spending.image = await FirebaseStorage.instance
+                            .ref()
+                            .child("spending/${spending.id}.png")
+                            .getDownloadURL();
+                      } catch (_) {}
+                      if (widget.change != null) {
+                        widget.change!(spending);
+                      }
+                      setState(() {
+                        this.spending = spending;
+                      });
+                    },
                   ),
-                );
-              },
-              icon: const Icon(Icons.edit)),
+                ),
+              );
+            },
+            icon: const Icon(Icons.edit),
+          ),
           IconButton(
             onPressed: () async {
               loadingAnimation(context);
-              await SpendingFirebase.deleteSpending(widget.spending);
-              // widget.delete!(spending.id!);
+              await SpendingFirebase.deleteSpending(spending);
+              if (widget.delete != null) {
+                widget.delete!(spending.id!);
+              }
               if (!mounted) return;
               Navigator.pop(context);
               if (!mounted) return;
@@ -81,12 +110,12 @@ class _ViewSpendingPageState extends State<ViewSpendingPage> {
                 Row(
                   children: [
                     Image.asset(
-                      listType[widget.spending.type]["image"]!,
+                      listType[spending.type]["image"]!,
                       height: 50,
                     ),
                     const SizedBox(width: 10),
                     Text(
-                      listType[widget.spending.type]["title"]!,
+                      listType[spending.type]["title"]!,
                       style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -99,11 +128,12 @@ class _ViewSpendingPageState extends State<ViewSpendingPage> {
                   children: [
                     const SizedBox(width: 60),
                     Text(
-                      widget.spending.money.abs().toString(),
+                      numberFormat.format(spending.money.abs()),
                       style: const TextStyle(fontSize: 25, color: Colors.red),
                     ),
                   ],
                 ),
+                const SizedBox(height: 10),
                 Row(
                   children: [
                     const SizedBox(
@@ -118,12 +148,12 @@ class _ViewSpendingPageState extends State<ViewSpendingPage> {
                     const SizedBox(width: 10),
                     Text(
                       DateFormat("dd/MM/yyyy - hh:mm")
-                          .format(widget.spending.dateTime),
+                          .format(spending.dateTime),
                       style: const TextStyle(fontSize: 16),
                     )
                   ],
                 ),
-                if (widget.spending.note != null)
+                if (spending.note != null && spending.note!.isNotEmpty)
                   Row(
                     children: [
                       const SizedBox(
@@ -137,12 +167,13 @@ class _ViewSpendingPageState extends State<ViewSpendingPage> {
                       ),
                       const SizedBox(width: 10),
                       Text(
-                        widget.spending.note!,
+                        spending.note!,
+                        maxLines: 10,
                         style: const TextStyle(fontSize: 16),
                       )
                     ],
                   ),
-                if (widget.spending.location != null)
+                if (spending.location != null && spending.location!.isNotEmpty)
                   Row(
                     children: [
                       const SizedBox(
@@ -156,19 +187,16 @@ class _ViewSpendingPageState extends State<ViewSpendingPage> {
                       ),
                       const SizedBox(width: 10),
                       Text(
-                        widget.spending.location!,
+                        spending.location!,
                         style: const TextStyle(fontSize: 16),
                       )
                     ],
                   ),
-                if (widget.spending.friends != null &&
-                    widget.spending.friends!.isNotEmpty)
+                if (spending.friends != null && spending.friends!.isNotEmpty)
                   addFriend(),
-                if (widget.spending.friends != null &&
-                    widget.spending.friends!.isNotEmpty)
+                if (spending.friends != null && spending.friends!.isNotEmpty)
                   const SizedBox(height: 10),
-                if (widget.spending.image != null)
-                  Image.network(widget.spending.image!)
+                if (spending.image != null) Image.network(spending.image!)
               ],
             ),
           ),
@@ -192,12 +220,12 @@ class _ViewSpendingPageState extends State<ViewSpendingPage> {
             ),
           ),
           const SizedBox(width: 10),
-          if (widget.spending.friends!.isNotEmpty)
+          if (spending.friends!.isNotEmpty)
             Expanded(
               child: ListView.builder(
                 // shrinkWrap: true,
                 scrollDirection: Axis.horizontal,
-                itemCount: widget.spending.friends!.length,
+                itemCount: spending.friends!.length,
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 5),
@@ -210,12 +238,12 @@ class _ViewSpendingPageState extends State<ViewSpendingPage> {
                       child: Row(
                         children: [
                           circleText(
-                            text: widget.spending.friends![index][0],
+                            text: spending.friends![index][0],
                             color: colors[index],
                           ),
                           const SizedBox(width: 10),
                           Text(
-                            widget.spending.friends![index],
+                            spending.friends![index],
                             style: const TextStyle(fontSize: 16),
                           ),
                         ],
