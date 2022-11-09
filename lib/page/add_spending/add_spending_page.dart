@@ -5,7 +5,9 @@ import 'package:expenditure_management/constants/function/loading_animation.dart
 import 'package:expenditure_management/constants/list.dart';
 import 'package:expenditure_management/controls/spending_firebase.dart';
 import 'package:expenditure_management/models/spending.dart';
+import 'package:expenditure_management/page/add_spending/add_friend.dart';
 import 'package:expenditure_management/page/add_spending/choose_type.dart';
+import 'package:expenditure_management/page/add_spending/widget/circle_text.dart';
 import 'package:expenditure_management/page/add_spending/widget/input_spending.dart';
 import 'package:expenditure_management/page/add_spending/widget/item_spending.dart';
 import 'package:expenditure_management/page/add_spending/widget/more_button.dart';
@@ -27,7 +29,6 @@ class _AddSpendingPageState extends State<AddSpendingPage> {
   final _money = TextEditingController();
   final _note = TextEditingController();
   final _location = TextEditingController();
-  final _friend = TextEditingController();
   DateTime selectedDate = DateTime.now();
   TimeOfDay selectedTime = TimeOfDay.now();
   int? type;
@@ -36,6 +37,7 @@ class _AddSpendingPageState extends State<AddSpendingPage> {
   String? typeName;
   int coefficient = 1;
   List<String> friends = [];
+  List<Color> colors = [];
 
   @override
   void dispose() {
@@ -246,7 +248,7 @@ class _AddSpendingPageState extends State<AddSpendingPage> {
               ),
               line(),
               inputSpending(
-                icon: Icons.edit,
+                icon: Icons.edit_note_rounded,
                 color: const Color.fromRGBO(221, 96, 0, 1),
                 controller: _note,
                 keyboardType: TextInputType.multiline,
@@ -278,41 +280,7 @@ class _AddSpendingPageState extends State<AddSpendingPage> {
                 hintText: AppLocalizations.of(context).translate('location'),
               ),
               line(),
-              inputSpending(
-                icon: Icons.people,
-                color: const Color.fromRGBO(202, 31, 52, 1),
-                controller: _friend,
-                hintText: AppLocalizations.of(context).translate('friend'),
-                textInputAction: TextInputAction.done,
-                action: (value) {
-                  friends.add(value);
-                  setState(() => _friend.text = "");
-                },
-              ),
-              if (friends.isNotEmpty)
-                ListView.builder(
-                  shrinkWrap: true,
-                  padding: const EdgeInsets.only(left: 40, right: 5),
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: friends.length,
-                  itemBuilder: (context, index) {
-                    return Row(
-                      children: [
-                        Text(
-                          friends[index],
-                          style: const TextStyle(fontSize: 18),
-                        ),
-                        const Spacer(),
-                        IconButton(
-                          onPressed: () {
-                            setState(() => friends.removeAt(index));
-                          },
-                          icon: const Icon(Icons.delete, color: Colors.red),
-                        )
-                      ],
-                    );
-                  },
-                ),
+              addFriend(),
               line(),
               const SizedBox(height: 10),
               if (image != null)
@@ -342,6 +310,88 @@ class _AddSpendingPageState extends State<AddSpendingPage> {
               const SizedBox(height: 10),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget addFriend() {
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => AddFriend(
+              friends: friends,
+              colors: colors,
+              action: (friends, colors) {
+                setState(() {
+                  this.colors = colors;
+                  this.friends = friends;
+                });
+              },
+            ),
+          ),
+        );
+      },
+      child: SizedBox(
+        height: 45,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: Row(
+                children: [
+                  const Icon(
+                    Icons.people,
+                    color: Color.fromRGBO(202, 31, 52, 1),
+                    size: 30,
+                  ),
+                  const SizedBox(width: 10),
+                  friends.isEmpty
+                      ? const Text(
+                          "Bạ̣n bè",
+                          style: TextStyle(fontSize: 16, color: Colors.grey),
+                        )
+                      : Expanded(
+                          child: ListView.builder(
+                            // shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            itemCount: friends.length,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 5),
+                                child: Container(
+                                  padding: const EdgeInsets.only(right: 10),
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey.withOpacity(0.7),
+                                    borderRadius: BorderRadius.circular(90),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      circleText(
+                                        text: friends[index][0],
+                                        color: colors[index],
+                                      ),
+                                      const SizedBox(width: 10),
+                                      Text(
+                                        friends[index],
+                                        style: const TextStyle(fontSize: 16),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 10),
+            const Icon(Icons.arrow_forward_ios_rounded),
+          ],
         ),
       ),
     );

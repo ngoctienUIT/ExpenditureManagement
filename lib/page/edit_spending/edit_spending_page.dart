@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:expenditure_management/constants/app_styles.dart';
@@ -6,11 +7,12 @@ import 'package:expenditure_management/constants/function/loading_animation.dart
 import 'package:expenditure_management/constants/list.dart';
 import 'package:expenditure_management/controls/spending_firebase.dart';
 import 'package:expenditure_management/models/spending.dart';
+import 'package:expenditure_management/page/add_spending/add_friend.dart';
 import 'package:expenditure_management/page/add_spending/choose_type.dart';
+import 'package:expenditure_management/page/add_spending/widget/circle_text.dart';
 import 'package:expenditure_management/page/add_spending/widget/input_spending.dart';
 import 'package:expenditure_management/page/add_spending/widget/item_spending.dart';
 import 'package:expenditure_management/page/add_spending/widget/more_button.dart';
-import 'package:expenditure_management/page/login/widget/custom_button.dart';
 import 'package:expenditure_management/setting/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -47,6 +49,7 @@ class _EditSpendingPageState extends State<EditSpendingPage> {
   String? typeName;
   int coefficient = 1;
   List<String> friends = [];
+  List<Color> colors = [];
 
   @override
   void dispose() {
@@ -63,6 +66,10 @@ class _EditSpendingPageState extends State<EditSpendingPage> {
         .format(widget.spending.money.abs());
     _location.text = widget.spending.location ?? "";
     friends = widget.spending.friends ?? [];
+    for (var element in friends) {
+      colors.add(Color.fromRGBO(Random().nextInt(255), Random().nextInt(255),
+          Random().nextInt(255), 1));
+    }
     if (widget.spending.note != null) {
       _note.text = widget.spending.note!;
     }
@@ -192,22 +199,6 @@ class _EditSpendingPageState extends State<EditSpendingPage> {
                       },
                       more: more,
                     ),
-                    SizedBox(
-                      width: 100,
-                      child: customButton(
-                        text: "Xóa",
-                        action: () async {
-                          loadingAnimation(context);
-                          await SpendingFirebase.deleteSpending(
-                              widget.spending);
-                          widget.delete!(widget.spending.id!);
-                          if (!mounted) return;
-                          Navigator.pop(context);
-                          if (!mounted) return;
-                          Navigator.pop(context);
-                        },
-                      ),
-                    ),
                     const SizedBox(height: 10)
                   ],
                 ),
@@ -293,7 +284,7 @@ class _EditSpendingPageState extends State<EditSpendingPage> {
               ),
               line(),
               inputSpending(
-                icon: Icons.edit,
+                icon: Icons.edit_note_rounded,
                 color: const Color.fromRGBO(221, 96, 0, 1),
                 controller: _note,
                 keyboardType: TextInputType.multiline,
@@ -325,41 +316,7 @@ class _EditSpendingPageState extends State<EditSpendingPage> {
                 hintText: AppLocalizations.of(context).translate('location'),
               ),
               line(),
-              inputSpending(
-                icon: Icons.people,
-                color: const Color.fromRGBO(202, 31, 52, 1),
-                controller: _friend,
-                hintText: AppLocalizations.of(context).translate('friend'),
-                textInputAction: TextInputAction.done,
-                action: (value) {
-                  friends.add(value);
-                  setState(() => _friend.text = "");
-                },
-              ),
-              if (friends.isNotEmpty)
-                ListView.builder(
-                  shrinkWrap: true,
-                  padding: const EdgeInsets.only(left: 40, right: 5),
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: friends.length,
-                  itemBuilder: (context, index) {
-                    return Row(
-                      children: [
-                        Text(
-                          friends[index],
-                          style: const TextStyle(fontSize: 18),
-                        ),
-                        const Spacer(),
-                        IconButton(
-                          onPressed: () {
-                            setState(() => friends.removeAt(index));
-                          },
-                          icon: const Icon(Icons.delete, color: Colors.red),
-                        )
-                      ],
-                    );
-                  },
-                ),
+              addFriend(),
               line(),
               const SizedBox(height: 10),
               if (image != null)
@@ -411,6 +368,88 @@ class _EditSpendingPageState extends State<EditSpendingPage> {
               const SizedBox(height: 10),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget addFriend() {
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => AddFriend(
+              friends: friends,
+              colors: colors,
+              action: (friends, colors) {
+                setState(() {
+                  this.colors = colors;
+                  this.friends = friends;
+                });
+              },
+            ),
+          ),
+        );
+      },
+      child: SizedBox(
+        height: 45,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: Row(
+                children: [
+                  const Icon(
+                    Icons.people,
+                    color: Color.fromRGBO(202, 31, 52, 1),
+                    size: 30,
+                  ),
+                  const SizedBox(width: 10),
+                  friends.isEmpty
+                      ? const Text(
+                          "Bạ̣n bè",
+                          style: TextStyle(fontSize: 16, color: Colors.grey),
+                        )
+                      : Expanded(
+                          child: ListView.builder(
+                            // shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            itemCount: friends.length,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 5),
+                                child: Container(
+                                  padding: const EdgeInsets.only(right: 10),
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey.withOpacity(0.7),
+                                    borderRadius: BorderRadius.circular(90),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      circleText(
+                                        text: friends[index][0],
+                                        color: colors[index],
+                                      ),
+                                      const SizedBox(width: 10),
+                                      Text(
+                                        friends[index],
+                                        style: const TextStyle(fontSize: 16),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 10),
+            const Icon(Icons.arrow_forward_ios_rounded),
+          ],
         ),
       ),
     );
