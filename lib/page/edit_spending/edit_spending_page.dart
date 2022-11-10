@@ -65,7 +65,7 @@ class _EditSpendingPageState extends State<EditSpendingPage> {
         .format(widget.spending.money.abs());
     _location.text = widget.spending.location ?? "";
     friends = widget.spending.friends ?? [];
-    for (var element in friends) {
+    for (var _ in friends) {
       colors.add(Color.fromRGBO(Random().nextInt(255), Random().nextInt(255),
           Random().nextInt(255), 1));
     }
