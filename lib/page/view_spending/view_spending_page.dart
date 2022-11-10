@@ -48,7 +48,7 @@ class _ViewSpendingPageState extends State<ViewSpendingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        elevation: 0,
+        elevation: 1,
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
@@ -71,7 +71,10 @@ class _ViewSpendingPageState extends State<ViewSpendingPage> {
                 }
               });
             },
-            icon: const Icon(Icons.share),
+            icon: const Icon(
+              Icons.share,
+              color: Color.fromRGBO(18, 114, 216, 1),
+            ),
           ),
           IconButton(
             onPressed: () {
@@ -96,7 +99,10 @@ class _ViewSpendingPageState extends State<ViewSpendingPage> {
                 ),
               );
             },
-            icon: const Icon(Icons.edit),
+            icon: const Icon(
+              Icons.edit,
+              color: Color.fromRGBO(231, 187, 18, 1),
+            ),
           ),
           IconButton(
             onPressed: () async {
@@ -110,7 +116,10 @@ class _ViewSpendingPageState extends State<ViewSpendingPage> {
               if (!mounted) return;
               Navigator.pop(context);
             },
-            icon: const Icon(Icons.delete),
+            icon: const Icon(
+              Icons.delete,
+              color: Color.fromRGBO(255, 0, 24, 1),
+            ),
           ),
         ],
       ),
@@ -153,7 +162,9 @@ class _ViewSpendingPageState extends State<ViewSpendingPage> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 5),
+                  line(),
+                  const SizedBox(height: 5),
                   Row(
                     children: [
                       const SizedBox(
@@ -214,7 +225,15 @@ class _ViewSpendingPageState extends State<ViewSpendingPage> {
                       ],
                     ),
                   if (spending.friends != null && spending.friends!.isNotEmpty)
-                    addFriend(),
+                    ListView(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      children: [
+                        const SizedBox(height: 5),
+                        addFriend(),
+                        const SizedBox(height: 5),
+                      ],
+                    ),
                   if (spending.friends != null && spending.friends!.isNotEmpty)
                     const SizedBox(height: 10),
                   if (spending.image != null) Image.network(spending.image!)
@@ -274,6 +293,15 @@ class _ViewSpendingPageState extends State<ViewSpendingPage> {
             ),
           )
       ],
+    );
+  }
+
+  Widget line() {
+    return const Divider(
+      color: Colors.grey,
+      thickness: 0.5,
+      endIndent: 10,
+      indent: 10,
     );
   }
 }

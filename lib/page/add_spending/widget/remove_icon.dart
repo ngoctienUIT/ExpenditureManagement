@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-Widget removeIcon({required Function action}) {
+Widget removeIcon({required Function action, Color? background, Color? color}) {
   return InkWell(
     onTap: () {
       action();
@@ -9,9 +9,9 @@ Widget removeIcon({required Function action}) {
       padding: const EdgeInsets.all(3),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(90),
-        color: Colors.grey,
+        color: background ?? Colors.grey,
       ),
-      child: const Icon(Icons.close, size: 15),
+      child: Icon(Icons.close, size: 15, color: color),
     ),
   );
 }

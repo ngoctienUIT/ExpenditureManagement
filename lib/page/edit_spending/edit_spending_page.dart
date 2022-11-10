@@ -49,6 +49,7 @@ class _EditSpendingPageState extends State<EditSpendingPage> {
   int coefficient = 1;
   List<String> friends = [];
   List<Color> colors = [];
+  bool checkPickImage = false;
 
   @override
   void dispose() {
@@ -64,7 +65,7 @@ class _EditSpendingPageState extends State<EditSpendingPage> {
     _money.text = NumberFormat.currency(locale: "vi_VI")
         .format(widget.spending.money.abs());
     _location.text = widget.spending.location ?? "";
-    friends = widget.spending.friends ?? [];
+    friends.addAll(widget.spending.friends ?? []);
     for (var _ in friends) {
       colors.add(Color.fromRGBO(Random().nextInt(255), Random().nextInt(255),
           Random().nextInt(255), 1));
@@ -299,78 +300,120 @@ class _EditSpendingPageState extends State<EditSpendingPage> {
   Widget moreSpending() {
     return Padding(
       padding: const EdgeInsets.all(10),
-      child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: Column(
-            children: [
-              inputSpending(
-                icon: Icons.location_on_outlined,
-                color: const Color.fromRGBO(99, 195, 40, 1),
-                controller: _location,
-                textInputAction: TextInputAction.done,
-                hintText: AppLocalizations.of(context).translate('location'),
+      child: Column(
+        children: [
+          Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                children: [
+                  inputSpending(
+                    icon: Icons.location_on_outlined,
+                    color: const Color.fromRGBO(99, 195, 40, 1),
+                    controller: _location,
+                    textInputAction: TextInputAction.done,
+                    hintText:
+                        AppLocalizations.of(context).translate('location'),
+                  ),
+                  line(),
+                  const SizedBox(height: 5),
+                  addFriend(),
+                  const SizedBox(height: 10),
+                ],
               ),
-              line(),
-              const SizedBox(height: 5),
-              addFriend(),
-              const SizedBox(height: 5),
-              line(),
-              const SizedBox(height: 10),
-              if (image != null)
-                Column(
-                  children: [
-                    Image.file(
-                      File(image!.path),
-                      width: double.infinity,
-                      fit: BoxFit.fitWidth,
+            ),
+          ),
+          const SizedBox(height: 20),
+          imageWidget(),
+        ],
+      ),
+    );
+  }
+
+  Widget imageWidget() {
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: image == null && (widget.spending.image == null || checkPickImage)
+          ? IntrinsicHeight(
+              child: Row(
+                children: [
+                  Expanded(
+                    child: IconButton(
+                      onPressed: () => pickImage(true),
+                      icon: const Icon(Icons.image, size: 30),
                     ),
-                    const SizedBox(height: 10)
-                  ],
-                ),
-              if (image == null && widget.spending.image != null)
-                Column(
-                  children: [
-                    CachedNetworkImage(
-                      imageUrl: widget.spending.image!,
-                      width: double.infinity,
-                      fit: BoxFit.fitWidth,
-                      placeholder: (context, url) => Shimmer.fromColors(
-                        baseColor: Colors.grey[300]!,
-                        highlightColor: Colors.grey[100]!,
-                        child: Container(
-                          height: 150,
+                  ),
+                  const VerticalDivider(
+                    color: Colors.black54,
+                    thickness: 1,
+                    indent: 5,
+                    endIndent: 5,
+                  ),
+                  Expanded(
+                    child: IconButton(
+                      onPressed: () => pickImage(false),
+                      icon: const Icon(Icons.camera_alt, size: 30),
+                    ),
+                  ),
+                ],
+              ),
+            )
+          : Stack(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(15),
+                  child: Column(
+                    children: [
+                      if (image != null)
+                        Image.file(
+                          File(image!.path),
                           width: double.infinity,
-                          color: Colors.grey,
+                          fit: BoxFit.fitWidth,
                         ),
-                      ),
-                      errorWidget: (context, url, error) =>
-                          const Icon(Icons.error),
-                    ),
-                    const SizedBox(height: 10)
-                  ],
-                ),
-              SizedBox(
-                height: 40,
-                child: ElevatedButton.icon(
-                  onPressed: () => pickImage(),
-                  icon: const Icon(Icons.image, size: 35),
-                  label: Text(
-                    image == null && widget.spending.image == null
-                        ? AppLocalizations.of(context).translate('add_picture')
-                        : AppLocalizations.of(context).translate('replace'),
-                    style: const TextStyle(fontSize: 16),
+                      if (image == null &&
+                          widget.spending.image != null &&
+                          !checkPickImage)
+                        CachedNetworkImage(
+                          imageUrl: widget.spending.image!,
+                          width: double.infinity,
+                          fit: BoxFit.fitWidth,
+                          placeholder: (context, url) => Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              height: 150,
+                              width: double.infinity,
+                              color: Colors.grey,
+                            ),
+                          ),
+                          errorWidget: (context, url, error) =>
+                              const Icon(Icons.error),
+                        ),
+                    ],
                   ),
                 ),
-              ),
-              const SizedBox(height: 10),
-            ],
-          ),
-        ),
-      ),
+                Positioned(
+                  top: 5,
+                  right: 5,
+                  child: removeIcon(
+                    background: Colors.red.withOpacity(0.8),
+                    color: Colors.white,
+                    action: () => setState(() {
+                      if (checkPickImage) {
+                        image = null;
+                      } else {
+                        checkPickImage = true;
+                      }
+                    }),
+                  ),
+                )
+              ],
+            ),
     );
   }
 
@@ -495,9 +538,10 @@ class _EditSpendingPageState extends State<EditSpendingPage> {
     }
   }
 
-  Future pickImage() async {
+  Future pickImage(bool check) async {
     try {
-      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      final image = await ImagePicker()
+          .pickImage(source: check ? ImageSource.gallery : ImageSource.camera);
       if (image != null) {
         setState(() => this.image = image);
       }
