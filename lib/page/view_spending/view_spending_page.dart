@@ -83,7 +83,7 @@ class _ViewSpendingPageState extends State<ViewSpendingPage> {
                 MaterialPageRoute(
                   builder: (context) => EditSpendingPage(
                     spending: spending,
-                    change: (spending) async {
+                    change: (spending, colors) async {
                       try {
                         spending.image = await FirebaseStorage.instance
                             .ref()
@@ -93,7 +93,10 @@ class _ViewSpendingPageState extends State<ViewSpendingPage> {
                       if (widget.change != null) {
                         widget.change!(spending);
                       }
-                      setState(() => this.spending = spending);
+                      setState(() {
+                        this.spending = spending;
+                        this.colors = colors;
+                      });
                     },
                   ),
                 ),

@@ -1,12 +1,11 @@
 import 'dart:math';
-
 import 'package:expenditure_management/constants/app_styles.dart';
 import 'package:expenditure_management/page/add_spending/widget/circle_text.dart';
 import 'package:expenditure_management/page/add_spending/widget/remove_icon.dart';
 import 'package:flutter/material.dart';
 
-class AddFriend extends StatefulWidget {
-  const AddFriend({
+class AddFriendPage extends StatefulWidget {
+  const AddFriendPage({
     Key? key,
     required this.friends,
     required this.action,
@@ -17,10 +16,10 @@ class AddFriend extends StatefulWidget {
   final List<Color> colors;
 
   @override
-  State<AddFriend> createState() => _AddFriendState();
+  State<AddFriendPage> createState() => _AddFriendPageState();
 }
 
-class _AddFriendState extends State<AddFriend> {
+class _AddFriendPageState extends State<AddFriendPage> {
   final _friend = TextEditingController();
   List<String> friends = [];
   final List<Color> colors = [];
