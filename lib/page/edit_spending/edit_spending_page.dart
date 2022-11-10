@@ -13,6 +13,7 @@ import 'package:expenditure_management/page/add_spending/widget/circle_text.dart
 import 'package:expenditure_management/page/add_spending/widget/input_spending.dart';
 import 'package:expenditure_management/page/add_spending/widget/item_spending.dart';
 import 'package:expenditure_management/page/add_spending/widget/more_button.dart';
+import 'package:expenditure_management/page/add_spending/widget/remove_icon.dart';
 import 'package:expenditure_management/setting/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -314,7 +315,9 @@ class _EditSpendingPageState extends State<EditSpendingPage> {
                 hintText: AppLocalizations.of(context).translate('location'),
               ),
               line(),
+              const SizedBox(height: 5),
               addFriend(),
+              const SizedBox(height: 5),
               line(),
               const SizedBox(height: 10),
               if (image != null)
@@ -390,65 +393,68 @@ class _EditSpendingPageState extends State<EditSpendingPage> {
           ),
         );
       },
-      child: SizedBox(
-        height: 45,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: Row(
-                children: [
-                  const Icon(
-                    Icons.people,
-                    color: Color.fromRGBO(202, 31, 52, 1),
-                    size: 30,
-                  ),
-                  const SizedBox(width: 10),
-                  friends.isEmpty
-                      ? const Text(
-                          "Bạ̣n bè",
-                          style: TextStyle(fontSize: 16, color: Colors.grey),
-                        )
-                      : Expanded(
-                          child: ListView.builder(
-                            // shrinkWrap: true,
-                            scrollDirection: Axis.horizontal,
-                            itemCount: friends.length,
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 5),
-                                child: Container(
-                                  padding: const EdgeInsets.only(right: 10),
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey.withOpacity(0.7),
-                                    borderRadius: BorderRadius.circular(90),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      circleText(
-                                        text: friends[index][0],
-                                        color: colors[index],
-                                      ),
-                                      const SizedBox(width: 10),
-                                      Text(
-                                        friends[index],
-                                        style: const TextStyle(fontSize: 16),
-                                      ),
-                                    ],
-                                  ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: Row(
+              children: [
+                const Icon(
+                  Icons.people,
+                  color: Color.fromRGBO(202, 31, 52, 1),
+                  size: 30,
+                ),
+                const SizedBox(width: 10),
+                friends.isEmpty
+                    ? const Text(
+                        "Bạ̣n bè",
+                        style: TextStyle(fontSize: 16, color: Colors.grey),
+                      )
+                    : Expanded(
+                        child: Wrap(
+                          runSpacing: 5,
+                          spacing: 2,
+                          children: List.generate(friends.length, (index) {
+                            return Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 5),
+                              child: Container(
+                                padding: const EdgeInsets.only(right: 10),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey.withOpacity(0.7),
+                                  borderRadius: BorderRadius.circular(90),
                                 ),
-                              );
-                            },
-                          ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    circleText(
+                                      text: friends[index][0],
+                                      color: colors[index],
+                                    ),
+                                    const SizedBox(width: 10),
+                                    Text(
+                                      friends[index],
+                                      style: const TextStyle(fontSize: 16),
+                                    ),
+                                    const SizedBox(width: 5),
+                                    removeIcon(action: () {
+                                      setState(() {
+                                        friends.removeAt(index);
+                                      });
+                                    }),
+                                  ],
+                                ),
+                              ),
+                            );
+                          }),
                         ),
-                ],
-              ),
+                      ),
+              ],
             ),
-            const SizedBox(width: 10),
-            const Icon(Icons.arrow_forward_ios_rounded),
-          ],
-        ),
+          ),
+          const SizedBox(width: 10),
+          const Icon(Icons.arrow_forward_ios_rounded),
+        ],
       ),
     );
   }

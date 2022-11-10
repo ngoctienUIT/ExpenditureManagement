@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:expenditure_management/constants/app_styles.dart';
 import 'package:expenditure_management/page/add_spending/widget/circle_text.dart';
+import 'package:expenditure_management/page/add_spending/widget/remove_icon.dart';
 import 'package:flutter/material.dart';
 
 class AddFriend extends StatefulWidget {
@@ -100,6 +101,12 @@ class _AddFriendState extends State<AddFriend> {
                             friends[index],
                             style: const TextStyle(fontSize: 16),
                           ),
+                          const Spacer(),
+                          removeIcon(action: () {
+                            setState(() {
+                              friends.removeAt(index);
+                            });
+                          })
                         ],
                       ),
                     );
