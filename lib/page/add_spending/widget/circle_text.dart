@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 Widget circleText({required String text, required Color color}) {
   return Container(
-    width: 45,
-    height: 45,
+    width: 40,
+    height: 40,
     decoration: BoxDecoration(
       color: color,
       borderRadius: BorderRadius.circular(90),
@@ -12,7 +12,7 @@ Widget circleText({required String text, required Color color}) {
       child: Text(
         text.toUpperCase(),
         style: const TextStyle(
-          fontSize: 20,
+          fontSize: 18,
           fontWeight: FontWeight.bold,
           color: Colors.white,
         ),

@@ -1,19 +1,20 @@
 import 'dart:io';
-import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:expenditure_management/constants/app_styles.dart';
 import 'package:expenditure_management/constants/function/loading_animation.dart';
+import 'package:expenditure_management/constants/function/pick_function.dart';
+import 'package:expenditure_management/page/add_spending/widget/add_friend.dart';
+import 'package:expenditure_management/page/add_spending/widget/input_money.dart';
+import 'package:expenditure_management/page/add_spending/widget/pick_image_widget.dart';
 import 'package:expenditure_management/constants/list.dart';
 import 'package:expenditure_management/controls/spending_firebase.dart';
 import 'package:expenditure_management/models/spending.dart';
-import 'package:expenditure_management/page/add_spending/add_friend.dart';
 import 'package:expenditure_management/page/add_spending/choose_type.dart';
-import 'package:expenditure_management/page/add_spending/widget/circle_text.dart';
 import 'package:expenditure_management/page/add_spending/widget/input_spending.dart';
 import 'package:expenditure_management/page/add_spending/widget/item_spending.dart';
 import 'package:expenditure_management/page/add_spending/widget/more_button.dart';
+import 'package:expenditure_management/page/add_spending/widget/remove_icon.dart';
 import 'package:expenditure_management/setting/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -58,44 +59,7 @@ class _AddSpendingPageState extends State<AddSpendingPage> {
         actions: [
           TextButton(
             onPressed: () async {
-              String moneyString =
-                  _money.text.replaceAll(RegExp(r'[^0-9]'), '');
-              if (type != null &&
-                  moneyString.isNotEmpty &&
-                  moneyString.compareTo("0") != 0) {
-                int money = int.parse(moneyString);
-                Spending spending = Spending(
-                  money: type == 41
-                      ? coefficient * money
-                      : ([29, 30, 34, 36, 37, 40].contains(type!)
-                          ? 1
-                          : (-1) * money),
-                  type: type!,
-                  typeName: typeName,
-                  dateTime: DateTime(
-                    selectedDate.year,
-                    selectedDate.month,
-                    selectedDate.day,
-                    selectedTime.hour,
-                    selectedTime.minute,
-                  ),
-                  note: _note.text,
-                  image: image != null ? image!.path : null,
-                  location: _location.text,
-                  friends: friends,
-                );
-                loadingAnimation(context);
-                await SpendingFirebase.addSpending(spending);
-                if (!mounted) return;
-                Navigator.pop(context);
-                if (!mounted) return;
-                Navigator.pop(context);
-              } else if (type == null) {
-                Fluttertoast.showToast(msg: "Vui lòng chọn loại");
-              } else {
-                Fluttertoast.showToast(
-                    msg: "Vui lòng nhập vào số tiền hợp lệ");
-              }
+              await addingSpending();
             },
             child: Text(
               AppLocalizations.of(context).translate('save'),
@@ -105,65 +69,28 @@ class _AddSpendingPageState extends State<AddSpendingPage> {
         ],
         leading: IconButton(
           icon: const Icon(Icons.close_outlined, size: 30),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+          onPressed: () => Navigator.pop(context),
         ),
       ),
-      body: Form(
-        child: Column(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(20),
-              height: 100,
-              color: Colors.white,
-              child: TextFormField(
-                controller: _money,
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp("[\\s0-9a-zA-Z]")),
-                  CurrencyTextInputFormatter(locale: "vi"),
+      body: Column(
+        children: [
+          inputMoney(controller: _money),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  addSpending(),
+                  if (more) moreFunction(),
+                  MoreButton(
+                    action: () => setState(() => more = !more),
+                    more: more,
+                  ),
+                  const SizedBox(height: 10)
                 ],
-                textAlign: TextAlign.right,
-                style: const TextStyle(fontSize: 20),
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.grey[200],
-                  border: InputBorder.none,
-                  hintText: "100.000 VND",
-                  hintStyle: const TextStyle(fontSize: 20),
-                  contentPadding:
-                      const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Colors.white),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: const BorderSide(color: Colors.white),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                ),
               ),
             ),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    addSpending(),
-                    if (more) moreFunction(),
-                    MoreButton(
-                      action: () {
-                        setState(() => more = !more);
-                      },
-                      more: more,
-                    ),
-                    const SizedBox(height: 10)
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -232,8 +159,12 @@ class _AddSpendingPageState extends State<AddSpendingPage> {
                 color: const Color.fromRGBO(244, 131, 27, 1),
                 icon: Icons.calendar_month_rounded,
                 text: DateFormat("dd/MM/yyyy").format(selectedDate),
-                action: () {
-                  _selectDate(context);
+                action: () async {
+                  var day = await selectDate(
+                      context: context, initialDate: selectedDate);
+                  if (day != null && day != selectedDate) {
+                    setState(() => selectedDate = day);
+                  }
                 },
               ),
               line(),
@@ -242,8 +173,12 @@ class _AddSpendingPageState extends State<AddSpendingPage> {
                 icon: Icons.access_time_rounded,
                 text:
                     "${selectedTime.hour.toString().padLeft(2, "0")}:${selectedTime.minute.toString().padLeft(2, "0")}",
-                action: () {
-                  _selectTime(context);
+                action: () async {
+                  var time = await selectTime(
+                      context: context, initialTime: selectedTime);
+                  if (time != null && time != selectedTime) {
+                    setState(() => selectedTime = time);
+                  }
                 },
               ),
               line(),
@@ -264,136 +199,91 @@ class _AddSpendingPageState extends State<AddSpendingPage> {
   Widget moreFunction() {
     return Padding(
       padding: const EdgeInsets.all(10),
-      child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: Column(
-            children: [
-              inputSpending(
-                icon: Icons.location_on_outlined,
-                color: const Color.fromRGBO(99, 195, 40, 1),
-                controller: _location,
-                textInputAction: TextInputAction.done,
-                hintText: AppLocalizations.of(context).translate('location'),
-              ),
-              line(),
-              addFriend(),
-              line(),
-              const SizedBox(height: 10),
-              if (image != null)
-                Column(
-                  children: [
-                    Image.file(
-                      File(image!.path),
-                      width: double.infinity,
-                      fit: BoxFit.fitWidth,
-                    ),
-                    const SizedBox(height: 10)
-                  ],
-                ),
-              SizedBox(
-                height: 40,
-                child: ElevatedButton.icon(
-                  onPressed: () => pickImage(),
-                  icon: const Icon(Icons.image, size: 35),
-                  label: Text(
-                    image == null
-                        ? AppLocalizations.of(context).translate('add_picture')
-                        : AppLocalizations.of(context).translate('replace'),
-                    style: const TextStyle(fontSize: 16),
+      child: Column(
+        children: [
+          Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                children: [
+                  inputSpending(
+                    icon: Icons.location_on_outlined,
+                    color: const Color.fromRGBO(99, 195, 40, 1),
+                    controller: _location,
+                    textInputAction: TextInputAction.done,
+                    hintText:
+                        AppLocalizations.of(context).translate('location'),
                   ),
-                ),
+                  line(),
+                  const SizedBox(height: 5),
+                  AddFriend(
+                    friends: friends,
+                    colors: colors,
+                    add: (friends, colors) {
+                      setState(() {
+                        this.colors = colors;
+                        this.friends = friends;
+                      });
+                    },
+                    remove: (index) => setState(() {
+                      friends.removeAt(index);
+                      colors.removeAt(index);
+                    }),
+                  ),
+                  const SizedBox(height: 10),
+                ],
               ),
-              const SizedBox(height: 10),
-            ],
+            ),
           ),
-        ),
+          const SizedBox(height: 20),
+          imageWidget(),
+        ],
       ),
     );
   }
 
-  Widget addFriend() {
-    return InkWell(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => AddFriend(
-              friends: friends,
-              colors: colors,
-              action: (friends, colors) {
-                setState(() {
-                  this.colors = colors;
-                  this.friends = friends;
-                });
-              },
-            ),
-          ),
-        );
-      },
-      child: SizedBox(
-        height: 45,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: Row(
-                children: [
-                  const Icon(
-                    Icons.people,
-                    color: Color.fromRGBO(202, 31, 52, 1),
-                    size: 30,
-                  ),
-                  const SizedBox(width: 10),
-                  friends.isEmpty
-                      ? const Text(
-                          "Bạ̣n bè",
-                          style: TextStyle(fontSize: 16, color: Colors.grey),
-                        )
-                      : Expanded(
-                          child: ListView.builder(
-                            // shrinkWrap: true,
-                            scrollDirection: Axis.horizontal,
-                            itemCount: friends.length,
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 5),
-                                child: Container(
-                                  padding: const EdgeInsets.only(right: 10),
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey.withOpacity(0.7),
-                                    borderRadius: BorderRadius.circular(90),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      circleText(
-                                        text: friends[index][0],
-                                        color: colors[index],
-                                      ),
-                                      const SizedBox(width: 10),
-                                      Text(
-                                        friends[index],
-                                        style: const TextStyle(fontSize: 16),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                ],
-              ),
-            ),
-            const SizedBox(width: 10),
-            const Icon(Icons.arrow_forward_ios_rounded),
-          ],
-        ),
+  Widget imageWidget() {
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
       ),
+      child: image == null
+          ? pickImageWidget(
+              gallery: (file) {
+                if (file != null) {
+                  setState(() => image = file);
+                }
+              },
+              camera: (file) {
+                if (file != null) {
+                  setState(() => image = file);
+                }
+              },
+            )
+          : Stack(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(15),
+                  child: Image.file(
+                    File(image!.path),
+                    width: double.infinity,
+                    fit: BoxFit.fitWidth,
+                  ),
+                ),
+                Positioned(
+                  top: 5,
+                  right: 5,
+                  child: removeIcon(
+                    background: Colors.red.withOpacity(0.8),
+                    color: Colors.white,
+                    action: () => setState(() => image = null),
+                  ),
+                )
+              ],
+            ),
     );
   }
 
@@ -406,39 +296,40 @@ class _AddSpendingPageState extends State<AddSpendingPage> {
     );
   }
 
-  Future _selectTime(BuildContext context) async {
-    final TimeOfDay? picked = await showTimePicker(
-      context: context,
-      initialTime: selectedTime,
-      builder: (context, child) => MediaQuery(
-        data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
-        child: child!,
-      ),
-    );
-
-    if (picked != null && picked != selectedTime) {
-      setState(() => selectedTime = picked);
+  Future addingSpending() async {
+    String moneyString = _money.text.replaceAll(RegExp(r'[^0-9]'), '');
+    if (type != null &&
+        moneyString.isNotEmpty &&
+        moneyString.compareTo("0") != 0) {
+      int money = int.parse(moneyString);
+      Spending spending = Spending(
+        money: type == 41
+            ? coefficient * money
+            : ([29, 30, 34, 36, 37, 40].contains(type!) ? 1 : (-1) * money),
+        type: type!,
+        typeName: typeName,
+        dateTime: DateTime(
+          selectedDate.year,
+          selectedDate.month,
+          selectedDate.day,
+          selectedTime.hour,
+          selectedTime.minute,
+        ),
+        note: _note.text,
+        image: image != null ? image!.path : null,
+        location: _location.text,
+        friends: friends,
+      );
+      loadingAnimation(context);
+      await SpendingFirebase.addSpending(spending);
+      if (!mounted) return;
+      Navigator.pop(context);
+      if (!mounted) return;
+      Navigator.pop(context);
+    } else if (type == null) {
+      Fluttertoast.showToast(msg: "Vui lòng chọn loại");
+    } else {
+      Fluttertoast.showToast(msg: "Vui lòng nhập vào số tiền hợp lệ");
     }
-  }
-
-  Future _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: selectedDate,
-      firstDate: DateTime(2000),
-      lastDate: DateTime.now(),
-    );
-    if (picked != null && picked != selectedDate) {
-      setState(() => selectedDate = picked);
-    }
-  }
-
-  Future pickImage() async {
-    try {
-      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-      if (image != null) {
-        setState(() => this.image = image);
-      }
-    } on PlatformException catch (_) {}
   }
 }
