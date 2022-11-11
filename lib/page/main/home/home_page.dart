@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expenditure_management/constants/app_styles.dart';
+import 'package:expenditure_management/constants/function/extension.dart';
 import 'package:expenditure_management/models/spending.dart';
 import 'package:expenditure_management/page/main/home/widget/item_spending_widget.dart';
 import 'package:expenditure_management/page/main/home/widget/summary_spending.dart';
@@ -110,12 +111,17 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 width: MediaQuery.of(context).size.width / 4,
                 child: Tab(
                   text: index == 17
-                      ? AppLocalizations.of(context).translate('this_month')
+                      ? AppLocalizations.of(context)
+                          .translate('this_month')
+                          .capitalize()
                       : (index == 18
-                          ? AppLocalizations.of(context).translate('next_month')
+                          ? AppLocalizations.of(context)
+                              .translate('next_month')
+                              .capitalize()
                           : (index == 16
                               ? AppLocalizations.of(context)
                                   .translate('last_month')
+                                  .capitalize()
                               : DateFormat("MM/yyyy")
                                   .format(months[18 - index]))),
                 ),
@@ -156,7 +162,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         children: [
           const SizedBox(height: 10),
           Text(
-            AppLocalizations.of(context).translate('this_month'),
+            AppLocalizations.of(context).translate('this_month').capitalize(),
             style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
