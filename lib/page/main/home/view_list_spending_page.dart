@@ -14,7 +14,9 @@ class ViewListSpendingPage extends StatelessWidget {
         appBar: AppBar(
           elevation: 2,
           title: Text(
-            listType[spendingList[0].type]["title"]!,
+            spendingList[0].type == 41
+                ? spendingList[0].typeName!
+                : listType[spendingList[0].type]["title"]!,
             style: const TextStyle(color: Colors.black),
           ),
           centerTitle: true,

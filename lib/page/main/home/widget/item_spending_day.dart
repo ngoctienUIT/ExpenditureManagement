@@ -134,8 +134,10 @@ class _ItemSpendingDayState extends State<ItemSpendingDay> {
                                   ),
                                   const SizedBox(width: 10),
                                   Text(
-                                    listType[widget.spendingList[0].type]
-                                        ["title"]!,
+                                    widget.spendingList[0].type == 41
+                                        ? widget.spendingList[0].typeName!
+                                        : listType[widget.spendingList[0].type]
+                                            ["title"]!,
                                     style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,

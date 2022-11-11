@@ -65,7 +65,9 @@ class BuildSpending extends StatelessWidget {
                   ),
                   const SizedBox(width: 10),
                   Text(
-                    listType[spendingList[index].type]["title"]!,
+                    spendingList[index].type == 41
+                        ? spendingList[index].typeName!
+                        : listType[spendingList[index].type]["title"]!,
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,

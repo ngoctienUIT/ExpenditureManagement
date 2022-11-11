@@ -147,7 +147,9 @@ class _ViewSpendingPageState extends State<ViewSpendingPage> {
                       ),
                       const SizedBox(width: 10),
                       Text(
-                        listType[spending.type]["title"]!,
+                        spending.type == 41
+                            ? spending.typeName!
+                            : listType[spending.type]["title"]!,
                         style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,

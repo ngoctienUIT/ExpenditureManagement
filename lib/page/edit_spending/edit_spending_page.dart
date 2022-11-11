@@ -80,6 +80,8 @@ class _EditSpendingPageState extends State<EditSpendingPage> {
     );
     type = widget.spending.type;
     typeName = widget.spending.typeName;
+    coefficient = widget.spending.money < 0 ? -1 : 1;
+
     super.initState();
   }
 
@@ -174,7 +176,9 @@ class _EditSpendingPageState extends State<EditSpendingPage> {
                           Text(
                             type == null
                                 ? AppLocalizations.of(context).translate('type')
-                                : listType[type!]["title"]!,
+                                : (type == 41
+                                    ? typeName!
+                                    : listType[type!]["title"]!),
                             style: AppStyles.p,
                           ),
                           const Spacer(),
@@ -387,8 +391,12 @@ class _EditSpendingPageState extends State<EditSpendingPage> {
         friends: friends,
       );
       loadingAnimation(context);
-      await SpendingFirebase.updateSpending(spending, widget.spending.dateTime,
-          image != null ? File(image!.path) : null);
+      await SpendingFirebase.updateSpending(
+        spending,
+        widget.spending.dateTime,
+        image != null ? File(image!.path) : null,
+        checkPickImage,
+      );
       if (widget.change != null) {
         widget.change!(spending, colors);
       }
