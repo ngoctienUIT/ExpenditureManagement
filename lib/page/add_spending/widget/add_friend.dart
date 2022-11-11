@@ -1,6 +1,7 @@
 import 'package:expenditure_management/page/add_spending/add_friend_page.dart';
 import 'package:expenditure_management/page/add_spending/widget/circle_text.dart';
 import 'package:expenditure_management/page/add_spending/widget/remove_icon.dart';
+import 'package:expenditure_management/setting/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 class AddFriend extends StatelessWidget {
@@ -44,9 +45,10 @@ class AddFriend extends StatelessWidget {
                 ),
                 const SizedBox(width: 10),
                 friends.isEmpty
-                    ? const Text(
-                        "Bạ̣n bè",
-                        style: TextStyle(fontSize: 16, color: Colors.grey),
+                    ? Text(
+                        AppLocalizations.of(context).translate('friend'),
+                        style:
+                            const TextStyle(fontSize: 16, color: Colors.grey),
                       )
                     : Expanded(
                         child: Wrap(

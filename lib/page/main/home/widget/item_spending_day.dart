@@ -1,6 +1,7 @@
 import 'package:expenditure_management/constants/list.dart';
 import 'package:expenditure_management/models/spending.dart';
 import 'package:expenditure_management/page/view_spending/view_spending_page.dart';
+import 'package:expenditure_management/setting/localization/app_localizations.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -29,142 +30,141 @@ class _ItemSpendingDayState extends State<ItemSpendingDay> {
         .toList();
 
     return listDate.isNotEmpty
-        ? ListView.builder(
-            itemCount: listDate.length,
-            itemBuilder: (context, index) {
-              var list = widget.spendingList
-                  .where(
-                      (element) => isSameDay(element.dateTime, listDate[index]))
-                  .toList();
+        ? body(listDate)
+        : Center(
+            child: Text(
+              AppLocalizations.of(context).translate('no_data'),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+          );
+  }
 
-              return Padding(
-                padding: const EdgeInsets.all(10),
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Column(
+  Widget body(List<DateTime> listDate) {
+    return ListView.builder(
+      itemCount: listDate.length,
+      itemBuilder: (context, index) {
+        var list = widget.spendingList
+            .where((element) => isSameDay(element.dateTime, listDate[index]))
+            .toList();
+
+        return Padding(
+          padding: const EdgeInsets.all(10),
+          child: Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15),
+            ),
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Row(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Row(
-                          children: [
-                            Text(
-                              "${listDate[index].day}",
-                              style: const TextStyle(fontSize: 30),
-                            ),
-                            const SizedBox(width: 20),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  DateFormat("EEEE").format(listDate[index]),
-                                  style: const TextStyle(fontSize: 18),
-                                ),
-                                Text(DateFormat("MMMM, yyyy")
-                                    .format(listDate[index]))
-                              ],
-                            ),
-                            const Spacer(),
-                            Text(
-                              numberFormat.format(list
-                                  .map((e) => e.money)
-                                  .reduce((value, element) => value + element)),
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            )
-                          ],
-                        ),
+                      Text(
+                        "${listDate[index].day}",
+                        style: const TextStyle(fontSize: 30),
                       ),
-                      const Divider(
-                        height: 2,
-                        color: Colors.black,
-                        endIndent: 10,
-                        indent: 10,
-                      ),
+                      const SizedBox(width: 20),
                       Column(
-                        children: List.generate(
-                          list.length,
-                          (index) => InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ViewSpendingPage(
-                                    spending: list[index],
-                                    change: (spending) async {
-                                      try {
-                                        spending.image = await FirebaseStorage
-                                            .instance
-                                            .ref()
-                                            .child(
-                                                "spending/${spending.id}.png")
-                                            .getDownloadURL();
-                                      } catch (_) {}
-                                      widget.spendingList.removeWhere(
-                                          (element) =>
-                                              element.id!
-                                                  .compareTo(spending.id!) ==
-                                              0);
-                                      setState(() {
-                                        widget.spendingList.add(spending);
-                                      });
-                                    },
-                                    delete: (id) {
-                                      setState(() {
-                                        widget.spendingList.removeWhere(
-                                            (element) =>
-                                                element.id!.compareTo(id) == 0);
-                                      });
-                                    },
-                                  ),
-                                ),
-                              );
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.all(10),
-                              child: Row(
-                                children: [
-                                  Image.asset(
-                                    listType[widget.spendingList[0].type]
-                                        ["image"]!,
-                                    width: 40,
-                                  ),
-                                  const SizedBox(width: 10),
-                                  Text(
-                                    widget.spendingList[0].type == 41
-                                        ? widget.spendingList[0].typeName!
-                                        : listType[widget.spendingList[0].type]
-                                            ["title"]!,
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  const Spacer(),
-                                  Text(
-                                    numberFormat.format(list[index].money),
-                                    style: const TextStyle(fontSize: 16),
-                                  ),
-                                ],
-                              ),
-                            ),
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            DateFormat("EEEE").format(listDate[index]),
+                            style: const TextStyle(fontSize: 18),
                           ),
-                        ),
+                          Text(DateFormat("MMMM, yyyy").format(listDate[index]))
+                        ],
                       ),
+                      const Spacer(),
+                      Text(
+                        numberFormat.format(list
+                            .map((e) => e.money)
+                            .reduce((value, element) => value + element)),
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )
                     ],
                   ),
                 ),
-              );
-            },
-          )
-        : const Center(
-            child: Text(
-              "Không có dữ liệu",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                const Divider(
+                  height: 2,
+                  color: Colors.black,
+                  endIndent: 10,
+                  indent: 10,
+                ),
+                listItem(list),
+              ],
             ),
-          );
+          ),
+        );
+      },
+    );
+  }
+
+  Widget listItem(List<Spending> list) {
+    return Column(
+      children: List.generate(
+        list.length,
+        (index) => InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ViewSpendingPage(
+                  spending: list[index],
+                  change: (spending) async {
+                    try {
+                      spending.image = await FirebaseStorage.instance
+                          .ref()
+                          .child("spending/${spending.id}.png")
+                          .getDownloadURL();
+                    } catch (_) {}
+                    widget.spendingList.removeWhere(
+                        (element) => element.id!.compareTo(spending.id!) == 0);
+                    setState(() {
+                      widget.spendingList.add(spending);
+                    });
+                  },
+                  delete: (id) {
+                    setState(() {
+                      widget.spendingList.removeWhere(
+                          (element) => element.id!.compareTo(id) == 0);
+                    });
+                  },
+                ),
+              ),
+            );
+          },
+          child: Container(
+            padding: const EdgeInsets.all(10),
+            child: Row(
+              children: [
+                Image.asset(
+                  listType[widget.spendingList[0].type]["image"]!,
+                  width: 40,
+                ),
+                const SizedBox(width: 10),
+                Text(
+                  widget.spendingList[0].type == 41
+                      ? widget.spendingList[0].typeName!
+                      : AppLocalizations.of(context).translate(
+                          listType[widget.spendingList[0].type]["title"]!),
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const Spacer(),
+                Text(
+                  numberFormat.format(list[index].money),
+                  style: const TextStyle(fontSize: 16),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

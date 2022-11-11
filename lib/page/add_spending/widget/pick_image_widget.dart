@@ -2,10 +2,7 @@ import 'package:expenditure_management/constants/function/pick_function.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-Widget pickImageWidget({
-  required Function(XFile? file) gallery,
-  required Function(XFile? file) camera,
-}) {
+Widget pickImageWidget({required Function(XFile? file) image}) {
   return IntrinsicHeight(
     child: Row(
       children: [
@@ -13,7 +10,7 @@ Widget pickImageWidget({
           child: IconButton(
             onPressed: () async {
               var file = await pickImage(true);
-              gallery(file);
+              image(file);
             },
             icon: const Icon(Icons.image, size: 30),
           ),
@@ -28,7 +25,7 @@ Widget pickImageWidget({
           child: IconButton(
             onPressed: () async {
               var file = await pickImage(false);
-              camera(file);
+              image(file);
             },
             icon: const Icon(Icons.camera_alt, size: 30),
           ),

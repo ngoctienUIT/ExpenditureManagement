@@ -3,6 +3,7 @@ import 'package:expenditure_management/constants/app_styles.dart';
 import 'package:expenditure_management/models/spending.dart';
 import 'package:expenditure_management/page/main/home/widget/item_spending_widget.dart';
 import 'package:expenditure_management/page/main/home/widget/summary_spending.dart';
+import 'package:expenditure_management/setting/localization/app_localizations.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -109,11 +110,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 width: MediaQuery.of(context).size.width / 4,
                 child: Tab(
                   text: index == 17
-                      ? "Tháng này"
+                      ? AppLocalizations.of(context).translate('this_month')
                       : (index == 18
-                          ? "Tháng sau"
+                          ? AppLocalizations.of(context).translate('next_month')
                           : (index == 16
-                              ? "Tháng trước"
+                              ? AppLocalizations.of(context)
+                                  .translate('last_month')
                               : DateFormat("MM/yyyy")
                                   .format(months[18 - index]))),
                 ),
@@ -124,7 +126,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         SummarySpending(spendingList: spendingList),
         const SizedBox(height: 10),
         Text(
-          "Danh sách chi tiêu ${_monthController.index == 17 ? "tháng này" : DateFormat("MM/yyyy").format(months[18 - _monthController.index])}",
+          "${AppLocalizations.of(context).translate('spending_list')} ${_monthController.index == 17 ? AppLocalizations.of(context).translate('this_month') : DateFormat("MM/yyyy").format(months[18 - _monthController.index])}",
           style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
@@ -136,7 +138,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             : Expanded(
                 child: Center(
                   child: Text(
-                    "Không có dữ liệu ${_monthController.index == 17 ? "tháng này" : DateFormat("MM/yyyy").format(months[18 - _monthController.index])}!",
+                    "${AppLocalizations.of(context).translate('no_data')} ${_monthController.index == 17 ? AppLocalizations.of(context).translate('this_month') : DateFormat("MM/yyyy").format(months[18 - _monthController.index])}!",
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -151,27 +153,27 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   Widget loading() {
     return SingleChildScrollView(
       child: Column(
-        children: const [
-          SizedBox(height: 10),
+        children: [
+          const SizedBox(height: 10),
           Text(
-            "Tháng này",
-            style: TextStyle(
+            AppLocalizations.of(context).translate('this_month'),
+            style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
               color: Colors.grey,
             ),
           ),
-          SummarySpending(),
-          SizedBox(height: 10),
+          const SummarySpending(),
+          const SizedBox(height: 10),
           Text(
-            "Danh sách chi tiêu tháng này",
-            style: TextStyle(
+            AppLocalizations.of(context).translate('this_month_spending_list'),
+            style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
               color: Colors.grey,
             ),
           ),
-          ItemSpendingWidget(),
+          const ItemSpendingWidget(),
         ],
       ),
     );

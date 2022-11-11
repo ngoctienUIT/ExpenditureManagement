@@ -25,7 +25,7 @@ Future<DateTime?> selectDate({
     context: context,
     initialDate: initialDate,
     firstDate: DateTime(2000),
-    lastDate: DateTime.now(),
+    lastDate: DateTime(2100),
   );
   return picked;
 }

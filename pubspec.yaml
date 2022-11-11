@@ -107,8 +107,7 @@ flutter:
      - assets/logo/
      - assets/images/
      - assets/icons/
-     - assets/lang/vi.json
-     - assets/lang/en.json
+     - assets/lang/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

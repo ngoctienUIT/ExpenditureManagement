@@ -3,6 +3,7 @@ import 'package:expenditure_management/page/login/widget/input_password.dart';
 import 'package:expenditure_management/setting/localization/app_localizations.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class NewPassword extends StatefulWidget {
   const NewPassword({Key? key}) : super(key: key);
@@ -34,17 +35,18 @@ class _NewPasswordState extends State<NewPassword> {
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             children: [
-              const Text(
-                "Nhập mật khẩu mới",
-                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+              Text(
+                AppLocalizations.of(context)
+                    .translate('enter_your_new_password'),
+                style:
+                    const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 20),
-              const Text(
+              Text(
                 textAlign: TextAlign.center,
-                "Vui lòng nhập vào mật khẩu mới của bạn",
-                style: TextStyle(
-                  fontSize: 18,
-                ),
+                AppLocalizations.of(context)
+                    .translate('please_enter_your_new_password'),
+                style: const TextStyle(fontSize: 18),
               ),
               const SizedBox(height: 50),
               inputPassword(
@@ -76,13 +78,12 @@ class _NewPasswordState extends State<NewPassword> {
                       var user = FirebaseAuth.instance.currentUser;
 
                       user!.updatePassword(_passwordController.text).then((_) {
-                        var snackBar = const SnackBar(
-                            content: Text('Đổi mật khẩu thành công'));
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        Fluttertoast.showToast(
+                          msg: AppLocalizations.of(context)
+                              .translate("change_password_successfully"),
+                        );
                       }).catchError((error) {
-                        var snackBar =
-                            SnackBar(content: Text(error.toString()));
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        Fluttertoast.showToast(msg: error.toString());
                       });
                     } catch (_) {}
                     return;

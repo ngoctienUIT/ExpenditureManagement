@@ -287,18 +287,11 @@ class _EditSpendingPageState extends State<EditSpendingPage> {
         borderRadius: BorderRadius.circular(10),
       ),
       child: image == null && (widget.spending.image == null || checkPickImage)
-          ? pickImageWidget(
-              gallery: (file) {
-                if (file != null) {
-                  setState(() => image = file);
-                }
-              },
-              camera: (file) {
-                if (file != null) {
-                  setState(() => image = file);
-                }
-              },
-            )
+          ? pickImageWidget(image: (file) {
+              if (file != null) {
+                setState(() => image = file);
+              }
+            })
           : showImage(),
     );
   }

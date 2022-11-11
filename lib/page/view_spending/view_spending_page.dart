@@ -6,6 +6,7 @@ import 'package:expenditure_management/controls/spending_firebase.dart';
 import 'package:expenditure_management/models/spending.dart';
 import 'package:expenditure_management/page/add_spending/widget/circle_text.dart';
 import 'package:expenditure_management/page/edit_spending/edit_spending_page.dart';
+import 'package:expenditure_management/setting/localization/app_localizations.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -149,7 +150,8 @@ class _ViewSpendingPageState extends State<ViewSpendingPage> {
                       Text(
                         spending.type == 41
                             ? spending.typeName!
-                            : listType[spending.type]["title"]!,
+                            : AppLocalizations.of(context)
+                                .translate(listType[spending.type]["title"]!),
                         style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,

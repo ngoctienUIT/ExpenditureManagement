@@ -48,7 +48,8 @@ class TotalReport extends StatelessWidget {
         ),
         const SizedBox(height: 10),
         boxText(
-          text: "Thu chi:",
+          text:
+              "${AppLocalizations.of(context).translate('revenue_expenditure')}: ",
           number: income + spending,
         ),
         const SizedBox(height: 10),
@@ -56,14 +57,15 @@ class TotalReport extends StatelessWidget {
           children: [
             Expanded(
               child: boxText(
-                text: 'Số tiền: ',
+                text:
+                    '${AppLocalizations.of(context).translate('amount_money')}: ',
                 number: 1234,
               ),
             ),
             const SizedBox(width: 5),
             Expanded(
               child: boxText(
-                text: 'Số dư: ',
+                text: '${AppLocalizations.of(context).translate('balance')}: ',
                 number: 1234,
               ),
             )
