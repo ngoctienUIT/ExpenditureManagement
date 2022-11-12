@@ -32,9 +32,9 @@ class _ChooseTypeState extends State<ChooseType> with TickerProviderStateMixin {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        title: const Text(
-          "Loại chi tiêu",
-          style: TextStyle(color: Colors.black),
+        title: Text(
+          AppLocalizations.of(context).translate('type_spending'),
+          style: const TextStyle(color: Colors.black),
         ),
         centerTitle: true,
       ),
@@ -45,7 +45,8 @@ class _ChooseTypeState extends State<ChooseType> with TickerProviderStateMixin {
             return Padding(
               padding: const EdgeInsets.only(top: 20, bottom: 10, left: 15),
               child: Text(
-                listType[index]["title"]!,
+                AppLocalizations.of(context)
+                    .translate(listType[index]["title"]!),
                 style: TextStyle(
                   fontSize: 18,
                   color: Colors.grey[600],
@@ -63,12 +64,6 @@ class _ChooseTypeState extends State<ChooseType> with TickerProviderStateMixin {
               } else {
                 await showNewType();
                 _name.text = "";
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => const NewTypePage(),
-                //   ),
-                // );
               }
             },
             child: Material(
@@ -86,7 +81,8 @@ class _ChooseTypeState extends State<ChooseType> with TickerProviderStateMixin {
                     ),
                     const SizedBox(width: 15),
                     Text(
-                      listType[index]["title"]!,
+                      AppLocalizations.of(context)
+                          .translate(listType[index]["title"]!),
                       style: AppStyles.p,
                     ),
                   ],
@@ -148,6 +144,7 @@ class _ChooseTypeState extends State<ChooseType> with TickerProviderStateMixin {
                   maxLines: 10,
                   minLines: 1,
                   style: AppStyles.p,
+                  textCapitalization: TextCapitalization.sentences,
                   textAlign: TextAlign.center,
                   keyboardType: TextInputType.multiline,
                   decoration: InputDecoration(

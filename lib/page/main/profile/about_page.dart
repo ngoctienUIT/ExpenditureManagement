@@ -1,3 +1,4 @@
+import 'package:expenditure_management/setting/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -11,9 +12,7 @@ class AboutPage extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
+          onPressed: () => Navigator.pop(context),
           icon: const Icon(Icons.arrow_back_ios_new_rounded),
         ),
       ),
@@ -26,9 +25,11 @@ class AboutPage extends StatelessWidget {
             style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 10),
-          const Text("Phiên bản 1.0.0"),
+          Text("${AppLocalizations.of(context).translate('version')} 1.0.0"),
           const SizedBox(height: 5),
-          const Text("Phát triển bởi Trần Ngọc Tiến"),
+          Text(
+            "${AppLocalizations.of(context).translate('developed_by')} Trần Ngọc Tiến",
+          ),
           const SizedBox(height: 15),
           const Divider(color: Colors.black26, height: 1),
           const SizedBox(height: 20),
@@ -42,16 +43,16 @@ class AboutPage extends StatelessWidget {
             child: SizedBox(
               width: 300,
               child: Row(
-                children: const [
-                  Icon(
+                children: [
+                  const Icon(
                     FontAwesomeIcons.facebook,
                     color: Colors.blue,
                     size: 40,
                   ),
-                  SizedBox(width: 5),
+                  const SizedBox(width: 5),
                   Text(
-                    "Liên hệ với tôi qua Facebook",
-                    style: TextStyle(fontSize: 16),
+                    "${AppLocalizations.of(context).translate('contact_me_via')} Facebook",
+                    style: const TextStyle(fontSize: 16),
                   )
                 ],
               ),
@@ -81,9 +82,9 @@ class AboutPage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 5),
-                  const Text(
-                    "Liên hệ với tôi qua Twitter",
-                    style: TextStyle(fontSize: 16),
+                  Text(
+                    "${AppLocalizations.of(context).translate('contact_me_via')} Twitter",
+                    style: const TextStyle(fontSize: 16),
                   )
                 ],
               ),
@@ -118,9 +119,9 @@ class AboutPage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 5),
-                  const Text(
-                    "Liên hệ với tôi qua Email",
-                    style: TextStyle(fontSize: 16),
+                  Text(
+                    "${AppLocalizations.of(context).translate('contact_me_via')} Email",
+                    style: const TextStyle(fontSize: 16),
                   )
                 ],
               ),

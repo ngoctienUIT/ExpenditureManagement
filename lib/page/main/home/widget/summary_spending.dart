@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expenditure_management/models/spending.dart';
+import 'package:expenditure_management/setting/localization/app_localizations.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -89,9 +90,9 @@ class _SummarySpendingState extends State<SummarySpending> {
             children: [
               Row(
                 children: [
-                  const Text(
-                    "Số dư đầu",
-                    style: TextStyle(fontSize: 18),
+                  Text(
+                    AppLocalizations.of(context).translate('first_balance'),
+                    style: const TextStyle(fontSize: 18),
                   ),
                   const Spacer(),
                   Text(
@@ -103,9 +104,9 @@ class _SummarySpendingState extends State<SummarySpending> {
               const SizedBox(height: 20),
               Row(
                 children: [
-                  const Text(
-                    "Số dư cuối",
-                    style: TextStyle(fontSize: 18),
+                  Text(
+                    AppLocalizations.of(context).translate('final_balance'),
+                    style: const TextStyle(fontSize: 18),
                   ),
                   const Spacer(),
                   Text(
@@ -156,9 +157,9 @@ class _SummarySpendingState extends State<SummarySpending> {
             children: [
               Row(
                 children: [
-                  const Text(
-                    "Số dư đầu",
-                    style: TextStyle(fontSize: 18),
+                  Text(
+                    AppLocalizations.of(context).translate('first_balance'),
+                    style: const TextStyle(fontSize: 18),
                   ),
                   const Spacer(),
                   textLoading()
@@ -167,9 +168,9 @@ class _SummarySpendingState extends State<SummarySpending> {
               const SizedBox(height: 20),
               Row(
                 children: [
-                  const Text(
-                    "Số dư cuối",
-                    style: TextStyle(fontSize: 18),
+                  Text(
+                    AppLocalizations.of(context).translate('final_balance'),
+                    style: const TextStyle(fontSize: 18),
                   ),
                   const Spacer(),
                   textLoading()

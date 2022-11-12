@@ -70,58 +70,7 @@ class _CalendarPageState extends State<CalendarPage> {
                             check = false;
                           }
 
-                          return Column(
-                            children: [
-                              customTableCalendar(
-                                  focusedDay: _focusedDay,
-                                  selectedDay: _selectedDay,
-                                  dataSpending: dataSpending,
-                                  onPageChanged: (focusedDay) =>
-                                      setState(() => _focusedDay = focusedDay),
-                                  onDaySelected: (selectedDay, focusedDay) {
-                                    setState(() {
-                                      _focusedDay = focusedDay;
-                                      _selectedDay = selectedDay;
-                                      check = true;
-                                    });
-                                  }),
-                              const SizedBox(height: 5),
-                              Expanded(
-                                  child: SingleChildScrollView(
-                                child: Column(
-                                  children: [
-                                    if (_currentSpendingList!.isNotEmpty)
-                                      TotalSpending(
-                                        list: _currentSpendingList,
-                                      ),
-                                    BuildSpending(
-                                      spendingList: _currentSpendingList,
-                                      date: _selectedDay,
-                                      change: (spending) async {
-                                        try {
-                                          spending.image = await FirebaseStorage
-                                              .instance
-                                              .ref()
-                                              .child(
-                                                  "spending/${spending.id}.png")
-                                              .getDownloadURL();
-                                        } catch (_) {}
-
-                                        _currentSpendingList!.removeWhere(
-                                            (element) =>
-                                                element.id!
-                                                    .compareTo(spending.id!) ==
-                                                0);
-                                        setState(() {
-                                          _currentSpendingList!.add(spending);
-                                        });
-                                      },
-                                    )
-                                  ],
-                                ),
-                              ))
-                            ],
-                          );
+                          return body(dataSpending);
                         }
                         return loadingData();
                       });
@@ -130,6 +79,56 @@ class _CalendarPageState extends State<CalendarPage> {
               return loadingData();
             }),
       ),
+    );
+  }
+
+  Widget body(List<Spending> dataSpending) {
+    return Column(
+      children: [
+        customTableCalendar(
+            focusedDay: _focusedDay,
+            selectedDay: _selectedDay,
+            dataSpending: dataSpending,
+            onPageChanged: (focusedDay) =>
+                setState(() => _focusedDay = focusedDay),
+            onDaySelected: (selectedDay, focusedDay) {
+              setState(() {
+                _focusedDay = focusedDay;
+                _selectedDay = selectedDay;
+                check = true;
+              });
+            }),
+        const SizedBox(height: 5),
+        Expanded(
+            child: SingleChildScrollView(
+          child: Column(
+            children: [
+              if (_currentSpendingList!.isNotEmpty)
+                TotalSpending(
+                  list: _currentSpendingList,
+                ),
+              BuildSpending(
+                spendingList: _currentSpendingList,
+                date: _selectedDay,
+                change: (spending) async {
+                  try {
+                    spending.image = await FirebaseStorage.instance
+                        .ref()
+                        .child("spending/${spending.id}.png")
+                        .getDownloadURL();
+                  } catch (_) {}
+
+                  _currentSpendingList!.removeWhere(
+                      (element) => element.id!.compareTo(spending.id!) == 0);
+                  setState(() {
+                    _currentSpendingList!.add(spending);
+                  });
+                },
+              )
+            ],
+          ),
+        ))
+      ],
     );
   }
 

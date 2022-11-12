@@ -64,6 +64,7 @@ dependencies:
   screenshot: ^1.2.3
   share_plus: ^6.2.0
   path_provider: ^2.0.11
+  flutter_native_splash: ^2.2.14
 
 dev_dependencies:
   flutter_test:
@@ -107,8 +108,7 @@ flutter:
      - assets/logo/
      - assets/images/
      - assets/icons/
-     - assets/lang/vi.json
-     - assets/lang/en.json
+     - assets/lang/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

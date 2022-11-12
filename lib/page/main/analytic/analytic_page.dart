@@ -190,10 +190,7 @@ class _AnalyticPageState extends State<AnalyticPage>
 
                   return SingleChildScrollView(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 10,
-                        vertical: 10,
-                      ),
+                      padding: const EdgeInsets.all(10),
                       child: Column(
                         children: [
                           showChart(classifySpending),
@@ -263,26 +260,29 @@ class _AnalyticPageState extends State<AnalyticPage>
   }
 
   Widget loading() {
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-      color: const Color(0xff2c4260),
-      child: Column(
-        children: [
-          const SizedBox(height: 10),
-          showDate(
-            date: date,
-            index: 0,
-            now: now,
-            action: (date, now) {},
-          ),
-          TabBarType(controller: TabController(length: 2, vsync: this)),
-          const SizedBox(
-            height: 350,
-            child: Center(child: CircularProgressIndicator()),
-          ),
-          tabBarChart(controller: TabController(length: 2, vsync: this)),
-          const SizedBox(height: 10),
-        ],
+    return Padding(
+      padding: const EdgeInsets.all(10),
+      child: Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+        color: const Color(0xff2c4260),
+        child: Column(
+          children: [
+            const SizedBox(height: 10),
+            showDate(
+              date: date,
+              index: 0,
+              now: now,
+              action: (date, now) {},
+            ),
+            TabBarType(controller: TabController(length: 2, vsync: this)),
+            const SizedBox(
+              height: 350,
+              child: Center(child: CircularProgressIndicator()),
+            ),
+            tabBarChart(controller: TabController(length: 2, vsync: this)),
+            const SizedBox(height: 10),
+          ],
+        ),
       ),
     );
   }

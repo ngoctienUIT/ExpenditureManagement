@@ -2,6 +2,7 @@ import 'package:expenditure_management/constants/list.dart';
 import 'package:expenditure_management/models/spending.dart';
 import 'package:expenditure_management/page/main/home/widget/item_spending_widget.dart';
 import 'package:expenditure_management/page/view_spending/view_spending_page.dart';
+import 'package:expenditure_management/setting/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -65,7 +66,10 @@ class BuildSpending extends StatelessWidget {
                   ),
                   const SizedBox(width: 10),
                   Text(
-                    listType[spendingList[index].type]["title"]!,
+                    spendingList[index].type == 41
+                        ? spendingList[index].typeName!
+                        : AppLocalizations.of(context).translate(
+                            listType[spendingList[index].type]["title"]!),
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,

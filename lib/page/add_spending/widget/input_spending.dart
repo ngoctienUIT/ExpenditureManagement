@@ -9,6 +9,7 @@ Widget inputSpending({
   Function(String value)? action,
   TextInputAction? textInputAction,
   TextInputType? keyboardType,
+  TextCapitalization textCapitalization = TextCapitalization.none,
 }) {
   return Row(
     children: [
@@ -20,6 +21,7 @@ Widget inputSpending({
           style: AppStyles.p,
           keyboardType: keyboardType,
           textInputAction: textInputAction,
+          textCapitalization: textCapitalization,
           onFieldSubmitted: (value) {
             if (action != null) action(value);
           },

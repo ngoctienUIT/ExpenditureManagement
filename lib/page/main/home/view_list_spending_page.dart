@@ -1,6 +1,7 @@
 import 'package:expenditure_management/constants/list.dart';
 import 'package:expenditure_management/models/spending.dart';
 import 'package:expenditure_management/page/main/home/widget/item_spending_day.dart';
+import 'package:expenditure_management/setting/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 class ViewListSpendingPage extends StatelessWidget {
@@ -14,7 +15,10 @@ class ViewListSpendingPage extends StatelessWidget {
         appBar: AppBar(
           elevation: 2,
           title: Text(
-            listType[spendingList[0].type]["title"]!,
+            spendingList[0].type == 41
+                ? spendingList[0].typeName!
+                : AppLocalizations.of(context)
+                    .translate(listType[spendingList[0].type]["title"]!),
             style: const TextStyle(color: Colors.black),
           ),
           centerTitle: true,

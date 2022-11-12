@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:expenditure_management/constants/app_styles.dart';
 import 'package:expenditure_management/page/add_spending/widget/circle_text.dart';
 import 'package:expenditure_management/page/add_spending/widget/remove_icon.dart';
+import 'package:expenditure_management/setting/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 class AddFriendPage extends StatefulWidget {
@@ -36,7 +37,7 @@ class _AddFriendPageState extends State<AddFriendPage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        title: const Text("Thêm bạn bè"),
+        title: Text(AppLocalizations.of(context).translate('add_friends')),
         centerTitle: true,
         leading: IconButton(
           onPressed: () {
@@ -50,7 +51,7 @@ class _AddFriendPageState extends State<AddFriendPage> {
               widget.action(friends, colors);
               Navigator.pop(context);
             },
-            child: const Text("Xong"),
+            child: Text(AppLocalizations.of(context).translate('done')),
           )
         ],
       ),
@@ -61,6 +62,7 @@ class _AddFriendPageState extends State<AddFriendPage> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: TextFormField(
+                textCapitalization: TextCapitalization.words,
                 controller: _friend,
                 style: AppStyles.p,
                 textInputAction: TextInputAction.done,
@@ -76,7 +78,8 @@ class _AddFriendPageState extends State<AddFriendPage> {
                 },
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  hintText: "Thêm bạn bè",
+                  hintText:
+                      AppLocalizations.of(context).translate('add_friends'),
                   hintStyle: AppStyles.p,
                 ),
               ),

@@ -1,4 +1,5 @@
 import 'package:expenditure_management/constants/function/on_will_pop.dart';
+import 'package:expenditure_management/setting/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:expenditure_management/page/login/widget/custom_button.dart';
 
@@ -25,9 +26,9 @@ class _SuccessPageState extends State<SuccessPage> {
             padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 40),
             child: Column(
               children: [
-                const Text(
-                  "Success",
-                  style: TextStyle(
+                Text(
+                  AppLocalizations.of(context).translate('success'),
+                  style: const TextStyle(
                     fontSize: 25,
                     color: Colors.red,
                     fontWeight: FontWeight.bold,
@@ -46,7 +47,7 @@ class _SuccessPageState extends State<SuccessPage> {
                 ),
                 const SizedBox(height: 20),
                 customButton(
-                  text: 'Go to Login',
+                  text: AppLocalizations.of(context).translate('go_to_login'),
                   action: () {
                     Navigator.pushReplacementNamed(context, '/login');
                   },

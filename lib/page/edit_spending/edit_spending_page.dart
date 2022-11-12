@@ -80,6 +80,8 @@ class _EditSpendingPageState extends State<EditSpendingPage> {
     );
     type = widget.spending.type;
     typeName = widget.spending.typeName;
+    coefficient = widget.spending.money < 0 ? -1 : 1;
+
     super.initState();
   }
 
@@ -174,7 +176,9 @@ class _EditSpendingPageState extends State<EditSpendingPage> {
                           Text(
                             type == null
                                 ? AppLocalizations.of(context).translate('type')
-                                : listType[type!]["title"]!,
+                                : (type == 41
+                                    ? typeName!
+                                    : listType[type!]["title"]!),
                             style: AppStyles.p,
                           ),
                           const Spacer(),
@@ -245,6 +249,7 @@ class _EditSpendingPageState extends State<EditSpendingPage> {
                     icon: Icons.location_on_outlined,
                     color: const Color.fromRGBO(99, 195, 40, 1),
                     controller: _location,
+                    textCapitalization: TextCapitalization.words,
                     textInputAction: TextInputAction.done,
                     hintText:
                         AppLocalizations.of(context).translate('location'),
@@ -283,18 +288,11 @@ class _EditSpendingPageState extends State<EditSpendingPage> {
         borderRadius: BorderRadius.circular(10),
       ),
       child: image == null && (widget.spending.image == null || checkPickImage)
-          ? pickImageWidget(
-              gallery: (file) {
-                if (file != null) {
-                  setState(() => image = file);
-                }
-              },
-              camera: (file) {
-                if (file != null) {
-                  setState(() => image = file);
-                }
-              },
-            )
+          ? pickImageWidget(image: (file) {
+              if (file != null) {
+                setState(() => image = file);
+              }
+            })
           : showImage(),
     );
   }
@@ -387,8 +385,12 @@ class _EditSpendingPageState extends State<EditSpendingPage> {
         friends: friends,
       );
       loadingAnimation(context);
-      await SpendingFirebase.updateSpending(spending, widget.spending.dateTime,
-          image != null ? File(image!.path) : null);
+      await SpendingFirebase.updateSpending(
+        spending,
+        widget.spending.dateTime,
+        image != null ? File(image!.path) : null,
+        checkPickImage,
+      );
       if (widget.change != null) {
         widget.change!(spending, colors);
       }

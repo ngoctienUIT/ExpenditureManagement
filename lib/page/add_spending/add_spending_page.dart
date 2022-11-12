@@ -142,7 +142,8 @@ class _AddSpendingPageState extends State<AddSpendingPage> {
                                 ? AppLocalizations.of(context).translate('type')
                                 : (type == 41
                                     ? typeName!
-                                    : listType[type!]["title"]!),
+                                    : AppLocalizations.of(context)
+                                        .translate(listType[type!]["title"]!)),
                             style: AppStyles.p,
                           ),
                           const Spacer(),
@@ -213,6 +214,7 @@ class _AddSpendingPageState extends State<AddSpendingPage> {
                     icon: Icons.location_on_outlined,
                     color: const Color.fromRGBO(99, 195, 40, 1),
                     controller: _location,
+                    textCapitalization: TextCapitalization.words,
                     textInputAction: TextInputAction.done,
                     hintText:
                         AppLocalizations.of(context).translate('location'),
@@ -251,18 +253,11 @@ class _AddSpendingPageState extends State<AddSpendingPage> {
         borderRadius: BorderRadius.circular(10),
       ),
       child: image == null
-          ? pickImageWidget(
-              gallery: (file) {
-                if (file != null) {
-                  setState(() => image = file);
-                }
-              },
-              camera: (file) {
-                if (file != null) {
-                  setState(() => image = file);
-                }
-              },
-            )
+          ? pickImageWidget(image: (file) {
+              if (file != null) {
+                setState(() => image = file);
+              }
+            })
           : Stack(
               children: [
                 Padding(

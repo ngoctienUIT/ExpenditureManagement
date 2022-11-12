@@ -82,7 +82,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       if (loginMethod) const SizedBox(height: 20),
                       if (loginMethod)
                         settingItem(
-                          text: "Đổi Mật Khẩu",
+                          text: AppLocalizations.of(context)
+                              .translate('change_password'),
                           action: () {
                             Navigator.pushNamed(context, '/password');
                           },

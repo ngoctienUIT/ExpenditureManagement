@@ -1,6 +1,7 @@
 import 'package:expenditure_management/constants/list.dart';
 import 'package:expenditure_management/models/spending.dart';
 import 'package:expenditure_management/page/main/home/view_list_spending_page.dart';
+import 'package:expenditure_management/setting/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -51,7 +52,8 @@ Widget showListSpending({required List<Spending> list}) {
                     const SizedBox(width: 10),
                     Expanded(
                       child: Text(
-                        listType[index]["title"]!,
+                        AppLocalizations.of(context)
+                            .translate(listType[index]["title"]!),
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
                         style: const TextStyle(

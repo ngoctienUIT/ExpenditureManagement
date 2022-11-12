@@ -52,7 +52,11 @@ class SpendingFirebase {
   }
 
   static Future updateSpending(
-      Spending spending, DateTime oldDay, File? image) async {
+    Spending spending,
+    DateTime oldDay,
+    File? image,
+    bool check,
+  ) async {
     var firestoreSpending =
         FirebaseFirestore.instance.collection("spending").doc(spending.id);
 
@@ -65,6 +69,12 @@ class SpendingFirebase {
           folder: "spending",
           name: "${firestoreSpending.id}.png",
           image: image);
+    } else if (check) {
+      await FirebaseStorage.instance
+          .ref()
+          .child("spending/${spending.id}.png")
+          .delete();
+      spending.image = null;
     }
 
     firestoreSpending.update(spending.toMap());
