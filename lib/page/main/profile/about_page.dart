@@ -18,6 +18,7 @@ class AboutPage extends StatelessWidget {
       ),
       body: Column(
         children: [
+          const SizedBox(height: 15),
           Image.asset("assets/logo/logo.png", width: 150),
           const SizedBox(height: 15),
           const Text(
@@ -31,13 +32,16 @@ class AboutPage extends StatelessWidget {
             "${AppLocalizations.of(context).translate('developed_by')} Trần Ngọc Tiến",
           ),
           const SizedBox(height: 15),
-          const Divider(color: Colors.black26, height: 1),
+          const Divider(color: Colors.black45, height: 1),
           const SizedBox(height: 20),
           InkWell(
             onTap: () async {
-              var url = 'https://www.facebook.com/ngoctien.TNT/';
+              var url = 'https://fb.com/ngoctien.TNT';
               if (await canLaunchUrlString(url)) {
-                await launchUrlString(url);
+                await launchUrlString(
+                  url,
+                  mode: LaunchMode.externalApplication,
+                );
               }
             },
             child: SizedBox(
@@ -46,7 +50,7 @@ class AboutPage extends StatelessWidget {
                 children: [
                   const Icon(
                     FontAwesomeIcons.facebook,
-                    color: Colors.blue,
+                    color: Color.fromRGBO(66, 103, 178, 1),
                     size: 40,
                   ),
                   const SizedBox(width: 5),
@@ -58,12 +62,15 @@ class AboutPage extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 15),
+          const SizedBox(height: 20),
           InkWell(
             onTap: () async {
               var url = 'https://twitter.com/ngoctienTNT';
               if (await canLaunchUrlString(url)) {
-                await launchUrlString(url);
+                await launchUrlString(
+                  url,
+                  mode: LaunchMode.externalApplication,
+                );
               }
             },
             child: SizedBox(
@@ -73,7 +80,7 @@ class AboutPage extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(9),
                     decoration: BoxDecoration(
-                      color: Colors.blue,
+                      color: const Color.fromRGBO(29, 161, 242, 1),
                       borderRadius: BorderRadius.circular(90),
                     ),
                     child: const Icon(
@@ -90,7 +97,36 @@ class AboutPage extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 15),
+          const SizedBox(height: 20),
+          InkWell(
+            onTap: () async {
+              var url = 'https://t.me/ngoctienTNT';
+              if (await canLaunchUrlString(url)) {
+                await launchUrlString(
+                  url,
+                  mode: LaunchMode.externalApplication,
+                );
+              }
+            },
+            child: SizedBox(
+              width: 300,
+              child: Row(
+                children: [
+                  const Icon(
+                    FontAwesomeIcons.telegram,
+                    color: Color.fromRGBO(0, 136, 204, 1),
+                    size: 40,
+                  ),
+                  const SizedBox(width: 5),
+                  Text(
+                    "${AppLocalizations.of(context).translate('contact_me_via')} Telegram",
+                    style: const TextStyle(fontSize: 16),
+                  )
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 20),
           InkWell(
             onTap: () async {
               String email = 'ngoctienTNT.vn@gmail.com';
@@ -126,7 +162,21 @@ class AboutPage extends StatelessWidget {
                 ],
               ),
             ),
-          )
+          ),
+          const Spacer(),
+          InkWell(
+            onTap: () async {
+              var url = 'https://me.momo.vn/ngoctienTNT';
+              if (await canLaunchUrlString(url)) {
+                await launchUrlString(
+                  url,
+                  mode: LaunchMode.externalApplication,
+                );
+              }
+            },
+            child: Image.asset("assets/images/buy-me-a-coffee.png", height: 50),
+          ),
+          const SizedBox(height: 40),
         ],
       ),
     );

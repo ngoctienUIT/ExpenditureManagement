@@ -33,6 +33,7 @@ class _ChangePasswordState extends State<ChangePassword> {
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             children: [
+              const SizedBox(height: 15),
               Text(
                 AppLocalizations.of(context)
                     .translate('you_want_change_your_password'),

@@ -117,7 +117,6 @@ class _ViewSpendingPageState extends State<ViewSpendingPage> {
               }
               if (!mounted) return;
               Navigator.pop(context);
-              if (!mounted) return;
               Navigator.pop(context);
             },
             icon: const Icon(

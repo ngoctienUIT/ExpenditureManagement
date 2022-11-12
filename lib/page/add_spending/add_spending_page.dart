@@ -319,7 +319,6 @@ class _AddSpendingPageState extends State<AddSpendingPage> {
       await SpendingFirebase.addSpending(spending);
       if (!mounted) return;
       Navigator.pop(context);
-      if (!mounted) return;
       Navigator.pop(context);
     } else if (type == null) {
       Fluttertoast.showToast(msg: "Vui lòng chọn loại");

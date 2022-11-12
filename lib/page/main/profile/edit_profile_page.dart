@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:expenditure_management/constants/app_colors.dart';
 import 'package:expenditure_management/constants/app_styles.dart';
+import 'package:expenditure_management/constants/function/loading_animation.dart';
 import 'package:expenditure_management/controls/spending_firebase.dart';
 import 'package:expenditure_management/page/main/profile/widget/show_birthday.dart';
 import 'package:expenditure_management/page/signup/gender_widget.dart';
@@ -10,14 +11,20 @@ import 'package:expenditure_management/setting/localization/app_localizations.da
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:expenditure_management/models/user.dart' as myuser;
 
-class EditProfilePage extends StatelessWidget {
+class EditProfilePage extends StatefulWidget {
   const EditProfilePage({super.key});
 
+  @override
+  State<EditProfilePage> createState() => _EditProfilePageState();
+}
+
+class _EditProfilePageState extends State<EditProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -105,6 +112,7 @@ class EditProfilePage extends StatelessWidget {
                                 .translate('full_name')),
                             TextField(
                               controller: nameController,
+                              textCapitalization: TextCapitalization.words,
                               style: const TextStyle(
                                 color: Colors.black,
                                 fontSize: 20,
@@ -182,9 +190,10 @@ class EditProfilePage extends StatelessWidget {
                                   ),
                                 ),
                                 onPressed: () async {
-                                  SpendingFirebase.updateInfo(
+                                  loadingAnimation(context);
+                                  await SpendingFirebase.updateInfo(
                                     user: user.copyWith(
-                                      name: nameController.text,
+                                      name: nameController.text.trim(),
                                       money: int.parse(moneyController.text
                                           .replaceAll(RegExp(r'[^0-9]'), '')),
                                       gender: gender,
@@ -193,6 +202,12 @@ class EditProfilePage extends StatelessWidget {
                                     ),
                                     image: image,
                                   );
+                                  if (!mounted) return;
+                                  Navigator.pop(context);
+                                  Fluttertoast.showToast(
+                                      msg: AppLocalizations.of(context)
+                                          .translate("success"));
+                                  Navigator.pop(context);
                                 },
                                 child: Text(
                                   AppLocalizations.of(context)

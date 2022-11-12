@@ -396,7 +396,6 @@ class _EditSpendingPageState extends State<EditSpendingPage> {
       }
       if (!mounted) return;
       Navigator.pop(context);
-      if (!mounted) return;
       Navigator.pop(context);
     } else if (type == null) {
       Fluttertoast.showToast(msg: "Vui lòng chọn loại");
