@@ -62,6 +62,7 @@ class _AddFriendPageState extends State<AddFriendPage> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: TextFormField(
+                textCapitalization: TextCapitalization.words,
                 controller: _friend,
                 style: AppStyles.p,
                 textInputAction: TextInputAction.done,

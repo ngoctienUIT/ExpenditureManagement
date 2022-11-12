@@ -8,6 +8,8 @@ Widget pickImageWidget({required Function(XFile? file) image}) {
       children: [
         Expanded(
           child: IconButton(
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
             onPressed: () async {
               var file = await pickImage(true);
               image(file);
@@ -23,6 +25,8 @@ Widget pickImageWidget({required Function(XFile? file) image}) {
         ),
         Expanded(
           child: IconButton(
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
             onPressed: () async {
               var file = await pickImage(false);
               image(file);

@@ -144,6 +144,7 @@ class _ChooseTypeState extends State<ChooseType> with TickerProviderStateMixin {
                   maxLines: 10,
                   minLines: 1,
                   style: AppStyles.p,
+                  textCapitalization: TextCapitalization.sentences,
                   textAlign: TextAlign.center,
                   keyboardType: TextInputType.multiline,
                   decoration: InputDecoration(

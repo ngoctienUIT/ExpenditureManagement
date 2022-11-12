@@ -7,18 +7,21 @@ Widget itemSpending({
   required Function action,
   Color? color,
 }) {
-  return Padding(
-    padding: const EdgeInsets.symmetric(vertical: 10),
-    child: Row(
-      children: [
-        Icon(icon, size: 35, color: color ?? Colors.grey),
-        Expanded(
-          child: InkWell(
-            splashColor: Colors.transparent,
-            highlightColor: Colors.transparent,
-            onTap: () {
-              action();
-            },
+  return Row(
+    children: [
+      Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        child: Icon(icon, size: 35, color: color ?? Colors.grey),
+      ),
+      Expanded(
+        child: InkWell(
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
+          onTap: () {
+            action();
+          },
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
             child: Row(
               children: [
                 const SizedBox(width: 10),
@@ -29,7 +32,7 @@ Widget itemSpending({
             ),
           ),
         ),
-      ],
-    ),
+      ),
+    ],
   );
 }

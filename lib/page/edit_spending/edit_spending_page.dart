@@ -249,6 +249,7 @@ class _EditSpendingPageState extends State<EditSpendingPage> {
                     icon: Icons.location_on_outlined,
                     color: const Color.fromRGBO(99, 195, 40, 1),
                     controller: _location,
+                    textCapitalization: TextCapitalization.words,
                     textInputAction: TextInputAction.done,
                     hintText:
                         AppLocalizations.of(context).translate('location'),
