@@ -57,17 +57,14 @@ class TotalSpending extends StatelessWidget {
             Expanded(
               child: Column(
                 children: [
-                  Text(
-                    AppLocalizations.of(context).translate('income'),
-                    style: const TextStyle(fontSize: 16),
-                  ),
+                  Text(AppLocalizations.of(context).translate('income')),
                   const SizedBox(height: 5),
                   list != null
                       ? Text(
                           numberFormat.format(income),
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
-                            fontSize: 20,
+                            fontSize: 18,
                             fontWeight: FontWeight.bold,
                           ),
                         )
@@ -78,10 +75,7 @@ class TotalSpending extends StatelessWidget {
             Expanded(
               child: Column(
                 children: [
-                  Text(
-                    AppLocalizations.of(context).translate('spending'),
-                    style: const TextStyle(fontSize: 16),
-                  ),
+                  Text(AppLocalizations.of(context).translate('spending')),
                   const SizedBox(height: 5),
                   list != null
                       ? Text(
@@ -90,7 +84,7 @@ class TotalSpending extends StatelessWidget {
                               : "0",
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
-                            fontSize: 20,
+                            fontSize: 18,
                             fontWeight: FontWeight.bold,
                           ),
                         )
@@ -101,10 +95,7 @@ class TotalSpending extends StatelessWidget {
             Expanded(
               child: Column(
                 children: [
-                  Text(
-                    AppLocalizations.of(context).translate('total'),
-                    style: const TextStyle(fontSize: 16),
-                  ),
+                  Text(AppLocalizations.of(context).translate('total')),
                   const SizedBox(height: 5),
                   list != null
                       ? Text(
@@ -113,7 +104,7 @@ class TotalSpending extends StatelessWidget {
                               : "0",
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
-                            fontSize: 20,
+                            fontSize: 18,
                             fontWeight: FontWeight.bold,
                           ),
                         )

@@ -35,6 +35,7 @@ class TotalReport extends StatelessWidget {
               child: boxText(
                 text: "${AppLocalizations.of(context).translate('spending')}: ",
                 number: spending,
+                color: Colors.red,
               ),
             ),
             const SizedBox(width: 5),
@@ -42,6 +43,7 @@ class TotalReport extends StatelessWidget {
               child: boxText(
                 text: "${AppLocalizations.of(context).translate('income')}: ",
                 number: income,
+                color: Colors.blue,
               ),
             )
           ],

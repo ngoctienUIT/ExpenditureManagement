@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 List<Map<String, String>> listType = [
   {"title": "monthly_spending"},
   {"image": "assets/icons/eat.png", "title": "eating"},
@@ -49,51 +47,51 @@ List<Map<String, String>> listType = [
 ];
 
 List<String> listDayOfWeek = [
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-  "Sunday"
+  "monday",
+  "tuesday",
+  "wednesday",
+  "thursday",
+  "friday",
+  "saturday",
+  "sunday"
 ];
 
 List<String> listDayOfWeekAcronym = [
-  "Mon",
-  "Tue",
-  "Wed",
-  "Thu",
-  "Fri",
-  "Sat",
-  "Sun"
+  "mon",
+  "tue",
+  "wed",
+  "thu",
+  "fri",
+  "sat",
+  "sun"
 ];
 
 List<String> listMonthOfYear = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December"
+  "january",
+  "february",
+  "march",
+  "april",
+  "may",
+  "june",
+  "july",
+  "august",
+  "september",
+  "october",
+  "november",
+  "december"
 ];
 
 List<String> listMonthOfYearAcronym = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec"
+  "jan",
+  "feb",
+  "mar",
+  "apr",
+  "maya",
+  "jun",
+  "jul",
+  "aug",
+  "sep",
+  "oct",
+  "nov",
+  "dec"
 ];

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:expenditure_management/constants/app_colors.dart';
@@ -16,6 +17,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:expenditure_management/models/user.dart' as myuser;
+import 'package:shimmer/shimmer.dart';
 
 class EditProfilePage extends StatefulWidget {
   const EditProfilePage({super.key});
@@ -65,42 +67,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   child: Column(
                     children: [
                       const SizedBox(height: 20),
-                      InkWell(
-                        borderRadius: BorderRadius.circular(90),
-                        onTap: () async {
-                          try {
-                            var pickImage = await ImagePicker()
-                                .pickImage(source: ImageSource.gallery);
-                            if (pickImage == null) return;
-                            final cropImage = await ImageCropper().cropImage(
-                                sourcePath: pickImage.path,
-                                aspectRatio:
-                                    const CropAspectRatio(ratioX: 1, ratioY: 1),
-                                aspectRatioPresets: [
-                                  CropAspectRatioPreset.square
-                                ]);
-                            if (cropImage == null) return;
-                            setState(() => image = File(cropImage.path));
-                          } on PlatformException catch (_) {}
-                        },
-                        child: Stack(
-                          children: [
-                            ClipOval(
-                              child: image == null
-                                  ? Image.network(user.avatar, width: 170)
-                                  : Image.file(image!, width: 170),
-                            ),
-                            Positioned(
-                              bottom: 5,
-                              right: 5,
-                              child: Image.asset(
-                                "assets/icons/image.png",
-                                width: 35,
-                                color: Colors.black54,
-                              ),
-                            )
-                          ],
-                        ),
+                      showAvatar(
+                        image: image,
+                        url: user.avatar,
+                        getImage: (file) => setState(() => image = file),
                       ),
                       const SizedBox(height: 30),
                       Padding(
@@ -238,6 +208,73 @@ class _EditProfilePageState extends State<EditProfilePage> {
         fontSize: 16,
         fontWeight: FontWeight.bold,
         color: Colors.grey[600],
+      ),
+    );
+  }
+
+  Widget showAvatar({
+    File? image,
+    required String url,
+    required Function(File) getImage,
+  }) {
+    return InkWell(
+      borderRadius: BorderRadius.circular(90),
+      onTap: () async {
+        try {
+          var pickImage =
+              await ImagePicker().pickImage(source: ImageSource.gallery);
+          if (pickImage == null) return;
+          final cropImage = await ImageCropper().cropImage(
+            sourcePath: pickImage.path,
+            aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
+            aspectRatioPresets: [CropAspectRatioPreset.square],
+          );
+          if (cropImage == null) return;
+          getImage(File(cropImage.path));
+        } on PlatformException catch (_) {}
+      },
+      child: Stack(
+        children: [
+          ClipOval(
+            child: image == null
+                ? CachedNetworkImage(
+                    imageUrl: url,
+                    width: 170,
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) {
+                      return loadingInfo(width: 150, height: 150, radius: 90);
+                    },
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
+                  )
+                : Image.file(image, width: 170),
+          ),
+          Positioned(
+            bottom: 5,
+            right: 5,
+            child: Image.asset(
+              "assets/icons/image.png",
+              width: 35,
+              color: Colors.black54,
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget loadingInfo(
+      {required double width, required double height, double radius = 5}) {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey[300]!,
+      highlightColor: Colors.grey[100]!,
+      child: Container(
+        height: height,
+        width: width,
+        decoration: BoxDecoration(
+          color: Colors.grey,
+          borderRadius: BorderRadius.circular(radius),
+        ),
       ),
     );
   }

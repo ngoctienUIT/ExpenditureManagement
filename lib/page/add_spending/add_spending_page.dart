@@ -71,26 +71,23 @@ class _AddSpendingPageState extends State<AddSpendingPage> {
           icon: const Icon(Icons.close_outlined, size: 30),
           onPressed: () => Navigator.pop(context),
         ),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(100),
+          child: inputMoney(controller: _money),
+        ),
       ),
-      body: Column(
-        children: [
-          inputMoney(controller: _money),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  addSpending(),
-                  if (more) moreFunction(),
-                  MoreButton(
-                    action: () => setState(() => more = !more),
-                    more: more,
-                  ),
-                  const SizedBox(height: 10)
-                ],
-              ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            addSpending(),
+            if (more) moreFunction(),
+            MoreButton(
+              action: () => setState(() => more = !more),
+              more: more,
             ),
-          ),
-        ],
+            const SizedBox(height: 10)
+          ],
+        ),
       ),
     );
   }
