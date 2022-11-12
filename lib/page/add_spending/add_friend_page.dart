@@ -69,7 +69,7 @@ class _AddFriendPageState extends State<AddFriendPage> {
                 onFieldSubmitted: (value) {
                   if (value.isNotEmpty) {
                     setState(() {
-                      friends.add(value);
+                      friends.add(value.trim());
                       colors.add(Color.fromRGBO(Random().nextInt(255),
                           Random().nextInt(255), Random().nextInt(255), 1));
                       _friend.text = "";

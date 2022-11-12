@@ -369,9 +369,9 @@ class _EditSpendingPageState extends State<EditSpendingPage> {
         id: widget.spending.id,
         money: type == 41
             ? coefficient * money
-            : ([29, 30, 34, 36, 37, 40].contains(type!) ? 1 : (-1) * money),
+            : ([29, 30, 34, 36, 37, 40].contains(type!) ? 1 : -1) * money,
         type: type!,
-        typeName: typeName,
+        typeName: typeName != null ? typeName!.trim() : typeName,
         dateTime: DateTime(
           selectedDate.year,
           selectedDate.month,
@@ -379,9 +379,9 @@ class _EditSpendingPageState extends State<EditSpendingPage> {
           selectedTime.hour,
           selectedTime.minute,
         ),
-        note: _note.text,
+        note: _note.text.trim(),
         image: widget.spending.image,
-        location: _location.text,
+        location: _location.text.trim(),
         friends: friends,
       );
       loadingAnimation(context);

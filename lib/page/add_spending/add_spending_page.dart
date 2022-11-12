@@ -300,9 +300,9 @@ class _AddSpendingPageState extends State<AddSpendingPage> {
       Spending spending = Spending(
         money: type == 41
             ? coefficient * money
-            : ([29, 30, 34, 36, 37, 40].contains(type!) ? 1 : (-1) * money),
+            : ([29, 30, 34, 36, 37, 40].contains(type!) ? 1 : -1) * money,
         type: type!,
-        typeName: typeName,
+        typeName: typeName != null ? typeName!.trim() : typeName,
         dateTime: DateTime(
           selectedDate.year,
           selectedDate.month,
@@ -310,9 +310,9 @@ class _AddSpendingPageState extends State<AddSpendingPage> {
           selectedTime.hour,
           selectedTime.minute,
         ),
-        note: _note.text,
+        note: _note.text.trim(),
         image: image != null ? image!.path : null,
-        location: _location.text,
+        location: _location.text.trim(),
         friends: friends,
       );
       loadingAnimation(context);
