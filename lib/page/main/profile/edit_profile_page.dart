@@ -5,6 +5,7 @@ import 'package:currency_text_input_formatter/currency_text_input_formatter.dart
 import 'package:expenditure_management/constants/app_colors.dart';
 import 'package:expenditure_management/constants/app_styles.dart';
 import 'package:expenditure_management/constants/function/loading_animation.dart';
+import 'package:expenditure_management/constants/function/pick_function.dart';
 import 'package:expenditure_management/controls/spending_firebase.dart';
 import 'package:expenditure_management/page/main/profile/widget/show_birthday.dart';
 import 'package:expenditure_management/page/signup/gender_widget.dart';
@@ -13,8 +14,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_cropper/image_cropper.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:expenditure_management/models/user.dart' as myuser;
 import 'package:shimmer/shimmer.dart';
@@ -32,10 +33,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 2,
-        title: Text(
-          AppLocalizations.of(context).translate('account'),
-          style: const TextStyle(color: Colors.black),
-        ),
+        title: Text(AppLocalizations.of(context).translate('account')),
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
@@ -84,7 +82,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               controller: nameController,
                               textCapitalization: TextCapitalization.words,
                               style: const TextStyle(
-                                color: Colors.black,
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -95,7 +92,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             TextField(
                               controller: moneyController,
                               style: const TextStyle(
-                                color: Colors.black,
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -220,18 +216,13 @@ class _EditProfilePageState extends State<EditProfilePage> {
     return InkWell(
       borderRadius: BorderRadius.circular(90),
       onTap: () async {
-        try {
-          var pickImage =
-              await ImagePicker().pickImage(source: ImageSource.gallery);
-          if (pickImage == null) return;
-          final cropImage = await ImageCropper().cropImage(
-            sourcePath: pickImage.path,
-            aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
-            aspectRatioPresets: [CropAspectRatioPreset.square],
-          );
-          if (cropImage == null) return;
-          getImage(File(cropImage.path));
-        } on PlatformException catch (_) {}
+        _showBottomSheet(
+          (file) {
+            if (file != null) {
+              getImage(file);
+            }
+          },
+        );
       },
       child: Stack(
         children: [
@@ -250,17 +241,106 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 : Image.file(image, width: 170),
           ),
           Positioned(
-            bottom: 5,
-            right: 5,
-            child: Image.asset(
-              "assets/icons/image.png",
-              width: 35,
-              color: Colors.black54,
+            bottom: 10,
+            right: 10,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(90),
+                border: Border.all(color: Colors.white),
+              ),
+              child: const Icon(
+                FontAwesomeIcons.circlePlus,
+                color: Colors.blue,
+                size: 28,
+              ),
             ),
           )
         ],
       ),
     );
+  }
+
+  void _showBottomSheet(Function(File? file) getFile) {
+    showModalBottomSheet(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
+      ),
+      context: context,
+      builder: (context) {
+        return SizedBox(
+          width: double.infinity,
+          height: 170,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Spacer(),
+              InkWell(
+                onTap: () async {
+                  Navigator.pop(context);
+                  getFile(await chooseAvatar(true));
+                },
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 5, 0, 5),
+                  child: Row(
+                    children: const [
+                      Icon(FontAwesomeIcons.image, size: 30),
+                      SizedBox(width: 10),
+                      Text(
+                        "Chọn ảnh từ thư viện",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const Spacer(),
+              InkWell(
+                onTap: () async {
+                  Navigator.pop(context);
+                  getFile(await chooseAvatar(false));
+                },
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 5, 0, 5),
+                  child: Row(
+                    children: const [
+                      Icon(FontAwesomeIcons.camera, size: 30),
+                      SizedBox(width: 10),
+                      Text(
+                        "Chụp ảnh từ camera",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const Spacer(),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Future<File?> chooseAvatar(bool check) async {
+    try {
+      var chooseImage = await pickImage(check);
+      if (chooseImage == null) return null;
+      final cropImage = await ImageCropper().cropImage(
+        sourcePath: chooseImage.path,
+        aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
+        aspectRatioPresets: [CropAspectRatioPreset.square],
+      );
+      if (cropImage == null) return null;
+      return File(cropImage.path);
+    } on PlatformException catch (_) {}
+    return null;
   }
 
   Widget loadingInfo(

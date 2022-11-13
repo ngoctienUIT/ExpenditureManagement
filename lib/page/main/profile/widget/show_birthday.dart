@@ -14,7 +14,6 @@ Widget showBirthday(DateTime date) {
     child: Text(
       DateFormat("dd/MM/yyyy").format(date),
       style: const TextStyle(
-        color: Colors.black,
         fontSize: 20,
         fontWeight: FontWeight.bold,
       ),
