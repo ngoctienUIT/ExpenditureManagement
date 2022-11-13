@@ -7,8 +7,9 @@ import 'package:intl/intl.dart';
 
 Widget showListSpending({required List<Spending> list}) {
   var numberFormat = NumberFormat.currency(locale: "vi_VI");
-  int sum =
-      list.map((e) => e.money).reduce((value, element) => value + element);
+  int sum = list.isNotEmpty
+      ? list.map((e) => e.money).reduce((value, element) => value + element)
+      : 1;
 
   return ListView.builder(
     shrinkWrap: true,
@@ -42,7 +43,7 @@ Widget showListSpending({required List<Spending> list}) {
               ),
               child: Padding(
                 padding:
-                    const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+                    const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
                 child: Row(
                   children: [
                     Image.asset(
@@ -50,28 +51,38 @@ Widget showListSpending({required List<Spending> list}) {
                       width: 40,
                     ),
                     const SizedBox(width: 10),
-                    Expanded(
+                    Container(
+                      constraints: const BoxConstraints(maxWidth: 100),
                       child: Text(
                         AppLocalizations.of(context)
                             .translate(listType[index]["title"]!),
                         overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
+                        maxLines: 2,
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
-                    Text(
-                      numberFormat.format(sumSpending),
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                    Expanded(
+                      child: Text(
+                        numberFormat.format(sumSpending),
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.end,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                     const SizedBox(width: 10),
-                    Text(
-                      "${((sumSpending / sum) * 100).toStringAsFixed(2)}%",
+                    SizedBox(
+                      width: 50,
+                      child: Text(
+                        "${((sumSpending / sum) * 100).toStringAsFixed(2)}%",
+                        style: const TextStyle(fontSize: 13),
+                        textAlign: TextAlign.end,
+                      ),
                     ),
                     const SizedBox(width: 10),
                     const Icon(Icons.arrow_forward_ios_outlined)

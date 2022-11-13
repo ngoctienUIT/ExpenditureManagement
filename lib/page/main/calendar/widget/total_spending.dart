@@ -64,8 +64,9 @@ class TotalSpending extends StatelessWidget {
                           numberFormat.format(income),
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
-                            fontSize: 18,
+                            fontSize: 16,
                             fontWeight: FontWeight.bold,
+                            color: Colors.blue,
                           ),
                         )
                       : shimmerAnimation()
@@ -84,8 +85,9 @@ class TotalSpending extends StatelessWidget {
                               : "0",
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
-                            fontSize: 18,
+                            fontSize: 16,
                             fontWeight: FontWeight.bold,
+                            color: Colors.red,
                           ),
                         )
                       : shimmerAnimation()
@@ -104,8 +106,9 @@ class TotalSpending extends StatelessWidget {
                               : "0",
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
-                            fontSize: 18,
+                            fontSize: 16,
                             fontWeight: FontWeight.bold,
+                            color: Colors.green,
                           ),
                         )
                       : shimmerAnimation()

@@ -74,12 +74,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         .map((e) => Spending.fromFirebase(e))
                         .toList();
 
-                    if (spendingList.isEmpty) {
-                      return body(spendingList: spendingList);
-                    } else {
-                      return SingleChildScrollView(
-                          child: body(spendingList: spendingList));
-                    }
+                    return body(spendingList: spendingList);
                   }
                   return loading();
                 },
@@ -106,6 +101,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
             unselectedLabelColor: const Color.fromRGBO(45, 216, 198, 1),
             unselectedLabelStyle: AppStyles.p,
+            indicatorColor: Colors.green,
             tabs: List.generate(19, (index) {
               return SizedBox(
                 width: MediaQuery.of(context).size.width / 4,
@@ -139,8 +135,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             color: Colors.grey,
           ),
         ),
+        const SizedBox(height: 10),
         spendingList!.isNotEmpty
-            ? ItemSpendingWidget(spendingList: spendingList)
+            ? Expanded(child: ItemSpendingWidget(spendingList: spendingList))
             : Expanded(
                 child: Center(
                   child: Text(

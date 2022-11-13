@@ -120,9 +120,7 @@ class _CalendarPageState extends State<CalendarPage> {
 
                   _currentSpendingList!.removeWhere(
                       (element) => element.id!.compareTo(spending.id!) == 0);
-                  setState(() {
-                    _currentSpendingList!.add(spending);
-                  });
+                  setState(() => _currentSpendingList!.add(spending));
                 },
               )
             ],

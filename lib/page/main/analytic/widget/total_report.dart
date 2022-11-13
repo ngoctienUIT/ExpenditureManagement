@@ -55,25 +55,6 @@ class TotalReport extends StatelessWidget {
           number: income + spending,
         ),
         const SizedBox(height: 10),
-        Row(
-          children: [
-            Expanded(
-              child: boxText(
-                text:
-                    '${AppLocalizations.of(context).translate('amount_money')}: ',
-                number: 1234,
-              ),
-            ),
-            const SizedBox(width: 5),
-            Expanded(
-              child: boxText(
-                text: '${AppLocalizations.of(context).translate('balance')}: ',
-                number: 1234,
-              ),
-            )
-          ],
-        ),
-        const SizedBox(height: 10),
       ],
     );
   }
