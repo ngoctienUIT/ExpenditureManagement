@@ -35,6 +35,7 @@ class TotalReport extends StatelessWidget {
               child: boxText(
                 text: "${AppLocalizations.of(context).translate('spending')}: ",
                 number: spending,
+                color: Colors.red,
               ),
             ),
             const SizedBox(width: 5),
@@ -42,6 +43,7 @@ class TotalReport extends StatelessWidget {
               child: boxText(
                 text: "${AppLocalizations.of(context).translate('income')}: ",
                 number: income,
+                color: Colors.blue,
               ),
             )
           ],
@@ -51,25 +53,6 @@ class TotalReport extends StatelessWidget {
           text:
               "${AppLocalizations.of(context).translate('revenue_expenditure')}: ",
           number: income + spending,
-        ),
-        const SizedBox(height: 10),
-        Row(
-          children: [
-            Expanded(
-              child: boxText(
-                text:
-                    '${AppLocalizations.of(context).translate('amount_money')}: ',
-                number: 1234,
-              ),
-            ),
-            const SizedBox(width: 5),
-            Expanded(
-              child: boxText(
-                text: '${AppLocalizations.of(context).translate('balance')}: ',
-                number: 1234,
-              ),
-            )
-          ],
         ),
         const SizedBox(height: 10),
       ],

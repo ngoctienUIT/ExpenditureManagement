@@ -61,9 +61,7 @@ class _AnalyticPageState extends State<AnalyticPage>
         }
       });
     });
-    _typeController.addListener(() {
-      setState(() {});
-    });
+    _typeController.addListener(() => setState(() {}));
     super.initState();
   }
 
@@ -197,7 +195,7 @@ class _AnalyticPageState extends State<AnalyticPage>
                           if (spendingList.isNotEmpty)
                             TotalReport(list: spendingList),
                           if (spendingList.isNotEmpty)
-                            showListSpending(list: spendingList)
+                            showListSpending(list: classifySpending)
                         ],
                       ),
                     ),

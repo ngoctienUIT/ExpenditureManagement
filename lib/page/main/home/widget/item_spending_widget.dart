@@ -15,8 +15,8 @@ class ItemSpendingWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return spendingList != null
         ? ListView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
+            // shrinkWrap: true,
+            // physics: const NeverScrollableScrollPhysics(),
             padding: const EdgeInsets.all(10),
             itemCount: listType.length,
             itemBuilder: (context, index) {
@@ -55,29 +55,31 @@ class ItemSpendingWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(15),
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
           child: Row(
             children: [
-              Image.asset(
-                listType[index]["image"]!,
-                width: 40,
-              ),
+              Image.asset(listType[index]["image"]!, width: 40),
               const SizedBox(width: 10),
-              Text(
-                AppLocalizations.of(context)
-                    .translate(listType[index]["title"]!),
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
+              Container(
+                constraints: const BoxConstraints(maxWidth: 100),
+                child: Text(
+                  AppLocalizations.of(context)
+                      .translate(listType[index]["title"]!),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
-              const Spacer(),
-              Flexible(
+              Expanded(
                 child: Text(
                   numberFormat.format(list
                       .map((e) => e.money)
                       .reduce((value, element) => value + element)),
                   overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.end,
                   style: const TextStyle(fontSize: 16),
                 ),
               ),

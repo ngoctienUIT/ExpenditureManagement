@@ -71,26 +71,23 @@ class _AddSpendingPageState extends State<AddSpendingPage> {
           icon: const Icon(Icons.close_outlined, size: 30),
           onPressed: () => Navigator.pop(context),
         ),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(100),
+          child: inputMoney(controller: _money),
+        ),
       ),
-      body: Column(
-        children: [
-          inputMoney(controller: _money),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  addSpending(),
-                  if (more) moreFunction(),
-                  MoreButton(
-                    action: () => setState(() => more = !more),
-                    more: more,
-                  ),
-                  const SizedBox(height: 10)
-                ],
-              ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            addSpending(),
+            if (more) moreFunction(),
+            MoreButton(
+              action: () => setState(() => more = !more),
+              more: more,
             ),
-          ),
-        ],
+            const SizedBox(height: 10)
+          ],
+        ),
       ),
     );
   }
@@ -300,9 +297,9 @@ class _AddSpendingPageState extends State<AddSpendingPage> {
       Spending spending = Spending(
         money: type == 41
             ? coefficient * money
-            : ([29, 30, 34, 36, 37, 40].contains(type!) ? 1 : (-1) * money),
+            : ([29, 30, 34, 36, 37, 40].contains(type!) ? 1 : -1) * money,
         type: type!,
-        typeName: typeName,
+        typeName: typeName != null ? typeName!.trim() : typeName,
         dateTime: DateTime(
           selectedDate.year,
           selectedDate.month,
@@ -310,16 +307,15 @@ class _AddSpendingPageState extends State<AddSpendingPage> {
           selectedTime.hour,
           selectedTime.minute,
         ),
-        note: _note.text,
+        note: _note.text.trim(),
         image: image != null ? image!.path : null,
-        location: _location.text,
+        location: _location.text.trim(),
         friends: friends,
       );
       loadingAnimation(context);
       await SpendingFirebase.addSpending(spending);
       if (!mounted) return;
       Navigator.pop(context);
-      if (!mounted) return;
       Navigator.pop(context);
     } else if (type == null) {
       Fluttertoast.showToast(msg: "Vui lòng chọn loại");

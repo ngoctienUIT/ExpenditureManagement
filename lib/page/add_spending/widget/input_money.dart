@@ -6,7 +6,7 @@ Widget inputMoney({required TextEditingController controller}) {
   return Container(
     padding: const EdgeInsets.all(20),
     height: 100,
-    color: Colors.white,
+    // color: Colors.white,
     child: TextFormField(
       controller: controller,
       inputFormatters: [

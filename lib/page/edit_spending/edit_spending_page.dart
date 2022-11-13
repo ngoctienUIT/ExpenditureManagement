@@ -90,6 +90,7 @@ class _EditSpendingPageState extends State<EditSpendingPage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
+        backgroundColor: Colors.white,
         title: Text(AppLocalizations.of(context).translate('edit_spending')),
         centerTitle: true,
         actions: [
@@ -107,26 +108,23 @@ class _EditSpendingPageState extends State<EditSpendingPage> {
           icon: const Icon(Icons.close_outlined, size: 30),
           onPressed: () => Navigator.pop(context),
         ),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(100),
+          child: inputMoney(controller: _money),
+        ),
       ),
-      body: Column(
-        children: [
-          inputMoney(controller: _money),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  addSpending(),
-                  if (more) moreSpending(),
-                  MoreButton(
-                    action: () => setState(() => more = !more),
-                    more: more,
-                  ),
-                  const SizedBox(height: 10)
-                ],
-              ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            addSpending(),
+            if (more) moreSpending(),
+            MoreButton(
+              action: () => setState(() => more = !more),
+              more: more,
             ),
-          ),
-        ],
+            const SizedBox(height: 10)
+          ],
+        ),
       ),
     );
   }
@@ -178,7 +176,8 @@ class _EditSpendingPageState extends State<EditSpendingPage> {
                                 ? AppLocalizations.of(context).translate('type')
                                 : (type == 41
                                     ? typeName!
-                                    : listType[type!]["title"]!),
+                                    : AppLocalizations.of(context)
+                                        .translate(listType[type!]["title"]!)),
                             style: AppStyles.p,
                           ),
                           const Spacer(),
@@ -369,9 +368,9 @@ class _EditSpendingPageState extends State<EditSpendingPage> {
         id: widget.spending.id,
         money: type == 41
             ? coefficient * money
-            : ([29, 30, 34, 36, 37, 40].contains(type!) ? 1 : (-1) * money),
+            : ([29, 30, 34, 36, 37, 40].contains(type!) ? 1 : -1) * money,
         type: type!,
-        typeName: typeName,
+        typeName: typeName != null ? typeName!.trim() : typeName,
         dateTime: DateTime(
           selectedDate.year,
           selectedDate.month,
@@ -379,9 +378,9 @@ class _EditSpendingPageState extends State<EditSpendingPage> {
           selectedTime.hour,
           selectedTime.minute,
         ),
-        note: _note.text,
+        note: _note.text.trim(),
         image: widget.spending.image,
-        location: _location.text,
+        location: _location.text.trim(),
         friends: friends,
       );
       loadingAnimation(context);
@@ -396,7 +395,6 @@ class _EditSpendingPageState extends State<EditSpendingPage> {
       }
       if (!mounted) return;
       Navigator.pop(context);
-      if (!mounted) return;
       Navigator.pop(context);
     } else if (type == null) {
       Fluttertoast.showToast(msg: "Vui lòng chọn loại");

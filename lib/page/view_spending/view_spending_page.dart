@@ -110,15 +110,7 @@ class _ViewSpendingPageState extends State<ViewSpendingPage> {
           ),
           IconButton(
             onPressed: () async {
-              loadingAnimation(context);
-              await SpendingFirebase.deleteSpending(spending);
-              if (widget.delete != null) {
-                widget.delete!(spending.id!);
-              }
-              if (!mounted) return;
-              Navigator.pop(context);
-              if (!mounted) return;
-              Navigator.pop(context);
+              await showConfirmDialog();
             },
             icon: const Icon(
               Icons.delete,
@@ -309,6 +301,52 @@ class _ViewSpendingPageState extends State<ViewSpendingPage> {
       thickness: 0.5,
       endIndent: 10,
       indent: 10,
+    );
+  }
+
+  Future showConfirmDialog() async {
+    await showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Center(
+            child: Text(
+              AppLocalizations.of(context).translate('you_want_delete'),
+            ),
+          ),
+          content: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Spacer(),
+                ElevatedButton(
+                  onPressed: () async {
+                    loadingAnimation(context);
+                    await SpendingFirebase.deleteSpending(spending);
+                    if (widget.delete != null) {
+                      widget.delete!(spending.id!);
+                    }
+                    if (!mounted) return;
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                  },
+                  child: const Text("OK"),
+                ),
+                const Spacer(),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text(AppLocalizations.of(context).translate('cancel')),
+                ),
+                const Spacer(),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

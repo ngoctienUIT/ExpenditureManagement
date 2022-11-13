@@ -145,20 +145,28 @@ class _ItemSpendingDayState extends State<ItemSpendingDay> {
                   width: 40,
                 ),
                 const SizedBox(width: 10),
-                Text(
-                  widget.spendingList[0].type == 41
-                      ? widget.spendingList[0].typeName!
-                      : AppLocalizations.of(context).translate(
-                          listType[widget.spendingList[0].type]["title"]!),
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
+                Container(
+                  constraints: const BoxConstraints(maxWidth: 100),
+                  child: Text(
+                    widget.spendingList[0].type == 41
+                        ? widget.spendingList[0].typeName!
+                        : AppLocalizations.of(context).translate(
+                            listType[widget.spendingList[0].type]["title"]!),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
-                const Spacer(),
-                Text(
-                  numberFormat.format(list[index].money),
-                  style: const TextStyle(fontSize: 16),
+                Expanded(
+                  child: Text(
+                    numberFormat.format(list[index].money),
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.end,
+                    style: const TextStyle(fontSize: 16),
+                  ),
                 ),
               ],
             ),

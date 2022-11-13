@@ -1,7 +1,8 @@
+import 'dart:math';
 import 'package:expenditure_management/constants/list.dart';
 import 'package:expenditure_management/models/spending.dart';
 import 'package:expenditure_management/page/main/analytic/function/render_list_money.dart';
-import 'package:expenditure_management/page/main/analytic/function/round_number.dart';
+import 'package:expenditure_management/setting/localization/app_localizations.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
@@ -46,7 +47,7 @@ class ColumnChartState extends State<ColumnChart> {
       getList: (list) => weekOfMonth = list,
     );
     max = (money.reduce((curr, next) => curr > next ? curr : next)).toDouble();
-    max = roundNumber(number: max);
+    max = max + pow(10, max.toString().length - 3);
     double width = 500;
     if (widget.index != 0) {
       width = 1000;
@@ -113,11 +114,14 @@ class ColumnChartState extends State<ColumnChart> {
             getTooltipItem: (group, groupIndex, rod, rodIndex) {
               String weekDay = "";
               if (widget.index == 0) {
-                weekDay = listDayOfWeek[group.x.toInt()];
+                weekDay = AppLocalizations.of(context)
+                    .translate(listDayOfWeek[group.x.toInt()]);
               } else if (widget.index == 1) {
-                weekDay = "Tuần ${group.x.toInt() + 1}";
+                weekDay =
+                    "${AppLocalizations.of(context).translate('week')} ${group.x.toInt() + 1}";
               } else {
-                weekDay = listMonthOfYear[group.x.toInt()];
+                weekDay = AppLocalizations.of(context)
+                    .translate(listMonthOfYear[group.x.toInt()]);
               }
               return BarTooltipItem(
                 '$weekDay\n',
@@ -196,11 +200,13 @@ class ColumnChartState extends State<ColumnChart> {
     );
     String title = "";
     if (widget.index == 0) {
-      title = listDayOfWeekAcronym[value.toInt()];
+      title = AppLocalizations.of(context)
+          .translate(listDayOfWeekAcronym[value.toInt()]);
     } else if (widget.index == 1) {
       title = weekOfMonth[value.toInt()];
     } else {
-      title = listMonthOfYearAcronym[value.toInt()];
+      title = AppLocalizations.of(context)
+          .translate(listMonthOfYearAcronym[value.toInt()]);
     }
 
     Widget text = Text(title, style: style);

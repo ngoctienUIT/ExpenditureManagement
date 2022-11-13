@@ -57,7 +57,7 @@ class BuildSpending extends StatelessWidget {
               borderRadius: BorderRadius.circular(15),
             ),
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
               child: Row(
                 children: [
                   Image.asset(
@@ -65,20 +65,28 @@ class BuildSpending extends StatelessWidget {
                     width: 40,
                   ),
                   const SizedBox(width: 10),
-                  Text(
-                    spendingList[index].type == 41
-                        ? spendingList[index].typeName!
-                        : AppLocalizations.of(context).translate(
-                            listType[spendingList[index].type]["title"]!),
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+                  Container(
+                    constraints: const BoxConstraints(maxWidth: 100),
+                    child: Text(
+                      spendingList[index].type == 41
+                          ? spendingList[index].typeName!
+                          : AppLocalizations.of(context).translate(
+                              listType[spendingList[index].type]["title"]!),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                  const Spacer(),
-                  Text(
-                    numberFormat.format(spendingList[index].money),
-                    style: const TextStyle(fontSize: 16),
+                  Expanded(
+                    child: Text(
+                      numberFormat.format(spendingList[index].money),
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.end,
+                      style: const TextStyle(fontSize: 16),
+                    ),
                   ),
                   const SizedBox(width: 10),
                   const Icon(Icons.arrow_forward_ios_outlined)
