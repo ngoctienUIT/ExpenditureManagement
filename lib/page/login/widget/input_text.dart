@@ -7,11 +7,13 @@ Widget inputText({
   required TextEditingController controller,
   required int validator,
   TextInputType? inputType,
+  TextCapitalization textCapitalization = TextCapitalization.none,
 }) {
   return TextFormField(
     controller: controller,
     style: AppStyles.p,
     keyboardType: inputType,
+    textCapitalization: textCapitalization,
     validator: (value) {
       if (validator == 0 &&
           (value!.isEmpty ||

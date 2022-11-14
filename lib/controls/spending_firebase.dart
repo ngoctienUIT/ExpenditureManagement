@@ -167,10 +167,41 @@ class SpendingFirebase {
         image: image,
       );
     }
+
+    updateWalletMoney(user.money);
+
     FirebaseFirestore.instance
         .collection("info")
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .update(user.toMap());
+  }
+
+  static Future updateWalletMoney(int money) async {
+    FirebaseFirestore.instance
+        .collection("wallet")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get()
+        .then((value) {
+      var data = value.data() as Map<String, dynamic>;
+      data[DateFormat("MM_yyyy").format(DateTime.now())] = money;
+      FirebaseFirestore.instance
+          .collection("wallet")
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .update(data);
+    });
+  }
+
+  static Future addWalletMoney(int money) async {
+    var data = {DateFormat("MM_yyyy").format(DateTime.now()): money};
+    FirebaseFirestore.instance
+        .collection("wallet")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .set(data);
+
+    FirebaseFirestore.instance
+        .collection("info")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .update({"money": money});
   }
 
   static Future<String> uploadImage({

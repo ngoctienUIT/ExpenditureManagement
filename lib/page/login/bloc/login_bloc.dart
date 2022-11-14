@@ -32,8 +32,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         SharedPreferences.getInstance().then((value) {
           value.setBool("login", false);
         });
-        await initInfoUser();
-        emit(LoginSuccessState(social: Social.google));
+        bool check = await initInfoUser();
+        emit(LoginSuccessState(social: check ? Social.google : Social.newUser));
       } else {
         emit(LoginErrorState(status: _status));
       }
@@ -45,8 +45,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         SharedPreferences.getInstance().then((value) {
           value.setBool("login", false);
         });
-        await initInfoUser();
-        emit(LoginSuccessState(social: Social.facebook));
+        bool check = await initInfoUser();
+        emit(LoginSuccessState(
+            social: check ? Social.facebook : Social.newUser));
       } else {
         emit(LoginErrorState(status: _status));
       }
@@ -96,7 +97,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
   }
 
-  Future initInfoUser() async {
+  Future<bool> initInfoUser() async {
+    bool check = true;
     var firestore = FirebaseFirestore.instance
         .collection("info")
         .doc(FirebaseAuth.instance.currentUser!.uid);
@@ -108,7 +110,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
                 money: 0,
                 avatar: FirebaseAuth.instance.currentUser!.photoURL.toString())
             .toMap());
+        check = false;
       }
     });
+    return check;
   }
 }
