@@ -95,7 +95,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
                               ),
+                              keyboardType: TextInputType.number,
                               inputFormatters: [
+                                FilteringTextInputFormatter.allow(
+                                    RegExp("[\\s0-9a-zA-Z]")),
                                 CurrencyTextInputFormatter(locale: "vi")
                               ],
                             ),

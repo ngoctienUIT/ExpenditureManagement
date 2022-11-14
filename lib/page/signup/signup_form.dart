@@ -85,6 +85,7 @@ class _SignupFormState extends State<SignupForm> {
                     validator: 1,
                     controller: _nameController,
                     inputType: TextInputType.name,
+                    textCapitalization: TextCapitalization.words,
                   ),
                   const SizedBox(height: 20),
                   inputText(
