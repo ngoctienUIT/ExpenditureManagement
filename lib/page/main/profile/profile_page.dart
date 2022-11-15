@@ -1,7 +1,11 @@
-import 'dart:io' show Platform;
+import 'dart:io' show Directory, File, Platform;
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:csv/csv.dart';
 import 'package:expenditure_management/constants/app_colors.dart';
 import 'package:expenditure_management/constants/app_styles.dart';
+import 'package:expenditure_management/constants/function/loading_animation.dart';
+import 'package:expenditure_management/constants/list.dart';
+import 'package:expenditure_management/models/spending.dart';
 import 'package:expenditure_management/page/main/profile/widget/info_widget.dart';
 import 'package:expenditure_management/page/main/profile/widget/setting_item.dart';
 import 'package:expenditure_management/setting/bloc/setting_cubit.dart';
@@ -11,10 +15,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_switch/flutter_switch.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:expenditure_management/models/user.dart' as myuser;
 import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -132,6 +138,26 @@ class _ProfilePageState extends State<ProfilePage> {
                             },
                           ),
                         ],
+                      ),
+                      const SizedBox(height: 20),
+                      settingItem(
+                        text:
+                            "${AppLocalizations.of(context).translate('export')} CSV",
+                        action: () async {
+                          loadingAnimation(context);
+                          await exportCSV();
+                          if (!mounted) return;
+                          Navigator.pop(context);
+                        },
+                        icon: Icons.archive_outlined,
+                        color: const Color.fromRGBO(137, 207, 240, 1),
+                      ),
+                      const SizedBox(height: 20),
+                      settingItem(
+                        text: "Tra cứu tỷ giá",
+                        action: () async {},
+                        icon: Icons.attach_money_rounded,
+                        color: const Color.fromRGBO(255, 192, 0, 1),
                       ),
                       const SizedBox(height: 20),
                       settingItem(
@@ -260,5 +286,79 @@ class _ProfilePageState extends State<ProfilePage> {
 
     if (!mounted) return;
     Navigator.pop(context);
+  }
+
+  Future exportCSV() async {
+    List<Spending> spendingList = [];
+    await FirebaseFirestore.instance
+        .collection("data")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get()
+        .then((value) async {
+      var data = value.data() as Map<String, dynamic>;
+      List<String> listData = [];
+      for (var entry in data.entries) {
+        listData.addAll(
+            (entry.value as List<dynamic>).map((e) => e.toString()).toList());
+      }
+
+      for (var item in listData) {
+        await FirebaseFirestore.instance
+            .collection("spending")
+            .doc(item)
+            .get()
+            .then((value) {
+          spendingList.add(Spending.fromFirebase(value));
+        });
+      }
+    });
+    List<List<dynamic>> rows = [];
+
+    List<dynamic> row = [
+      "money",
+      "type",
+      "note",
+      "date",
+      "image",
+      "location",
+      "friends"
+    ];
+    rows.add(row);
+    for (var item in spendingList) {
+      List<dynamic> row = [];
+      row.add(item.money);
+      row.add(item.type == 41 ? item.typeName : listType[item.type]['title']);
+      row.add(item.note);
+      row.add(DateFormat("dd/MM/yyyy - HH:mm:ss").format(item.dateTime));
+      row.add(item.image);
+      row.add(item.location);
+      row.add(item.friends);
+      rows.add(row);
+    }
+
+    String csv = const ListToCsvConverter().convert(rows);
+    Directory? directory;
+    try {
+      if (Platform.isIOS) {
+        directory = await getApplicationDocumentsDirectory();
+      } else {
+        directory = Directory('/storage/emulated/0/Download');
+        if (!await directory.exists()) {
+          directory = await getExternalStorageDirectory();
+        }
+      }
+    } catch (_) {}
+
+    String path =
+        "${directory!.path}/TNT_${DateFormat("dd_MM_yyyy_HH_mm_ss").format(DateTime.now())}.csv";
+    File f = File(path);
+    f.writeAsString(csv);
+
+    if (!mounted) return;
+    Fluttertoast.showToast(
+      msg:
+          "${AppLocalizations.of(context).translate('file_successfully_saved')} $path",
+      toastLength: Toast.LENGTH_LONG,
+    );
   }
 }
