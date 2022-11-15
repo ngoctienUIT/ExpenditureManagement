@@ -8,6 +8,7 @@ import 'package:expenditure_management/page/main/home/home_page.dart';
 import 'package:expenditure_management/page/main/main_page.dart';
 import 'package:expenditure_management/page/main/profile/about_page.dart';
 import 'package:expenditure_management/page/main/profile/change_password.dart';
+import 'package:expenditure_management/page/main/profile/currency_exchange_rate.dart';
 import 'package:expenditure_management/page/main/profile/edit_profile_page.dart';
 import 'package:expenditure_management/page/main/profile/new_password.dart';
 import 'package:expenditure_management/page/onboarding/onboarding_page.dart';
@@ -108,7 +109,8 @@ class MyApp extends StatelessWidget {
                 '/password': (context) => const ChangePassword(),
                 '/new': (context) => const NewPassword(),
                 '/about': (context) => const AboutPage(),
-                '/wallet': (context) => const InputWalletPage()
+                '/wallet': (context) => const InputWalletPage(),
+                '/exchange': (context) => const CurrencyExchangeRate(),
               },
             );
           }),

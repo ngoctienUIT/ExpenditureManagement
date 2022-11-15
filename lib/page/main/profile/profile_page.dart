@@ -5,6 +5,7 @@ import 'package:expenditure_management/constants/app_colors.dart';
 import 'package:expenditure_management/constants/app_styles.dart';
 import 'package:expenditure_management/constants/function/loading_animation.dart';
 import 'package:expenditure_management/constants/list.dart';
+import 'package:expenditure_management/models/api_service.dart';
 import 'package:expenditure_management/models/spending.dart';
 import 'package:expenditure_management/page/main/profile/widget/info_widget.dart';
 import 'package:expenditure_management/page/main/profile/widget/setting_item.dart';
@@ -155,7 +156,9 @@ class _ProfilePageState extends State<ProfilePage> {
                       const SizedBox(height: 20),
                       settingItem(
                         text: "Tra cứu tỷ giá",
-                        action: () async {},
+                        action: () async {
+                          Navigator.pushNamed(context, '/exchange');
+                        },
                         icon: Icons.attach_money_rounded,
                         color: const Color.fromRGBO(255, 192, 0, 1),
                       ),
