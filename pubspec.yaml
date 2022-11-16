@@ -67,6 +67,7 @@ dependencies:
   flutter_native_splash: ^2.2.14
   csv: ^5.0.1
   http: ^0.13.5
+  html: ^0.15.1
 
 dev_dependencies:
   flutter_test:
