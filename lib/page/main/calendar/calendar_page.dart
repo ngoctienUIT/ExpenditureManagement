@@ -85,7 +85,7 @@ class _CalendarPageState extends State<CalendarPage> {
   Widget body(List<Spending> dataSpending) {
     return Column(
       children: [
-        customTableCalendar(
+        CustomTableCalendar(
             focusedDay: _focusedDay,
             selectedDay: _selectedDay,
             dataSpending: dataSpending,
@@ -133,7 +133,7 @@ class _CalendarPageState extends State<CalendarPage> {
   Widget loadingData() {
     return Column(
       children: [
-        customTableCalendar(
+        CustomTableCalendar(
           focusedDay: _focusedDay,
           selectedDay: _selectedDay,
         ),

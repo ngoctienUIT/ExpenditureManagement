@@ -11,3 +11,9 @@ extension StringExtension on String {
     return this;
   }
 }
+
+extension DateTimeExtension on DateTime {
+  DateTime formatToDate() {
+    return DateTime(year, month, day);
+  }
+}
