@@ -22,7 +22,7 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   final TextEditingController _searchController = TextEditingController();
   String? query;
-  Filter filter = Filter(chooseIndex: [0, 0, 0]);
+  Filter filter = Filter(chooseIndex: [0, 0, 0], friends: [], colors: []);
 
   @override
   void dispose() {
@@ -71,6 +71,14 @@ class _SearchPageState extends State<SearchPage> {
       return false;
     }
 
+    if (filter.friends!.isNotEmpty) {
+      List<String> list = filter.friends!
+          .where((element) => spending.friends!.contains(element))
+          .toList();
+
+      if (list.isEmpty) return false;
+    }
+
     if (spending.note != null && !spending.note!.contains(filter.note)) {
       return false;
     }
@@ -115,7 +123,6 @@ class _SearchPageState extends State<SearchPage> {
                   builder: (context) => FilterPage(
                     filter: filter,
                     action: (filter) {
-                      print(filter.toMap());
                       setState(() => this.filter = filter.copyWith());
                     },
                   ),

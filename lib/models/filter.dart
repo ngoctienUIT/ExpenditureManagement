@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class Filter {
   List<int> chooseIndex;
   int money;
@@ -5,6 +7,8 @@ class Filter {
   DateTime? time;
   DateTime? finishTime;
   String note;
+  List<Color>? colors;
+  List<String>? friends;
 
   Filter({
     required this.chooseIndex,
@@ -13,18 +17,9 @@ class Filter {
     this.time,
     this.finishTime,
     this.note = "",
+    this.colors,
+    this.friends,
   });
-
-  Map<String, dynamic> toMap() {
-    return {
-      "choose": chooseIndex,
-      "money": money,
-      "finishmoney": finishMoney,
-      "time": time,
-      "finishTime": finishTime,
-      "note": note
-    };
-  }
 
   Filter copyWith({
     List<int>? chooseIndex,
@@ -33,6 +28,8 @@ class Filter {
     DateTime? time,
     DateTime? finishTime,
     String? note,
+    List<Color>? colors,
+    List<String>? friends,
   }) {
     return Filter(
       chooseIndex: chooseIndex ?? List.from(this.chooseIndex),
@@ -41,6 +38,8 @@ class Filter {
       time: time ?? this.time,
       finishTime: finishTime ?? this.finishTime,
       note: note ?? this.note,
+      colors: colors ?? this.colors,
+      friends: friends ?? this.friends,
     );
   }
 }
