@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:expenditure_management/constants/function/extension.dart';
 import 'package:expenditure_management/constants/list.dart';
 import 'package:expenditure_management/controls/spending_firebase.dart';
+import 'package:expenditure_management/models/filter.dart';
 import 'package:expenditure_management/models/spending.dart';
 import 'package:expenditure_management/page/main/analytic/widget/filter_page.dart';
 import 'package:expenditure_management/page/main/analytic/widget/my_search_delegate.dart';
@@ -20,10 +22,7 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   final TextEditingController _searchController = TextEditingController();
   String? query;
-  List<int> chooseIndex = [0, 0, 0, 0];
-  int money = 0;
-  DateTime? dateTime;
-  String note = "";
+  Filter filter = Filter(chooseIndex: [0, 0, 0]);
 
   @override
   void dispose() {
@@ -32,27 +31,49 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   bool checkResult(Spending spending) {
-    if (!listType[spending.type]["title"]!
+    if (!AppLocalizations.of(context)
+        .translate(listType[spending.type]["title"]!)
         .toUpperCase()
         .contains(query!.toUpperCase())) return false;
 
-    if (chooseIndex[0] == 1 && spending.money < money) {
+    if (filter.chooseIndex[0] == 1 && spending.money.abs() < filter.money) {
       return false;
-    } else if (chooseIndex[0] == 2 && spending.money > money) {
+    } else if (filter.chooseIndex[0] == 2 &&
+        spending.money.abs() > filter.money) {
       return false;
-    } else if (chooseIndex[0] == 4 && spending.money == money) {
+    } else if (filter.chooseIndex[0] == 3 &&
+        (spending.money.abs() > filter.finishMoney ||
+            spending.money.abs() < filter.money)) {
       return false;
-    }
-
-    if (chooseIndex[2] == 1 && dateTime!.isAfter(spending.dateTime)) {
-      return false;
-    } else if (chooseIndex[2] == 2 && dateTime!.isBefore(spending.dateTime)) {
-      return false;
-    } else if (chooseIndex[2] == 4 && isSameDay(spending.dateTime, dateTime)) {
+    } else if (filter.chooseIndex[0] == 4 &&
+        spending.money.abs() == filter.money) {
       return false;
     }
 
-    if (spending.note != null && !spending.note!.contains(note)) return false;
+    if (filter.chooseIndex[1] == 1 &&
+        filter.time!.isAfter(spending.dateTime.formatToDate())) {
+      return false;
+    } else if (filter.chooseIndex[1] == 2 &&
+        filter.time!.isBefore(spending.dateTime.formatToDate())) {
+      return false;
+    } else if (filter.chooseIndex[1] == 3 &&
+        (spending.dateTime.formatToDate().isAfter(filter.finishTime!) ||
+            spending.dateTime.formatToDate().isBefore(filter.time!))) {
+      return false;
+    } else if (filter.chooseIndex[1] == 4 &&
+        isSameDay(spending.dateTime, filter.time)) {
+      return false;
+    }
+
+    if (filter.chooseIndex[2] == 1 && spending.money < 0) {
+      return false;
+    } else if (filter.chooseIndex[2] == 2 && spending.money > 0) {
+      return false;
+    }
+
+    if (spending.note != null && !spending.note!.contains(filter.note)) {
+      return false;
+    }
     return true;
   }
 
@@ -92,13 +113,10 @@ class _SearchPageState extends State<SearchPage> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => FilterPage(
-                    action: (list, money, dateTime, note) {
-                      setState(() {
-                        this.dateTime = dateTime;
-                        this.money = money;
-                        this.note = note;
-                        chooseIndex = list;
-                      });
+                    filter: filter,
+                    action: (filter) {
+                      print(filter.toMap());
+                      setState(() => this.filter = filter.copyWith());
                     },
                   ),
                 ),

@@ -46,6 +46,10 @@ List<Map<String, String>> listType = [
   {"image": "assets/icons/plus.png", "title": "new_group"},
 ];
 
+List<String> moneyList = ["all", "bigger", "smaller", "about2", "exactly"];
+List<String> timeList = ["all", "after", "before", "about2", "exactly"];
+List<String> groupList = ["all", "all_earnings", "all_expenses"];
+
 List<String> listDayOfWeek = [
   "monday",
   "tuesday",
