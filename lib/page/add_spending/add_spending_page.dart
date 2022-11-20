@@ -52,7 +52,7 @@ class _AddSpendingPageState extends State<AddSpendingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        elevation: 0,
+        elevation: 1,
         backgroundColor: Colors.white,
         title: Text(AppLocalizations.of(context).translate('add_spending')),
         centerTitle: true,

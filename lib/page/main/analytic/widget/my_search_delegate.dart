@@ -17,7 +17,7 @@ class MySearchDelegate extends SearchDelegate<String> {
           onPressed: () {
             close(context, query);
           },
-          child: const Text("Tìm kiếm"),
+          child: Text(text),
         )
       ];
 

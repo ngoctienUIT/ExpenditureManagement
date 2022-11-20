@@ -119,8 +119,10 @@ class _AnalyticPageState extends State<AnalyticPage>
                 style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
               ),
               const Spacer(),
-              IconButton(
-                onPressed: () {
+              InkWell(
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+                onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -128,12 +130,25 @@ class _AnalyticPageState extends State<AnalyticPage>
                     ),
                   );
                 },
-                icon: const Icon(
-                  FontAwesomeIcons.magnifyingGlass,
-                  size: 20,
-                  color: Color.fromRGBO(180, 190, 190, 1),
+                child: Material(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(90),
+                  ),
+                  elevation: 1,
+                  child: Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(90),
+                    ),
+                    child: const Icon(
+                      FontAwesomeIcons.magnifyingGlass,
+                      size: 20,
+                      color: Color.fromRGBO(180, 190, 190, 1),
+                    ),
+                  ),
                 ),
-              )
+              ),
             ],
           ),
           const SizedBox(height: 20),

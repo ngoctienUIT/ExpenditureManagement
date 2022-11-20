@@ -89,6 +89,7 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 2,
         title: TextField(
           controller: _searchController,
           decoration: InputDecoration(
