@@ -1,3 +1,4 @@
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:expenditure_management/constants/app_styles.dart';
 import 'package:expenditure_management/constants/list.dart';
 import 'package:expenditure_management/setting/localization/app_localizations.dart';
@@ -14,6 +15,8 @@ class ChooseType extends StatefulWidget {
 class _ChooseTypeState extends State<ChooseType> with TickerProviderStateMixin {
   late TabController _tabController;
   final _name = TextEditingController();
+  List<String> title = ["all", "spending", "income"];
+  String selectedValue = "all";
 
   @override
   void initState() {
@@ -32,64 +35,120 @@ class _ChooseTypeState extends State<ChooseType> with TickerProviderStateMixin {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        title: Text(
-          AppLocalizations.of(context).translate('type_spending'),
-          style: const TextStyle(color: Colors.black),
-        ),
         centerTitle: true,
+        title: DropdownButtonHideUnderline(
+          child: DropdownButton2(
+            dropdownMaxHeight: 200,
+            customButton: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+              width: 140,
+              decoration: BoxDecoration(
+                color: Theme.of(context).backgroundColor,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    AppLocalizations.of(context).translate(selectedValue),
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const Icon(Icons.arrow_drop_down)
+                ],
+              ),
+            ),
+            dropdownDecoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            items: title
+                .map(
+                  (item) => DropdownMenuItem<String>(
+                    value: item,
+                    child: Text(
+                      AppLocalizations.of(context).translate(item),
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                )
+                .toList(),
+            value: selectedValue,
+            onChanged: (value) {
+              setState(() {
+                selectedValue = value as String;
+              });
+            },
+            buttonHeight: 40,
+            buttonWidth: 140,
+            itemHeight: 40,
+          ),
+        ),
       ),
       body: ListView.builder(
         itemCount: listType.length,
         itemBuilder: (context, index) {
-          if ([0, 10, 21, 27, 35, 38].contains(index)) {
-            return Padding(
-              padding: const EdgeInsets.only(top: 20, bottom: 10, left: 15),
-              child: Text(
-                AppLocalizations.of(context)
-                    .translate(listType[index]["title"]!),
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.grey[600],
-                  fontWeight: FontWeight.bold,
+          int choose = title.indexOf(selectedValue);
+          if (choose == 0 ||
+              choose == 2 &&
+                  [29, 30, 34, 36, 37, 40, 27, 35, 38, 41].contains(index) ||
+              choose == 1 && ![29, 30, 34, 36, 37, 40, 35].contains(index)) {
+            if ([0, 10, 21, 27, 35, 38].contains(index)) {
+              return Padding(
+                padding: const EdgeInsets.only(top: 20, bottom: 10, left: 15),
+                child: Text(
+                  AppLocalizations.of(context)
+                      .translate(listType[index]["title"]!),
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.grey[600],
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              );
+            }
+
+            return InkWell(
+              onTap: () async {
+                if (index != 41) {
+                  widget.action(
+                      index, _tabController.index == 0 ? -1 : 1, null);
+                  Navigator.pop(context);
+                } else {
+                  await showNewType();
+                  _name.text = "";
+                }
+              },
+              child: Material(
+                elevation: 2,
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                  height: 60,
+                  width: double.infinity,
+                  child: Row(
+                    children: [
+                      Image.asset(
+                        listType[index]["image"]!,
+                        width: 40,
+                      ),
+                      const SizedBox(width: 15),
+                      Text(
+                        AppLocalizations.of(context)
+                            .translate(listType[index]["title"]!),
+                        style: AppStyles.p,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             );
           }
-
-          return InkWell(
-            onTap: () async {
-              if (index != 41) {
-                widget.action(index, _tabController.index == 0 ? -1 : 1, null);
-                Navigator.pop(context);
-              } else {
-                await showNewType();
-                _name.text = "";
-              }
-            },
-            child: Material(
-              elevation: 2,
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                height: 60,
-                width: double.infinity,
-                child: Row(
-                  children: [
-                    Image.asset(
-                      listType[index]["image"]!,
-                      width: 40,
-                    ),
-                    const SizedBox(width: 15),
-                    Text(
-                      AppLocalizations.of(context)
-                          .translate(listType[index]["title"]!),
-                      style: AppStyles.p,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          );
+          return const SizedBox.shrink();
         },
       ),
     );

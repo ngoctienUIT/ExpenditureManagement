@@ -51,7 +51,7 @@ class TotalSpending extends StatelessWidget {
     return Card(
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 20),
-        color: Colors.white,
+        // color: Theme.of(context).backgroundColor,
         child: Row(
           children: [
             Expanded(

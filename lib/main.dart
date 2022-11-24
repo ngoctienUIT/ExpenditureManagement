@@ -74,10 +74,16 @@ class MyApp extends StatelessWidget {
                       primarySwatch: Colors.blue,
                     )
                   : ThemeData(
+                      cardColor: Colors.white,
+                      backgroundColor: Colors.white,
                       brightness: Brightness.light,
                       primarySwatch: Colors.blue,
                       scaffoldBackgroundColor: AppColors.whisperBackground,
                       bottomAppBarColor: AppColors.whisperBackground,
+                      floatingActionButtonTheme:
+                          const FloatingActionButtonThemeData(
+                        backgroundColor: Color.fromRGBO(121, 158, 84, 1),
+                      ),
                       appBarTheme: AppBarTheme(
                         backgroundColor: AppColors.whisperBackground,
                         iconTheme: const IconThemeData(color: Colors.black),
@@ -87,6 +93,7 @@ class MyApp extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
+                      primaryColor: const Color.fromRGBO(242, 243, 247, 1),
                     ),
               initialRoute: FirebaseAuth.instance.currentUser == null
                   ? (isFirstStart ? "/" : "/login")

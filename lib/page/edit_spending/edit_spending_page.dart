@@ -90,7 +90,7 @@ class _EditSpendingPageState extends State<EditSpendingPage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).backgroundColor,
         title: Text(AppLocalizations.of(context).translate('edit_spending')),
         centerTitle: true,
         actions: [
@@ -110,7 +110,7 @@ class _EditSpendingPageState extends State<EditSpendingPage> {
         ),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(100),
-          child: inputMoney(controller: _money),
+          child: InputMoney(controller: _money),
         ),
       ),
       body: SingleChildScrollView(

@@ -69,17 +69,23 @@ class CustomTableCalendar extends StatelessWidget {
                 top: customBorderSide(),
               ),
               isTodayHighlighted: true,
+              cellPadding: const EdgeInsets.all(0),
               selectedDecoration: BoxDecoration(
-                color: Colors.cyanAccent,
+                color: const Color.fromRGBO(104, 214, 157, 1),
                 shape: BoxShape.rectangle,
                 borderRadius: BorderRadius.circular(6.0),
               ),
-              cellPadding: const EdgeInsets.all(0),
-              selectedTextStyle: const TextStyle(color: Colors.green),
+              selectedTextStyle: const TextStyle(
+                color: Color.fromRGBO(64, 29, 131, 1),
+                fontWeight: FontWeight.bold,
+              ),
               todayDecoration: BoxDecoration(
-                color: Colors.cyanAccent,
+                color: const Color.fromRGBO(217, 217, 217, 1),
                 shape: BoxShape.rectangle,
                 borderRadius: BorderRadius.circular(6.0),
+              ),
+              todayTextStyle: const TextStyle(
+                color: Color.fromRGBO(194, 0, 0, 1),
               ),
               defaultDecoration: BoxDecoration(
                 shape: BoxShape.rectangle,
@@ -90,7 +96,6 @@ class CustomTableCalendar extends StatelessWidget {
                 borderRadius: BorderRadius.circular(6.0),
               ),
               outsideDaysVisible: true,
-              todayTextStyle: const TextStyle(color: Colors.green),
             ),
             headerStyle: HeaderStyle(
               formatButtonVisible: false,
@@ -128,11 +133,16 @@ class CustomTableCalendar extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: (isSameDay(day, selectedDay) ||
                                 isSameDay(day, DateTime.now()))
-                            ? Colors.orange
-                            : Colors.blue,
+                            ? const Color.fromRGBO(255, 146, 64, 1)
+                            : const Color.fromRGBO(109, 36, 207, 1),
                         borderRadius: BorderRadius.circular(90),
                       ),
-                      child: Text(events.length.toString()),
+                      child: Text(
+                        events.length.toString(),
+                        style: const TextStyle(
+                          color: Color.fromRGBO(255, 255, 169, 1),
+                        ),
+                      ),
                     ),
                   );
                 }

@@ -92,7 +92,9 @@ class _MainPageState extends State<MainPage> {
                     text: AppLocalizations.of(context).translate('account'),
                     index: 3,
                     current: currentTab,
-                    icon: FontAwesomeIcons.user,
+                    icon: currentTab == 3
+                        ? FontAwesomeIcons.userLarge
+                        : FontAwesomeIcons.user,
                     action: () {
                       setState(() => currentTab = 3);
                     },

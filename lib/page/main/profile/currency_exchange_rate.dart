@@ -57,7 +57,7 @@ class _CurrencyExchangeRateState extends State<CurrencyExchangeRate> {
           },
           icon: const Icon(Icons.arrow_back_ios_new_rounded),
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).backgroundColor,
         centerTitle: true,
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(80),
@@ -77,7 +77,7 @@ class _CurrencyExchangeRateState extends State<CurrencyExchangeRate> {
                     maxLength: 15,
                     decoration: InputDecoration(
                       filled: true,
-                      fillColor: Colors.grey[200],
+                      fillColor: Theme.of(context).scaffoldBackgroundColor,
                       border: InputBorder.none,
                       hintText: "100.000",
                       counterText: "",
@@ -144,14 +144,14 @@ class _CurrencyExchangeRateState extends State<CurrencyExchangeRate> {
             const SizedBox(height: 10),
             Container(
               padding: const EdgeInsets.all(10),
-              color: Colors.white,
+              color: Theme.of(context).backgroundColor,
               child: TextField(
                 controller: _searchController,
                 style: const TextStyle(fontSize: 20),
                 maxLength: 15,
                 decoration: InputDecoration(
                   filled: true,
-                  fillColor: Colors.grey[200],
+                  fillColor: Theme.of(context).scaffoldBackgroundColor,
                   border: InputBorder.none,
                   hintText: "Tìm kiếm theo tên quốc gia hoặc tiền tệ",
                   counterText: "",

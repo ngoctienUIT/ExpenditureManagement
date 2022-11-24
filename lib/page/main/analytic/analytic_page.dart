@@ -138,7 +138,7 @@ class _AnalyticPageState extends State<AnalyticPage>
                   child: Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Theme.of(context).primaryColor,
                       borderRadius: BorderRadius.circular(90),
                     ),
                     child: const Icon(
@@ -258,7 +258,7 @@ class _AnalyticPageState extends State<AnalyticPage>
                     child: Text(
                       AppLocalizations.of(context).translate('no_data'),
                       style: const TextStyle(
-                        color: Colors.blue,
+                        color: Color.fromRGBO(255, 224, 111, 1),
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),

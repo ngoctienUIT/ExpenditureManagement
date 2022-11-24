@@ -53,7 +53,7 @@ class _AddSpendingPageState extends State<AddSpendingPage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 1,
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).backgroundColor,
         title: Text(AppLocalizations.of(context).translate('add_spending')),
         centerTitle: true,
         actions: [
@@ -73,7 +73,7 @@ class _AddSpendingPageState extends State<AddSpendingPage> {
         ),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(100),
-          child: inputMoney(controller: _money),
+          child: InputMoney(controller: _money),
         ),
       ),
       body: SingleChildScrollView(
