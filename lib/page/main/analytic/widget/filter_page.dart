@@ -148,8 +148,11 @@ class _FilterPageState extends State<FilterPage> {
                 },
               ),
               line(),
+              const SizedBox(height: 10),
               findFriend(),
+              const SizedBox(height: 10),
               line(),
+              const SizedBox(height: 10),
               Row(
                 children: [
                   SizedBox(
@@ -183,6 +186,7 @@ class _FilterPageState extends State<FilterPage> {
                   ),
                 ],
               ),
+              const SizedBox(height: 10),
               line(),
               ItemFilter(
                 text: AppLocalizations.of(context).translate('group'),
@@ -193,7 +197,6 @@ class _FilterPageState extends State<FilterPage> {
                   setState(() => filter.chooseIndex[2] = value);
                 },
               ),
-              line()
             ],
           ),
         ),
