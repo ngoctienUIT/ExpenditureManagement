@@ -177,7 +177,7 @@ class _ViewSpendingPageState extends State<ViewSpendingPage> {
                       ),
                       const SizedBox(width: 10),
                       Text(
-                        DateFormat("dd/MM/yyyy - hh:mm")
+                        DateFormat("dd/MM/yyyy - HH:mm")
                             .format(spending.dateTime),
                         style: const TextStyle(fontSize: 16),
                       )

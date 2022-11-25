@@ -105,30 +105,34 @@ Widget loadingItemSpending() {
           borderRadius: BorderRadius.circular(15),
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
-          child: Row(
+          padding: const EdgeInsets.all(15),
+          child: Column(
             children: [
-              Shimmer.fromColors(
-                baseColor: Colors.grey[300]!,
-                highlightColor: Colors.grey[100]!,
-                child: Container(
-                  height: 40,
-                  width: 40,
-                  decoration: BoxDecoration(
-                    color: Colors.grey,
-                    borderRadius: BorderRadius.circular(90),
+              Row(
+                children: [
+                  Shimmer.fromColors(
+                    baseColor: Colors.grey[300]!,
+                    highlightColor: Colors.grey[100]!,
+                    child: Container(
+                      height: 40,
+                      width: 40,
+                      decoration: BoxDecoration(
+                        color: Colors.grey,
+                        borderRadius: BorderRadius.circular(90),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              const SizedBox(width: 10),
-              textLoading(Random().nextInt(50) + 50),
-              const Spacer(),
-              textLoading(Random().nextInt(50) + 70),
-              const SizedBox(width: 10),
-              Shimmer.fromColors(
-                baseColor: Colors.grey[300]!,
-                highlightColor: Colors.grey[100]!,
-                child: const Icon(Icons.arrow_forward_ios_outlined),
+                  const SizedBox(width: 10),
+                  textLoading(Random().nextInt(50) + 50),
+                  const Spacer(),
+                  textLoading(Random().nextInt(50) + 70),
+                  const SizedBox(width: 10),
+                  Shimmer.fromColors(
+                    baseColor: Colors.grey[300]!,
+                    highlightColor: Colors.grey[100]!,
+                    child: const Icon(Icons.arrow_forward_ios_outlined),
+                  ),
+                ],
               ),
             ],
           ),
@@ -138,12 +142,12 @@ Widget loadingItemSpending() {
   );
 }
 
-Widget textLoading(int width) {
+Widget textLoading(int width, {int height = 25}) {
   return Shimmer.fromColors(
     baseColor: Colors.grey[300]!,
     highlightColor: Colors.grey[100]!,
     child: Container(
-      height: 25,
+      height: height.toDouble(),
       width: width.toDouble(),
       decoration: BoxDecoration(
         color: Colors.grey,

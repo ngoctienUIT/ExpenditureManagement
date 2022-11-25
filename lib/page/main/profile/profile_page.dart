@@ -6,6 +6,7 @@ import 'package:expenditure_management/constants/app_styles.dart';
 import 'package:expenditure_management/constants/function/loading_animation.dart';
 import 'package:expenditure_management/constants/list.dart';
 import 'package:expenditure_management/models/spending.dart';
+import 'package:expenditure_management/page/main/profile/history_page.dart';
 import 'package:expenditure_management/page/main/profile/widget/info_widget.dart';
 import 'package:expenditure_management/page/main/profile/widget/setting_item.dart';
 import 'package:expenditure_management/setting/bloc/setting_cubit.dart';
@@ -138,6 +139,20 @@ class _ProfilePageState extends State<ProfilePage> {
                             },
                           ),
                         ],
+                      ),
+                      const SizedBox(height: 20),
+                      settingItem(
+                        text: AppLocalizations.of(context).translate('history'),
+                        action: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const HistoryPage(),
+                            ),
+                          );
+                        },
+                        icon: Icons.history_rounded,
+                        color: const Color.fromRGBO(121, 189, 161, 1),
                       ),
                       const SizedBox(height: 20),
                       settingItem(
