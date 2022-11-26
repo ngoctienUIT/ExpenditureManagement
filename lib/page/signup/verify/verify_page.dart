@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:expenditure_management/constants/function/on_will_pop.dart';
+import 'package:expenditure_management/constants/function/route_function.dart';
+import 'package:expenditure_management/page/signup/verify/input_wallet.dart';
 import 'package:expenditure_management/setting/localization/app_localizations.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -104,7 +106,9 @@ class _VerifyPageState extends State<VerifyPage> {
                     height: 50,
                     child: ElevatedButton.icon(
                       onPressed: () {
-                        Navigator.pushReplacementNamed(context, '/wallet');
+                        Navigator.of(context).pushReplacement(
+                          createRoute(screen: const InputWalletPage()),
+                        );
                       },
                       icon: const Icon(FontAwesomeIcons.house),
                       label: Text(

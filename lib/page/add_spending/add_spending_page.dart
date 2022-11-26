@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:expenditure_management/constants/app_styles.dart';
 import 'package:expenditure_management/constants/function/loading_animation.dart';
 import 'package:expenditure_management/constants/function/pick_function.dart';
+import 'package:expenditure_management/constants/function/route_function.dart';
 import 'package:expenditure_management/page/add_spending/widget/add_friend.dart';
 import 'package:expenditure_management/page/add_spending/widget/input_money.dart';
 import 'package:expenditure_management/page/add_spending/widget/pick_image_widget.dart';
@@ -116,10 +117,9 @@ class _AddSpendingPageState extends State<AddSpendingPage> {
                       splashColor: Colors.transparent,
                       highlightColor: Colors.transparent,
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ChooseType(
+                        Navigator.of(context).push(
+                          createRoute(
+                            screen: ChooseType(
                               action: (index, coefficient, name) {
                                 setState(() {
                                   type = index;
@@ -128,6 +128,7 @@ class _AddSpendingPageState extends State<AddSpendingPage> {
                                 });
                               },
                             ),
+                            begin: const Offset(1, 0),
                           ),
                         );
                       },

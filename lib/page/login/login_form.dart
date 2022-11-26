@@ -1,4 +1,7 @@
 import 'package:expenditure_management/constants/function/loading_animation.dart';
+import 'package:expenditure_management/constants/function/route_function.dart';
+import 'package:expenditure_management/page/forgot/forgot_page.dart';
+import 'package:expenditure_management/page/signup/signup_page.dart';
 import 'package:expenditure_management/setting/localization/app_localizations.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -107,11 +110,15 @@ class _LoginFormState extends State<LoginForm> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       TextButton(
-                          onPressed: () {
-                            Navigator.pushNamed(context, '/forgot');
-                          },
-                          child: Text(AppLocalizations.of(context)
-                              .translate('forgot_password'))),
+                        onPressed: () {
+                          Navigator.of(context).push(createRoute(
+                            screen: const ForgotPage(),
+                            begin: const Offset(1, 0),
+                          ));
+                        },
+                        child: Text(AppLocalizations.of(context)
+                            .translate('forgot_password')),
+                      ),
                     ],
                   ),
                   const SizedBox(height: 20),
@@ -199,7 +206,9 @@ class _LoginFormState extends State<LoginForm> {
                       ),
                       TextButton(
                         onPressed: () {
-                          Navigator.pushReplacementNamed(context, '/signup');
+                          Navigator.of(context).pushReplacement(
+                            createRoute(screen: const SignupPage()),
+                          );
                         },
                         child: Text(
                           AppLocalizations.of(context)

@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:expenditure_management/constants/function/route_function.dart';
 import 'package:expenditure_management/constants/list.dart';
 import 'package:expenditure_management/models/spending.dart';
 import 'package:expenditure_management/page/main/home/view_list_spending_page.dart';
@@ -43,12 +44,10 @@ class ItemSpendingWidget extends StatelessWidget {
     return InkWell(
       borderRadius: BorderRadius.circular(15),
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ViewListSpendingPage(spendingList: list),
-          ),
-        );
+        Navigator.of(context).push(createRoute(
+          screen: ViewListSpendingPage(spendingList: list),
+          begin: const Offset(1, 0),
+        ));
       },
       child: Card(
         shape: RoundedRectangleBorder(

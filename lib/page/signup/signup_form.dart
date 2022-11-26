@@ -1,4 +1,7 @@
 import 'package:expenditure_management/constants/function/loading_animation.dart';
+import 'package:expenditure_management/constants/function/route_function.dart';
+import 'package:expenditure_management/page/login/login_page.dart';
+import 'package:expenditure_management/page/signup/verify/verify_page.dart';
 import 'package:expenditure_management/setting/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -54,7 +57,9 @@ class _SignupFormState extends State<SignupForm> {
                   .translate("create-account-success"));
           SchedulerBinding.instance.addPostFrameCallback((_) {
             Future.delayed(const Duration(seconds: 3), () {
-              Navigator.pushReplacementNamed(context, "/verify");
+              Navigator.of(context).pushReplacement(
+                createRoute(screen: const VerifyPage()),
+              );
             });
           });
         }
@@ -215,7 +220,9 @@ class _SignupFormState extends State<SignupForm> {
                       ),
                       TextButton(
                         onPressed: () {
-                          Navigator.pushReplacementNamed(context, '/login');
+                          Navigator.of(context).pushReplacement(
+                            createRoute(screen: const LoginPage()),
+                          );
                         },
                         child: Text(
                           AppLocalizations.of(context).translate('login_now'),

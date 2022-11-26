@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expenditure_management/constants/function/extension.dart';
+import 'package:expenditure_management/constants/function/route_function.dart';
 import 'package:expenditure_management/constants/list.dart';
 import 'package:expenditure_management/controls/spending_firebase.dart';
 import 'package:expenditure_management/models/filter.dart';
@@ -118,10 +119,9 @@ class _SearchPageState extends State<SearchPage> {
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => FilterPage(
+              Navigator.of(context).push(
+                createRoute(
+                  screen: FilterPage(
                     filter: filter,
                     action: (filter) {
                       setState(() => this.filter = filter.copyWith());
