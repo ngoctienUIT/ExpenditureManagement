@@ -35,10 +35,11 @@ class _SuccessPageState extends State<SuccessPage> {
                   ),
                 ),
                 const SizedBox(height: 10),
-                const Text(
+                Text(
                   textAlign: TextAlign.center,
-                  "Vui lòng kiểm tra email và thực hiện thay đổi mật khẩu mới!",
-                  style: TextStyle(fontSize: 18),
+                  AppLocalizations.of(context)
+                      .translate('check_your_email_make_password_change'),
+                  style: const TextStyle(fontSize: 18),
                 ),
                 const SizedBox(height: 20),
                 Image.asset(

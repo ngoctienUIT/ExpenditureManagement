@@ -1,9 +1,13 @@
 import 'package:expenditure_management/constants/list.dart';
 import 'package:expenditure_management/models/spending.dart';
 import 'package:expenditure_management/page/view_spending/view_spending_page.dart';
+import 'package:expenditure_management/setting/bloc/setting_cubit.dart';
+import 'package:expenditure_management/setting/bloc/setting_state.dart';
 import 'package:expenditure_management/setting/localization/app_localizations.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -20,6 +24,12 @@ class _ItemSpendingDayState extends State<ItemSpendingDay> {
   var numberFormat = NumberFormat.currency(locale: "vi_VI");
 
   @override
+  void initState() {
+    super.initState();
+    initializeDateFormatting();
+  }
+
+  @override
   Widget build(BuildContext context) {
     widget.spendingList.sort((a, b) => b.dateTime.compareTo(a.dateTime));
 
@@ -30,7 +40,11 @@ class _ItemSpendingDayState extends State<ItemSpendingDay> {
         .toList();
 
     return listDate.isNotEmpty
-        ? body(listDate)
+        ? BlocBuilder<SettingCubit, SettingState>(
+            buildWhen: (previous, current) => previous != current,
+            builder: (_, settingState) {
+              return body(listDate, settingState.locale.languageCode);
+            })
         : Center(
             child: Text(
               AppLocalizations.of(context).translate('no_data'),
@@ -39,7 +53,7 @@ class _ItemSpendingDayState extends State<ItemSpendingDay> {
           );
   }
 
-  Widget body(List<DateTime> listDate) {
+  Widget body(List<DateTime> listDate, String lang) {
     return ListView.builder(
       itemCount: listDate.length,
       itemBuilder: (context, index) {
@@ -68,10 +82,10 @@ class _ItemSpendingDayState extends State<ItemSpendingDay> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            DateFormat("EEEE").format(listDate[index]),
+                            DateFormat.EEEE(lang).format(listDate[index]),
                             style: const TextStyle(fontSize: 18),
                           ),
-                          Text(DateFormat("MMMM, yyyy").format(listDate[index]))
+                          Text(DateFormat.yMMMM(lang).format(listDate[index]))
                         ],
                       ),
                       const Spacer(),
@@ -106,72 +120,74 @@ class _ItemSpendingDayState extends State<ItemSpendingDay> {
     return Column(
       children: List.generate(
         list.length,
-        (index) => InkWell(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ViewSpendingPage(
-                  spending: list[index],
-                  change: (spending) async {
-                    try {
-                      spending.image = await FirebaseStorage.instance
-                          .ref()
-                          .child("spending/${spending.id}.png")
-                          .getDownloadURL();
-                    } catch (_) {}
-                    widget.spendingList.removeWhere(
-                        (element) => element.id!.compareTo(spending.id!) == 0);
-                    setState(() {
-                      widget.spendingList.add(spending);
-                    });
-                  },
-                  delete: (id) {
-                    setState(() {
-                      widget.spendingList.removeWhere(
-                          (element) => element.id!.compareTo(id) == 0);
-                    });
-                  },
+        (index) {
+          return InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ViewSpendingPage(
+                    spending: list[index],
+                    change: (spending) async {
+                      try {
+                        spending.image = await FirebaseStorage.instance
+                            .ref()
+                            .child("spending/${spending.id}.png")
+                            .getDownloadURL();
+                      } catch (_) {}
+                      widget.spendingList.removeWhere((element) =>
+                          element.id!.compareTo(spending.id!) == 0);
+                      setState(() {
+                        widget.spendingList.add(spending);
+                      });
+                    },
+                    delete: (id) {
+                      setState(() {
+                        widget.spendingList.removeWhere(
+                            (element) => element.id!.compareTo(id) == 0);
+                      });
+                    },
+                  ),
                 ),
-              ),
-            );
-          },
-          child: Container(
-            padding: const EdgeInsets.all(10),
-            child: Row(
-              children: [
-                Image.asset(
-                  listType[widget.spendingList[0].type]["image"]!,
-                  width: 40,
-                ),
-                const SizedBox(width: 10),
-                Container(
-                  constraints: const BoxConstraints(maxWidth: 100),
-                  child: Text(
-                    widget.spendingList[0].type == 41
-                        ? widget.spendingList[0].typeName!
-                        : AppLocalizations.of(context).translate(
-                            listType[widget.spendingList[0].type]["title"]!),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+              );
+            },
+            child: Container(
+              padding: const EdgeInsets.all(10),
+              child: Row(
+                children: [
+                  Image.asset(
+                    listType[list[index].type]["image"]!,
+                    width: 40,
+                  ),
+                  const SizedBox(width: 10),
+                  Container(
+                    constraints: const BoxConstraints(maxWidth: 100),
+                    child: Text(
+                      list[index].type == 41
+                          ? list[index].typeName!
+                          : AppLocalizations.of(context)
+                              .translate(listType[list[index].type]["title"]!),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                ),
-                Expanded(
-                  child: Text(
-                    numberFormat.format(list[index].money),
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.end,
-                    style: const TextStyle(fontSize: 16),
+                  Expanded(
+                    child: Text(
+                      numberFormat.format(list[index].money),
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.end,
+                      style: const TextStyle(fontSize: 16),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }

@@ -4,8 +4,14 @@ import 'package:csv/csv.dart';
 import 'package:expenditure_management/constants/app_colors.dart';
 import 'package:expenditure_management/constants/app_styles.dart';
 import 'package:expenditure_management/constants/function/loading_animation.dart';
+import 'package:expenditure_management/constants/function/route_function.dart';
 import 'package:expenditure_management/constants/list.dart';
 import 'package:expenditure_management/models/spending.dart';
+import 'package:expenditure_management/page/main/profile/about_page.dart';
+import 'package:expenditure_management/page/main/profile/change_password.dart';
+import 'package:expenditure_management/page/main/profile/currency_exchange_rate.dart';
+import 'package:expenditure_management/page/main/profile/edit_profile_page.dart';
+import 'package:expenditure_management/page/main/profile/history_page.dart';
 import 'package:expenditure_management/page/main/profile/widget/info_widget.dart';
 import 'package:expenditure_management/page/main/profile/widget/setting_item.dart';
 import 'package:expenditure_management/setting/bloc/setting_cubit.dart';
@@ -80,7 +86,10 @@ class _ProfilePageState extends State<ProfilePage> {
                       settingItem(
                         text: AppLocalizations.of(context).translate('account'),
                         action: () {
-                          Navigator.pushNamed(context, '/edit');
+                          Navigator.of(context).push(createRoute(
+                            screen: const EditProfilePage(),
+                            begin: const Offset(1, 0),
+                          ));
                         },
                         icon: FontAwesomeIcons.solidUser,
                         color: const Color.fromRGBO(0, 150, 255, 1),
@@ -91,7 +100,10 @@ class _ProfilePageState extends State<ProfilePage> {
                           text: AppLocalizations.of(context)
                               .translate('change_password'),
                           action: () {
-                            Navigator.pushNamed(context, '/password');
+                            Navigator.of(context).push(createRoute(
+                              screen: const ChangePassword(),
+                              begin: const Offset(1, 0),
+                            ));
                           },
                           icon: FontAwesomeIcons.lock,
                           color: const Color.fromRGBO(233, 116, 81, 1),
@@ -141,6 +153,18 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       const SizedBox(height: 20),
                       settingItem(
+                        text: AppLocalizations.of(context).translate('history'),
+                        action: () {
+                          Navigator.of(context).push(createRoute(
+                            screen: const HistoryPage(),
+                            begin: const Offset(1, 0),
+                          ));
+                        },
+                        icon: Icons.history_rounded,
+                        color: const Color.fromRGBO(121, 189, 161, 1),
+                      ),
+                      const SizedBox(height: 20),
+                      settingItem(
                         text:
                             "${AppLocalizations.of(context).translate('export')} CSV",
                         action: () async {
@@ -157,7 +181,10 @@ class _ProfilePageState extends State<ProfilePage> {
                         text: AppLocalizations.of(context)
                             .translate('currency_exchange_rate'),
                         action: () async {
-                          Navigator.pushNamed(context, '/exchange');
+                          Navigator.of(context).push(createRoute(
+                            screen: const CurrencyExchangeRate(),
+                            begin: const Offset(1, 0),
+                          ));
                         },
                         icon: Icons.attach_money_rounded,
                         color: const Color.fromRGBO(255, 192, 0, 1),
@@ -166,7 +193,10 @@ class _ProfilePageState extends State<ProfilePage> {
                       settingItem(
                         text: AppLocalizations.of(context).translate('about'),
                         action: () {
-                          Navigator.pushNamed(context, '/about');
+                          Navigator.of(context).push(createRoute(
+                            screen: const AboutPage(),
+                            begin: const Offset(1, 0),
+                          ));
                         },
                         icon: FontAwesomeIcons.circleInfo,
                         color: const Color.fromRGBO(79, 121, 66, 1),

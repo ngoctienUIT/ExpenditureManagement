@@ -1,4 +1,6 @@
 import 'dart:math';
+import 'package:expenditure_management/constants/function/extension.dart';
+import 'package:expenditure_management/setting/localization/app_localizations.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expenditure_management/models/user.dart';
 import 'package:flutter/material.dart';
@@ -51,7 +53,10 @@ class InfoWidget extends StatelessWidget {
               : loadingInfo(width: 150, height: 150, radius: 90),
         ),
         const SizedBox(height: 20),
-        const Text("Tiền hàng tháng", style: TextStyle(fontSize: 16)),
+        Text(
+          AppLocalizations.of(context).translate('monthly_money').capitalize(),
+          style: const TextStyle(fontSize: 16),
+        ),
         const SizedBox(height: 10),
         user != null
             ? Text(

@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:expenditure_management/constants/app_styles.dart';
 import 'package:expenditure_management/constants/function/loading_animation.dart';
 import 'package:expenditure_management/constants/function/pick_function.dart';
+import 'package:expenditure_management/constants/function/route_function.dart';
 import 'package:expenditure_management/page/add_spending/widget/add_friend.dart';
 import 'package:expenditure_management/page/add_spending/widget/input_money.dart';
 import 'package:expenditure_management/page/add_spending/widget/pick_image_widget.dart';
@@ -52,8 +53,8 @@ class _AddSpendingPageState extends State<AddSpendingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.white,
+        elevation: 1,
+        backgroundColor: Theme.of(context).backgroundColor,
         title: Text(AppLocalizations.of(context).translate('add_spending')),
         centerTitle: true,
         actions: [
@@ -73,7 +74,7 @@ class _AddSpendingPageState extends State<AddSpendingPage> {
         ),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(100),
-          child: inputMoney(controller: _money),
+          child: InputMoney(controller: _money),
         ),
       ),
       body: SingleChildScrollView(
@@ -116,10 +117,9 @@ class _AddSpendingPageState extends State<AddSpendingPage> {
                       splashColor: Colors.transparent,
                       highlightColor: Colors.transparent,
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ChooseType(
+                        Navigator.of(context).push(
+                          createRoute(
+                            screen: ChooseType(
                               action: (index, coefficient, name) {
                                 setState(() {
                                   type = index;
@@ -128,6 +128,7 @@ class _AddSpendingPageState extends State<AddSpendingPage> {
                                 });
                               },
                             ),
+                            begin: const Offset(1, 0),
                           ),
                         );
                       },
@@ -318,9 +319,13 @@ class _AddSpendingPageState extends State<AddSpendingPage> {
       Navigator.pop(context);
       Navigator.pop(context);
     } else if (type == null) {
-      Fluttertoast.showToast(msg: "Vui lòng chọn loại");
+      Fluttertoast.showToast(
+          msg: AppLocalizations.of(context).translate('please_select_type'));
     } else {
-      Fluttertoast.showToast(msg: "Vui lòng nhập vào số tiền hợp lệ");
+      Fluttertoast.showToast(
+        msg:
+            AppLocalizations.of(context).translate('please_enter_valid_amount'),
+      );
     }
   }
 }

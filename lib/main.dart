@@ -1,19 +1,11 @@
 import 'package:expenditure_management/constants/app_colors.dart';
 import 'package:expenditure_management/firebase_options.dart';
-import 'package:expenditure_management/page/add_spending/add_spending_page.dart';
 import 'package:expenditure_management/page/forgot/forgot_page.dart';
 import 'package:expenditure_management/page/forgot/success_page.dart';
 import 'package:expenditure_management/page/login/login_page.dart';
 import 'package:expenditure_management/page/main/home/home_page.dart';
 import 'package:expenditure_management/page/main/main_page.dart';
-import 'package:expenditure_management/page/main/profile/about_page.dart';
-import 'package:expenditure_management/page/main/profile/change_password.dart';
-import 'package:expenditure_management/page/main/profile/currency_exchange_rate.dart';
-import 'package:expenditure_management/page/main/profile/edit_profile_page.dart';
-import 'package:expenditure_management/page/main/profile/new_password.dart';
 import 'package:expenditure_management/page/onboarding/onboarding_page.dart';
-import 'package:expenditure_management/page/signup/signup_page.dart';
-import 'package:expenditure_management/page/signup/verify/input_wallet.dart';
 import 'package:expenditure_management/page/signup/verify/verify_page.dart';
 import 'package:expenditure_management/setting/bloc/setting_cubit.dart';
 import 'package:expenditure_management/setting/bloc/setting_state.dart';
@@ -74,10 +66,16 @@ class MyApp extends StatelessWidget {
                       primarySwatch: Colors.blue,
                     )
                   : ThemeData(
+                      cardColor: Colors.white,
+                      backgroundColor: Colors.white,
                       brightness: Brightness.light,
                       primarySwatch: Colors.blue,
                       scaffoldBackgroundColor: AppColors.whisperBackground,
                       bottomAppBarColor: AppColors.whisperBackground,
+                      floatingActionButtonTheme:
+                          const FloatingActionButtonThemeData(
+                        backgroundColor: Color.fromRGBO(121, 158, 84, 1),
+                      ),
                       appBarTheme: AppBarTheme(
                         backgroundColor: AppColors.whisperBackground,
                         iconTheme: const IconThemeData(color: Colors.black),
@@ -87,6 +85,7 @@ class MyApp extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
+                      primaryColor: const Color.fromRGBO(242, 243, 247, 1),
                     ),
               initialRoute: FirebaseAuth.instance.currentUser == null
                   ? (isFirstStart ? "/" : "/login")
@@ -98,19 +97,11 @@ class MyApp extends StatelessWidget {
               routes: {
                 '/': (context) => const OnboardingPage(),
                 '/login': (context) => const LoginPage(),
-                '/signup': (context) => const SignupPage(),
                 '/home': (context) => const HomePage(),
                 '/main': (context) => const MainPage(),
                 '/forgot': (context) => const ForgotPage(),
                 '/success': (context) => const SuccessPage(),
                 '/verify': (context) => const VerifyPage(),
-                '/add': (context) => const AddSpendingPage(),
-                '/edit': (context) => const EditProfilePage(),
-                '/password': (context) => const ChangePassword(),
-                '/new': (context) => const NewPassword(),
-                '/about': (context) => const AboutPage(),
-                '/wallet': (context) => const InputWalletPage(),
-                '/exchange': (context) => const CurrencyExchangeRate(),
               },
             );
           }),

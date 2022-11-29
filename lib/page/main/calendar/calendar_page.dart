@@ -55,22 +55,37 @@ class _CalendarPageState extends State<CalendarPage> {
                       future: SpendingFirebase.getSpendingList(list),
                       builder: (context, futureSnapshot) {
                         if (futureSnapshot.hasData) {
-                          var dataSpending = futureSnapshot.data;
+                          var dataSpending = futureSnapshot.requireData;
 
-                          List<Spending> spendingList = dataSpending!
+                          List<Spending> spendingList = dataSpending
                               .where((element) =>
                                   isSameDay(element.dateTime, _selectedDay))
                               .toList();
 
-                          if (check ||
-                              (_currentSpendingList!.length !=
-                                      spendingList.length &&
-                                  isSameMonth(_selectedDay, _focusedDay))) {
+                          if (check) {
                             _currentSpendingList = spendingList;
                             check = false;
                           }
 
-                          return body(dataSpending);
+                          return Column(
+                            children: [
+                              CustomTableCalendar(
+                                  focusedDay: _focusedDay,
+                                  selectedDay: _selectedDay,
+                                  dataSpending: dataSpending,
+                                  onPageChanged: (focusedDay) =>
+                                      setState(() => _focusedDay = focusedDay),
+                                  onDaySelected: (selectedDay, focusedDay) {
+                                    setState(() {
+                                      _focusedDay = focusedDay;
+                                      _selectedDay = selectedDay;
+                                      check = true;
+                                    });
+                                  }),
+                              const SizedBox(height: 5),
+                              body(dataSpending),
+                            ],
+                          );
                         }
                         return loadingData();
                       });
@@ -83,50 +98,33 @@ class _CalendarPageState extends State<CalendarPage> {
   }
 
   Widget body(List<Spending> dataSpending) {
-    return Column(
-      children: [
-        CustomTableCalendar(
-            focusedDay: _focusedDay,
-            selectedDay: _selectedDay,
-            dataSpending: dataSpending,
-            onPageChanged: (focusedDay) =>
-                setState(() => _focusedDay = focusedDay),
-            onDaySelected: (selectedDay, focusedDay) {
-              setState(() {
-                _focusedDay = focusedDay;
-                _selectedDay = selectedDay;
-                check = true;
-              });
-            }),
-        const SizedBox(height: 5),
-        Expanded(
-            child: SingleChildScrollView(
-          child: Column(
-            children: [
-              if (_currentSpendingList!.isNotEmpty)
-                TotalSpending(
-                  list: _currentSpendingList,
-                ),
-              BuildSpending(
-                spendingList: _currentSpendingList,
-                date: _selectedDay,
-                change: (spending) async {
-                  try {
-                    spending.image = await FirebaseStorage.instance
-                        .ref()
-                        .child("spending/${spending.id}.png")
-                        .getDownloadURL();
-                  } catch (_) {}
+    return Expanded(
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            if (_currentSpendingList!.isNotEmpty)
+              TotalSpending(
+                list: _currentSpendingList,
+              ),
+            BuildSpending(
+              spendingList: _currentSpendingList,
+              date: _selectedDay,
+              change: (spending) async {
+                try {
+                  spending.image = await FirebaseStorage.instance
+                      .ref()
+                      .child("spending/${spending.id}.png")
+                      .getDownloadURL();
+                } catch (_) {}
 
-                  _currentSpendingList!.removeWhere(
-                      (element) => element.id!.compareTo(spending.id!) == 0);
-                  setState(() => _currentSpendingList!.add(spending));
-                },
-              )
-            ],
-          ),
-        ))
-      ],
+                _currentSpendingList!.removeWhere(
+                    (element) => element.id!.compareTo(spending.id!) == 0);
+                setState(() => _currentSpendingList!.add(spending));
+              },
+            )
+          ],
+        ),
+      ),
     );
   }
 

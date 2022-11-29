@@ -43,10 +43,11 @@ class _InputWalletPageState extends State<InputWalletPage> {
                       fontSize: 25, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 20),
-                const Text(
+                Text(
                   textAlign: TextAlign.center,
-                  "Nhập vào số tiền chi tiêu hàng tháng mà bạn muốn quản lý!",
-                  style: TextStyle(
+                  AppLocalizations.of(context).translate(
+                      'enter_monthly_spending_amount_you_want_manage'),
+                  style: const TextStyle(
                     fontSize: 18,
                   ),
                 ),

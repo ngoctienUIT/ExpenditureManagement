@@ -1,10 +1,15 @@
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:expenditure_management/constants/list.dart';
 import 'package:expenditure_management/models/filter.dart';
+import 'package:expenditure_management/page/add_spending/add_friend_page.dart';
+import 'package:expenditure_management/page/add_spending/widget/circle_text.dart';
+import 'package:expenditure_management/page/add_spending/widget/remove_icon.dart';
 import 'package:expenditure_management/page/main/analytic/widget/item_filter.dart';
 import 'package:expenditure_management/setting/localization/app_localizations.dart';
 import 'package:expenditure_management/constants/function/pick_function.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 
 class FilterPage extends StatefulWidget {
@@ -143,6 +148,11 @@ class _FilterPageState extends State<FilterPage> {
                 },
               ),
               line(),
+              const SizedBox(height: 10),
+              findFriend(),
+              const SizedBox(height: 10),
+              line(),
+              const SizedBox(height: 10),
               Row(
                 children: [
                   SizedBox(
@@ -161,7 +171,9 @@ class _FilterPageState extends State<FilterPage> {
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5),
                           borderSide: const BorderSide(
-                              width: 0, style: BorderStyle.none),
+                            width: 0,
+                            style: BorderStyle.none,
+                          ),
                         ),
                         hintStyle: const TextStyle(fontSize: 16),
                         filled: true,
@@ -174,6 +186,7 @@ class _FilterPageState extends State<FilterPage> {
                   ),
                 ],
               ),
+              const SizedBox(height: 10),
               line(),
               ItemFilter(
                 text: AppLocalizations.of(context).translate('group'),
@@ -184,11 +197,102 @@ class _FilterPageState extends State<FilterPage> {
                   setState(() => filter.chooseIndex[2] = value);
                 },
               ),
-              line()
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget findFriend() {
+    return Row(
+      children: [
+        SizedBox(
+          width: 70,
+          child: Text(
+            AppLocalizations.of(context).translate('friend'),
+            style: const TextStyle(fontSize: 16),
+          ),
+        ),
+        const SizedBox(width: 10),
+        Expanded(
+          child: InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AddFriendPage(
+                    friends: filter.friends!,
+                    colors: filter.colors!,
+                    action: (friends, colors) {
+                      setState(() {
+                        filter.friends = List.from(friends);
+                        filter.colors = List.from(colors);
+                      });
+                    },
+                  ),
+                ),
+              );
+            },
+            child: Container(
+              width: double.infinity,
+              alignment: Alignment.centerLeft,
+              height: 45,
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: filter.friends!.isEmpty
+                  ? Center(
+                      child: Text(
+                        AppLocalizations.of(context).translate('friend'),
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    )
+                  : Wrap(
+                      runSpacing: 5,
+                      spacing: 2,
+                      children: List.generate(filter.friends!.length, (index) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                          child: Container(
+                            padding: const EdgeInsets.only(right: 10),
+                            decoration: BoxDecoration(
+                              color: Colors.grey.withOpacity(0.7),
+                              borderRadius: BorderRadius.circular(90),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                circleText(
+                                  text: filter.friends![index][0],
+                                  color: filter.colors![index],
+                                ),
+                                const SizedBox(width: 10),
+                                Text(
+                                  filter.friends![index],
+                                  style: const TextStyle(fontSize: 16),
+                                ),
+                                const SizedBox(width: 5),
+                                removeIcon(action: () {
+                                  setState(() {
+                                    filter.friends!.removeAt(index);
+                                    filter.colors!.removeAt(index);
+                                  });
+                                }),
+                              ],
+                            ),
+                          ),
+                        );
+                      }),
+                    ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -216,25 +320,29 @@ class _FilterPageState extends State<FilterPage> {
                   Text(AppLocalizations.of(context).translate("enter_amount")),
                   const SizedBox(height: 10),
                   if (check)
-                    const Text(
-                      "Bắt đầu",
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                    Text(
+                      AppLocalizations.of(context).translate('start'),
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                   TextField(
                     controller: moneyController,
                     autofocus: true,
                     textAlign: TextAlign.center,
                     keyboardType: TextInputType.number,
-                    inputFormatters: [CurrencyTextInputFormatter(locale: "vi")],
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(
+                          RegExp("[\\s0-9a-zA-Z]")),
+                      CurrencyTextInputFormatter(locale: "vi"),
+                    ],
                     decoration: const InputDecoration(
                       hintText: '30.000 VND',
                     ),
                   ),
                   if (check) const SizedBox(height: 20),
                   if (check)
-                    const Text(
-                      "Kết thúc",
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                    Text(
+                      AppLocalizations.of(context).translate('finish'),
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                   if (check)
                     TextField(
@@ -243,7 +351,9 @@ class _FilterPageState extends State<FilterPage> {
                       textAlign: TextAlign.center,
                       keyboardType: TextInputType.number,
                       inputFormatters: [
-                        CurrencyTextInputFormatter(locale: "vi")
+                        FilteringTextInputFormatter.allow(
+                            RegExp("[\\s0-9a-zA-Z]")),
+                        CurrencyTextInputFormatter(locale: "vi"),
                       ],
                       decoration: const InputDecoration(
                         hintText: '30.000 VND',
@@ -252,8 +362,19 @@ class _FilterPageState extends State<FilterPage> {
                   const SizedBox(height: 10),
                   ElevatedButton(
                     onPressed: () {
-                      setState(() => filter.chooseIndex[0] = index);
-                      Navigator.pop(context);
+                      int money = int.parse(moneyController.text
+                          .replaceAll(RegExp(r'[^0-9]'), ''));
+                      int finish = int.parse(finishMoneyController.text
+                          .replaceAll(RegExp(r'[^0-9]'), ''));
+                      if (check && finish > money || !check) {
+                        setState(() => filter.chooseIndex[0] = index);
+                        Navigator.pop(context);
+                      } else {
+                        Fluttertoast.showToast(
+                          msg: AppLocalizations.of(context)
+                              .translate('invalid_input'),
+                        );
+                      }
                     },
                     child: const Text("Ok"),
                   )

@@ -1,4 +1,7 @@
 import 'package:expenditure_management/constants/function/loading_animation.dart';
+import 'package:expenditure_management/constants/function/route_function.dart';
+import 'package:expenditure_management/page/login/login_page.dart';
+import 'package:expenditure_management/page/signup/verify/verify_page.dart';
 import 'package:expenditure_management/setting/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -54,7 +57,9 @@ class _SignupFormState extends State<SignupForm> {
                   .translate("create-account-success"));
           SchedulerBinding.instance.addPostFrameCallback((_) {
             Future.delayed(const Duration(seconds: 3), () {
-              Navigator.pushReplacementNamed(context, "/verify");
+              Navigator.of(context).pushReplacement(
+                createRoute(screen: const VerifyPage()),
+              );
             });
           });
         }
@@ -80,7 +85,7 @@ class _SignupFormState extends State<SignupForm> {
                   const SizedBox(height: 10),
                   const Text("Welcome to App", style: TextStyle(fontSize: 20)),
                   const SizedBox(height: 50),
-                  inputText(
+                  InputText(
                     hint: AppLocalizations.of(context).translate('full_name'),
                     validator: 1,
                     controller: _nameController,
@@ -88,7 +93,7 @@ class _SignupFormState extends State<SignupForm> {
                     textCapitalization: TextCapitalization.words,
                   ),
                   const SizedBox(height: 20),
-                  inputText(
+                  InputText(
                     hint: "Email",
                     validator: 0,
                     controller: _userController,
@@ -140,7 +145,7 @@ class _SignupFormState extends State<SignupForm> {
                       width: double.infinity,
                       height: 57,
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: Theme.of(context).backgroundColor,
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Row(
@@ -160,7 +165,7 @@ class _SignupFormState extends State<SignupForm> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  inputPassword(
+                  InputPassword(
                     action: () {
                       check = false;
                       setState(() => hide = !hide);
@@ -170,7 +175,7 @@ class _SignupFormState extends State<SignupForm> {
                     hide: hide,
                   ),
                   const SizedBox(height: 20),
-                  inputPassword(
+                  InputPassword(
                     action: () {
                       check = false;
                       setState(() => hide = !hide);
@@ -215,7 +220,9 @@ class _SignupFormState extends State<SignupForm> {
                       ),
                       TextButton(
                         onPressed: () {
-                          Navigator.pushReplacementNamed(context, '/login');
+                          Navigator.of(context).pushReplacement(
+                            createRoute(screen: const LoginPage()),
+                          );
                         },
                         child: Text(
                           AppLocalizations.of(context).translate('login_now'),

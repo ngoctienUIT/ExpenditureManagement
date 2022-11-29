@@ -1,3 +1,4 @@
+import 'package:expenditure_management/constants/function/route_function.dart';
 import 'package:expenditure_management/constants/list.dart';
 import 'package:expenditure_management/models/spending.dart';
 import 'package:expenditure_management/page/main/home/widget/item_spending_widget.dart';
@@ -19,7 +20,7 @@ class BuildSpending extends StatelessWidget {
         ? (spendingList!.isEmpty
             ? Center(
                 child: Text(
-                  "Bạn không có bất kỳ chi tiêu nào\nvào ngày ${DateFormat("dd/MM/yyyy").format(date!)}",
+                  "${AppLocalizations.of(context).translate('you_have_spending_the_day')} ${DateFormat("dd/MM/yyyy").format(date!)}",
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -43,14 +44,12 @@ class BuildSpending extends StatelessWidget {
         return InkWell(
           borderRadius: BorderRadius.circular(15),
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ViewSpendingPage(
-                  spending: spendingList[index],
-                ),
+            Navigator.of(context).push(createRoute(
+              screen: ViewSpendingPage(
+                spending: spendingList[index],
               ),
-            );
+              begin: const Offset(1, 0),
+            ));
           },
           child: Card(
             shape: RoundedRectangleBorder(

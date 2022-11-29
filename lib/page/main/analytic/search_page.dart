@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expenditure_management/constants/function/extension.dart';
+import 'package:expenditure_management/constants/function/route_function.dart';
 import 'package:expenditure_management/constants/list.dart';
 import 'package:expenditure_management/controls/spending_firebase.dart';
 import 'package:expenditure_management/models/filter.dart';
@@ -22,7 +23,7 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   final TextEditingController _searchController = TextEditingController();
   String? query;
-  Filter filter = Filter(chooseIndex: [0, 0, 0]);
+  Filter filter = Filter(chooseIndex: [0, 0, 0], friends: [], colors: []);
 
   @override
   void dispose() {
@@ -71,6 +72,14 @@ class _SearchPageState extends State<SearchPage> {
       return false;
     }
 
+    if (filter.friends!.isNotEmpty) {
+      List<String> list = filter.friends!
+          .where((element) => spending.friends!.contains(element))
+          .toList();
+
+      if (list.isEmpty) return false;
+    }
+
     if (spending.note != null && !spending.note!.contains(filter.note)) {
       return false;
     }
@@ -81,6 +90,7 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 2,
         title: TextField(
           controller: _searchController,
           decoration: InputDecoration(
@@ -109,13 +119,11 @@ class _SearchPageState extends State<SearchPage> {
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => FilterPage(
+              Navigator.of(context).push(
+                createRoute(
+                  screen: FilterPage(
                     filter: filter,
                     action: (filter) {
-                      print(filter.toMap());
                       setState(() => this.filter = filter.copyWith());
                     },
                   ),
@@ -150,10 +158,11 @@ class _SearchPageState extends State<SearchPage> {
                           var spendingList = snapshot.data;
                           var list = spendingList!.where(checkResult).toList();
                           if (list.isEmpty) {
-                            return const Center(
+                            return Center(
                               child: Text(
-                                "Không có gì ở đây!",
-                                style: TextStyle(fontSize: 16),
+                                AppLocalizations.of(context)
+                                    .translate('nothing_here'),
+                                style: const TextStyle(fontSize: 16),
                               ),
                             );
                           }

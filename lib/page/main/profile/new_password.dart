@@ -52,7 +52,7 @@ class _NewPasswordState extends State<NewPassword> {
                 style: const TextStyle(fontSize: 18),
               ),
               const SizedBox(height: 50),
-              inputPassword(
+              InputPassword(
                 hint: AppLocalizations.of(context).translate('password'),
                 controller: _passwordController,
                 hide: hide,
@@ -61,7 +61,7 @@ class _NewPasswordState extends State<NewPassword> {
                 },
               ),
               const SizedBox(height: 20),
-              inputPassword(
+              InputPassword(
                 action: () {
                   setState(() {
                     hide = !hide;

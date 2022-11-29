@@ -1,3 +1,4 @@
+import 'package:expenditure_management/constants/function/route_function.dart';
 import 'package:expenditure_management/page/add_spending/add_friend_page.dart';
 import 'package:expenditure_management/page/add_spending/widget/circle_text.dart';
 import 'package:expenditure_management/page/add_spending/widget/remove_icon.dart';
@@ -23,14 +24,14 @@ class AddFriend extends StatelessWidget {
       splashColor: Colors.transparent,
       highlightColor: Colors.transparent,
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => AddFriendPage(
+        Navigator.of(context).push(
+          createRoute(
+            screen: AddFriendPage(
               friends: friends,
               colors: colors,
               action: (friends, colors) => add(friends, colors),
             ),
+            begin: const Offset(1, 0),
           ),
         );
       },

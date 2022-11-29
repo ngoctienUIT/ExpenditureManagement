@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:math';
 import 'package:expenditure_management/constants/function/loading_animation.dart';
+import 'package:expenditure_management/constants/function/route_function.dart';
 import 'package:expenditure_management/constants/list.dart';
 import 'package:expenditure_management/controls/spending_firebase.dart';
 import 'package:expenditure_management/models/spending.dart';
@@ -79,29 +80,26 @@ class _ViewSpendingPageState extends State<ViewSpendingPage> {
           ),
           IconButton(
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => EditSpendingPage(
-                    spending: spending,
-                    change: (spending, colors) async {
-                      try {
-                        spending.image = await FirebaseStorage.instance
-                            .ref()
-                            .child("spending/${spending.id}.png")
-                            .getDownloadURL();
-                      } catch (_) {}
-                      if (widget.change != null) {
-                        widget.change!(spending);
-                      }
-                      setState(() {
-                        this.spending = spending;
-                        this.colors = colors;
-                      });
-                    },
-                  ),
+              Navigator.of(context).push(createRoute(
+                screen: EditSpendingPage(
+                  spending: spending,
+                  change: (spending, colors) async {
+                    try {
+                      spending.image = await FirebaseStorage.instance
+                          .ref()
+                          .child("spending/${spending.id}.png")
+                          .getDownloadURL();
+                    } catch (_) {}
+                    if (widget.change != null) {
+                      widget.change!(spending);
+                    }
+                    setState(() {
+                      this.spending = spending;
+                      this.colors = colors;
+                    });
+                  },
                 ),
-              );
+              ));
             },
             icon: const Icon(
               Icons.edit,
@@ -177,7 +175,7 @@ class _ViewSpendingPageState extends State<ViewSpendingPage> {
                       ),
                       const SizedBox(width: 10),
                       Text(
-                        DateFormat("dd/MM/yyyy - hh:mm")
+                        DateFormat("dd/MM/yyyy - HH:mm")
                             .format(spending.dateTime),
                         style: const TextStyle(fontSize: 16),
                       )

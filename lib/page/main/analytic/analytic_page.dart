@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expenditure_management/constants/function/get_data_spending.dart';
 import 'package:expenditure_management/constants/function/get_date.dart';
+import 'package:expenditure_management/constants/function/route_function.dart';
 import 'package:expenditure_management/models/spending.dart';
 import 'package:expenditure_management/page/main/analytic/chart/column_chart.dart';
 import 'package:expenditure_management/page/main/analytic/chart/pie_chart.dart';
@@ -119,21 +120,36 @@ class _AnalyticPageState extends State<AnalyticPage>
                 style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
               ),
               const Spacer(),
-              IconButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const SearchPage(),
+              InkWell(
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+                onTap: () {
+                  Navigator.of(context).push(
+                    createRoute(
+                      screen: const SearchPage(),
+                      begin: const Offset(1, 0),
                     ),
                   );
                 },
-                icon: const Icon(
-                  FontAwesomeIcons.magnifyingGlass,
-                  size: 20,
-                  color: Color.fromRGBO(180, 190, 190, 1),
+                child: Material(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(90),
+                  ),
+                  elevation: 1,
+                  child: Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColor,
+                      borderRadius: BorderRadius.circular(90),
+                    ),
+                    child: const Icon(
+                      FontAwesomeIcons.magnifyingGlass,
+                      size: 20,
+                      color: Color.fromRGBO(180, 190, 190, 1),
+                    ),
+                  ),
                 ),
-              )
+              ),
             ],
           ),
           const SizedBox(height: 20),
@@ -243,7 +259,7 @@ class _AnalyticPageState extends State<AnalyticPage>
                     child: Text(
                       AppLocalizations.of(context).translate('no_data'),
                       style: const TextStyle(
-                        color: Colors.blue,
+                        color: Color.fromRGBO(255, 224, 111, 1),
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),

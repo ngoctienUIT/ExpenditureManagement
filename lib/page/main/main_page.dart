@@ -1,4 +1,6 @@
 import 'package:expenditure_management/constants/function/on_will_pop.dart';
+import 'package:expenditure_management/constants/function/route_function.dart';
+import 'package:expenditure_management/page/add_spending/add_spending_page.dart';
 import 'package:expenditure_management/page/main/profile/profile_page.dart';
 import 'package:expenditure_management/setting/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
@@ -39,7 +41,10 @@ class _MainPageState extends State<MainPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.pushNamed(context, '/add');
+          Navigator.of(context).push(
+            createRoute(screen: const AddSpendingPage()),
+          );
+          // Navigator.pushNamed(context, '/add');
         },
         child: const Icon(Icons.add_rounded),
       ),
@@ -92,7 +97,9 @@ class _MainPageState extends State<MainPage> {
                     text: AppLocalizations.of(context).translate('account'),
                     index: 3,
                     current: currentTab,
-                    icon: FontAwesomeIcons.user,
+                    icon: currentTab == 3
+                        ? FontAwesomeIcons.userLarge
+                        : FontAwesomeIcons.user,
                     action: () {
                       setState(() => currentTab = 3);
                     },

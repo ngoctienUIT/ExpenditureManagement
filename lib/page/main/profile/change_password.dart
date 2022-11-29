@@ -1,5 +1,7 @@
+import 'package:expenditure_management/constants/function/route_function.dart';
 import 'package:expenditure_management/page/login/widget/custom_button.dart';
 import 'package:expenditure_management/page/login/widget/input_password.dart';
+import 'package:expenditure_management/page/main/profile/new_password.dart';
 import 'package:expenditure_management/setting/localization/app_localizations.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -40,6 +42,7 @@ class _ChangePasswordState extends State<ChangePassword> {
               Text(
                 AppLocalizations.of(context)
                     .translate('you_want_change_your_password'),
+                textAlign: TextAlign.center,
                 style:
                     const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
               ),
@@ -51,7 +54,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                 style: const TextStyle(fontSize: 18),
               ),
               const SizedBox(height: 50),
-              inputPassword(
+              InputPassword(
                 hint: "Password",
                 controller: _passwordController,
                 hide: hide,
@@ -73,7 +76,10 @@ class _ChangePasswordState extends State<ChangePassword> {
                           await user.reauthenticateWithCredential(credential);
                       if (result.user != null) {
                         if (!mounted) return;
-                        Navigator.pushReplacementNamed(context, '/new');
+                        Navigator.of(context).push(createRoute(
+                          screen: const NewPassword(),
+                          begin: const Offset(1, 0),
+                        ));
                       } else {
                         if (!mounted) return;
                         Fluttertoast.showToast(
