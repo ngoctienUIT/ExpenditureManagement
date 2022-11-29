@@ -84,7 +84,7 @@ class _SummarySpendingState extends State<SummarySpending> {
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
-            color: Colors.white,
+            color: Theme.of(context).backgroundColor,
           ),
           child: Column(
             children: [
@@ -151,7 +151,7 @@ class _SummarySpendingState extends State<SummarySpending> {
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
-            color: Colors.white,
+            color: Theme.of(context).backgroundColor,
           ),
           child: Column(
             children: [

@@ -12,7 +12,6 @@ import 'package:expenditure_management/page/main/profile/change_password.dart';
 import 'package:expenditure_management/page/main/profile/currency_exchange_rate.dart';
 import 'package:expenditure_management/page/main/profile/edit_profile_page.dart';
 import 'package:expenditure_management/page/main/profile/history_page.dart';
-import 'package:expenditure_management/page/main/profile/new_password.dart';
 import 'package:expenditure_management/page/main/profile/widget/info_widget.dart';
 import 'package:expenditure_management/page/main/profile/widget/setting_item.dart';
 import 'package:expenditure_management/setting/bloc/setting_cubit.dart';

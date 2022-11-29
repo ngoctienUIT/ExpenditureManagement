@@ -20,7 +20,7 @@ class BuildSpending extends StatelessWidget {
         ? (spendingList!.isEmpty
             ? Center(
                 child: Text(
-                  "Bạn không có bất kỳ chi tiêu nào\nvào ngày ${DateFormat("dd/MM/yyyy").format(date!)}",
+                  "${AppLocalizations.of(context).translate('you_have_spending_the_day')} ${DateFormat("dd/MM/yyyy").format(date!)}",
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,

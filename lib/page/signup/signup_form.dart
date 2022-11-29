@@ -85,7 +85,7 @@ class _SignupFormState extends State<SignupForm> {
                   const SizedBox(height: 10),
                   const Text("Welcome to App", style: TextStyle(fontSize: 20)),
                   const SizedBox(height: 50),
-                  inputText(
+                  InputText(
                     hint: AppLocalizations.of(context).translate('full_name'),
                     validator: 1,
                     controller: _nameController,
@@ -93,7 +93,7 @@ class _SignupFormState extends State<SignupForm> {
                     textCapitalization: TextCapitalization.words,
                   ),
                   const SizedBox(height: 20),
-                  inputText(
+                  InputText(
                     hint: "Email",
                     validator: 0,
                     controller: _userController,
@@ -145,7 +145,7 @@ class _SignupFormState extends State<SignupForm> {
                       width: double.infinity,
                       height: 57,
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: Theme.of(context).backgroundColor,
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Row(
@@ -165,7 +165,7 @@ class _SignupFormState extends State<SignupForm> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  inputPassword(
+                  InputPassword(
                     action: () {
                       check = false;
                       setState(() => hide = !hide);
@@ -175,7 +175,7 @@ class _SignupFormState extends State<SignupForm> {
                     hide: hide,
                   ),
                   const SizedBox(height: 20),
-                  inputPassword(
+                  InputPassword(
                     action: () {
                       check = false;
                       setState(() => hide = !hide);

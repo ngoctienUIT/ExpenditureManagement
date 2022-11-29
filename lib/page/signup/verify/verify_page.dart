@@ -88,8 +88,10 @@ class _VerifyPageState extends State<VerifyPage> {
                 Text(
                   textAlign: TextAlign.center,
                   isEmailVerify
-                      ? "Chúc mừng bạn!\nEmail của bạn đã được xác thực!"
-                      : "Vui lòng kiểm tra email và xác thực email của bạn!",
+                      ? AppLocalizations.of(context)
+                          .translate('congratulation_your_email_verified')
+                      : AppLocalizations.of(context).translate(
+                          'please_check_your_email_verify_your_email'),
                   style: const TextStyle(fontSize: 18),
                 ),
                 const SizedBox(height: 20),

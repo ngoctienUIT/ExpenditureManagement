@@ -286,12 +286,13 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(20, 5, 0, 5),
                   child: Row(
-                    children: const [
-                      Icon(FontAwesomeIcons.image, size: 30),
-                      SizedBox(width: 10),
+                    children: [
+                      const Icon(FontAwesomeIcons.image, size: 30),
+                      const SizedBox(width: 10),
                       Text(
-                        "Chọn ảnh từ thư viện",
-                        style: TextStyle(
+                        AppLocalizations.of(context)
+                            .translate('select_photo_gallery'),
+                        style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
@@ -309,12 +310,13 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(20, 5, 0, 5),
                   child: Row(
-                    children: const [
-                      Icon(FontAwesomeIcons.camera, size: 30),
-                      SizedBox(width: 10),
+                    children: [
+                      const Icon(FontAwesomeIcons.camera, size: 30),
+                      const SizedBox(width: 10),
                       Text(
-                        "Chụp ảnh từ camera",
-                        style: TextStyle(
+                        AppLocalizations.of(context)
+                            .translate('take_picture_camera'),
+                        style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),

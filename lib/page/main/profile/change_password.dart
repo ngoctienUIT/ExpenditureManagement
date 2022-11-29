@@ -42,6 +42,7 @@ class _ChangePasswordState extends State<ChangePassword> {
               Text(
                 AppLocalizations.of(context)
                     .translate('you_want_change_your_password'),
+                textAlign: TextAlign.center,
                 style:
                     const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
               ),
@@ -53,7 +54,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                 style: const TextStyle(fontSize: 18),
               ),
               const SizedBox(height: 50),
-              inputPassword(
+              InputPassword(
                 hint: "Password",
                 controller: _passwordController,
                 hide: hide,

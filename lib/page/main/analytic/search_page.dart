@@ -158,10 +158,11 @@ class _SearchPageState extends State<SearchPage> {
                           var spendingList = snapshot.data;
                           var list = spendingList!.where(checkResult).toList();
                           if (list.isEmpty) {
-                            return const Center(
+                            return Center(
                               child: Text(
-                                "Không có gì ở đây!",
-                                style: TextStyle(fontSize: 16),
+                                AppLocalizations.of(context)
+                                    .translate('nothing_here'),
+                                style: const TextStyle(fontSize: 16),
                               ),
                             );
                           }

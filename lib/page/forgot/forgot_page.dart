@@ -24,7 +24,10 @@ class _ForgotPageState extends State<ForgotPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(elevation: 0),
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+      ),
       body: Form(
         key: _formKey,
         child: Padding(
@@ -45,7 +48,7 @@ class _ForgotPageState extends State<ForgotPage> {
                 ),
               ),
               const SizedBox(height: 50),
-              inputText(
+              InputText(
                 hint: "Email",
                 validator: 0,
                 controller: _emailController,

@@ -90,14 +90,14 @@ class _LoginFormState extends State<LoginForm> {
                     style: TextStyle(fontSize: 20),
                   ),
                   const SizedBox(height: 50),
-                  inputText(
+                  InputText(
                     hint: "Email",
                     validator: 0,
                     controller: _userController,
                     inputType: TextInputType.emailAddress,
                   ),
                   const SizedBox(height: 20),
-                  inputPassword(
+                  InputPassword(
                     action: () {
                       check = false;
                       setState(() => hide = !hide);

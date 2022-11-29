@@ -319,9 +319,13 @@ class _AddSpendingPageState extends State<AddSpendingPage> {
       Navigator.pop(context);
       Navigator.pop(context);
     } else if (type == null) {
-      Fluttertoast.showToast(msg: "Vui lòng chọn loại");
+      Fluttertoast.showToast(
+          msg: AppLocalizations.of(context).translate('please_select_type'));
     } else {
-      Fluttertoast.showToast(msg: "Vui lòng nhập vào số tiền hợp lệ");
+      Fluttertoast.showToast(
+        msg:
+            AppLocalizations.of(context).translate('please_enter_valid_amount'),
+      );
     }
   }
 }

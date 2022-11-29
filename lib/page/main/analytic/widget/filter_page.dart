@@ -370,7 +370,10 @@ class _FilterPageState extends State<FilterPage> {
                         setState(() => filter.chooseIndex[0] = index);
                         Navigator.pop(context);
                       } else {
-                        Fluttertoast.showToast(msg: "Đầu vào không hợp lệ");
+                        Fluttertoast.showToast(
+                          msg: AppLocalizations.of(context)
+                              .translate('invalid_input'),
+                        );
                       }
                     },
                     child: const Text("Ok"),

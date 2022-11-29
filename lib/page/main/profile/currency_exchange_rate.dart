@@ -153,7 +153,8 @@ class _CurrencyExchangeRateState extends State<CurrencyExchangeRate> {
                   filled: true,
                   fillColor: Theme.of(context).scaffoldBackgroundColor,
                   border: InputBorder.none,
-                  hintText: "Tìm kiếm theo tên quốc gia hoặc tiền tệ",
+                  hintText: AppLocalizations.of(context)
+                      .translate('search_by_country_name_or_currency'),
                   counterText: "",
                   hintStyle: const TextStyle(fontSize: 16),
                   contentPadding: const EdgeInsets.all(10),
