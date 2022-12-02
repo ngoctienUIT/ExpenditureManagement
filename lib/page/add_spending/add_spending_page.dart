@@ -186,6 +186,7 @@ class _AddSpendingPageState extends State<AddSpendingPage> {
                 color: const Color.fromRGBO(221, 96, 0, 1),
                 controller: _note,
                 keyboardType: TextInputType.multiline,
+                textCapitalization: TextCapitalization.sentences,
                 hintText: AppLocalizations.of(context).translate('note'),
               ),
             ],
