@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:expenditure_management/constants/function/find_index.dart';
 import 'package:expenditure_management/controls/spending_firebase.dart';
 import 'package:expenditure_management/models/spending.dart';
 import 'package:expenditure_management/page/main/calendar/widget/build_spending.dart';
@@ -83,7 +84,46 @@ class _CalendarPageState extends State<CalendarPage> {
                                     });
                                   }),
                               const SizedBox(height: 5),
-                              body(dataSpending),
+                              Expanded(
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    children: [
+                                      if (_currentSpendingList!.isNotEmpty)
+                                        TotalSpending(
+                                            list: _currentSpendingList),
+                                      BuildSpending(
+                                        spendingList: _currentSpendingList,
+                                        date: _selectedDay,
+                                        change: (spending) async {
+                                          try {
+                                            spending.image = await FirebaseStorage
+                                                .instance
+                                                .ref()
+                                                .child(
+                                                    "spending/${spending.id}.png")
+                                                .getDownloadURL();
+                                          } catch (_) {}
+
+                                          setState(() {
+                                            if (isSameDay(spending.dateTime,
+                                                _selectedDay)) {
+                                              _currentSpendingList![findIndex(
+                                                  _currentSpendingList!,
+                                                  spending.id!)] = spending;
+                                            } else {
+                                              _currentSpendingList!.removeWhere(
+                                                  (element) =>
+                                                      element.id!.compareTo(
+                                                          spending.id!) ==
+                                                      0);
+                                            }
+                                          });
+                                        },
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
                             ],
                           );
                         }
@@ -93,37 +133,6 @@ class _CalendarPageState extends State<CalendarPage> {
               }
               return loadingData();
             }),
-      ),
-    );
-  }
-
-  Widget body(List<Spending> dataSpending) {
-    return Expanded(
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            if (_currentSpendingList!.isNotEmpty)
-              TotalSpending(
-                list: _currentSpendingList,
-              ),
-            BuildSpending(
-              spendingList: _currentSpendingList,
-              date: _selectedDay,
-              change: (spending) async {
-                try {
-                  spending.image = await FirebaseStorage.instance
-                      .ref()
-                      .child("spending/${spending.id}.png")
-                      .getDownloadURL();
-                } catch (_) {}
-
-                _currentSpendingList!.removeWhere(
-                    (element) => element.id!.compareTo(spending.id!) == 0);
-                setState(() => _currentSpendingList!.add(spending));
-              },
-            )
-          ],
-        ),
       ),
     );
   }

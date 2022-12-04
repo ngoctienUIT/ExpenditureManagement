@@ -47,6 +47,9 @@ class BuildSpending extends StatelessWidget {
             Navigator.of(context).push(createRoute(
               screen: ViewSpendingPage(
                 spending: spendingList[index],
+                change: (spending) {
+                  if (change != null) change!(spending);
+                },
               ),
               begin: const Offset(1, 0),
             ));
