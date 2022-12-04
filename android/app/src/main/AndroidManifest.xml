@@ -31,7 +31,7 @@
     </queries>
 
     <application
-        android:label="Expenditure Management"
+        android:label="Spending Management"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

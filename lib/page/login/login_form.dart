@@ -77,17 +77,19 @@ class _LoginFormState extends State<LoginForm> {
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
               child: Column(
                 children: [
-                  const Text(
-                    "Hello Again!",
-                    style: TextStyle(
+                  Text(
+                    AppLocalizations.of(context).translate('hello_again'),
+                    style: const TextStyle(
                       fontSize: 25,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   const SizedBox(height: 10),
-                  const Text(
-                    "Welcome back you've been missed",
-                    style: TextStyle(fontSize: 20),
+                  Text(
+                    AppLocalizations.of(context)
+                        .translate('welcome_back_you_been_missed'),
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 20),
                   ),
                   const SizedBox(height: 50),
                   InputText(
@@ -138,7 +140,7 @@ class _LoginFormState extends State<LoginForm> {
                     text: AppLocalizations.of(context).translate('sign_in'),
                   ),
                   const SizedBox(height: 30),
-                  textContinue(),
+                  const TextContinue(),
                   const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,

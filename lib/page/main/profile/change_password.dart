@@ -55,7 +55,7 @@ class _ChangePasswordState extends State<ChangePassword> {
               ),
               const SizedBox(height: 50),
               InputPassword(
-                hint: "Password",
+                hint: AppLocalizations.of(context).translate('password'),
                 controller: _passwordController,
                 hide: hide,
                 action: () {

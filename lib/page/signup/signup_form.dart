@@ -78,12 +78,16 @@ class _SignupFormState extends State<SignupForm> {
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
               child: Column(
                 children: [
-                  const Text(
-                    "Hello New User!",
-                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                  Text(
+                    AppLocalizations.of(context).translate('hello_new_user'),
+                    style: const TextStyle(
+                        fontSize: 25, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 10),
-                  const Text("Welcome to App", style: TextStyle(fontSize: 20)),
+                  Text(
+                    AppLocalizations.of(context).translate('welcome_to_app'),
+                    style: const TextStyle(fontSize: 20),
+                  ),
                   const SizedBox(height: 50),
                   InputText(
                     hint: AppLocalizations.of(context).translate('full_name'),

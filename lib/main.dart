@@ -95,7 +95,7 @@ class MyApp extends StatelessWidget {
                           : '/verify')
                       : '/main',
               routes: {
-                '/': (context) => const OnboardingPage(),
+                '/': (context) => const OnBoardingPage(),
                 '/login': (context) => const LoginPage(),
                 '/home': (context) => const HomePage(),
                 '/main': (context) => const MainPage(),

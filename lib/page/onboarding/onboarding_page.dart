@@ -4,31 +4,51 @@ import 'package:expenditure_management/setting/localization/app_localizations.da
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-class OnboardingPage extends StatefulWidget {
-  const OnboardingPage({Key? key}) : super(key: key);
+class OnBoardingPage extends StatefulWidget {
+  const OnBoardingPage({Key? key}) : super(key: key);
 
   @override
-  State<OnboardingPage> createState() => _OnboardingPageState();
+  State<OnBoardingPage> createState() => _OnBoardingPageState();
 }
 
-class _OnboardingPageState extends State<OnboardingPage> {
+class _OnBoardingPageState extends State<OnBoardingPage> {
   final controller = PageController();
   bool isLastPage = false;
   List<Map<String, String>> listPage = [
     {
-      "image": "assets/images/",
-      "title": "Trang chủ",
-      "content": "Xem tổng kết chi tiêu và số dư còn lại hàng tháng"
+      "image": "assets/intro/home.jpg",
+      "title": "home",
+      "content": "view_monthly_spending_summary_and_remaining_balance"
     },
     {
-      "image": "assets/images/",
-      "title": "Lịch",
-      "content": "Xem lại những chi tiêu theo lịch biểu"
+      "image": "assets/intro/calendar.jpg",
+      "title": "calendar",
+      "content": "review_your_scheduled_expenses"
     },
     {
-      "image": "assets/images/",
-      "title": "Báo cáo",
-      "content": "Xem báo cáo chi tiêu và thu nhập của bạn qua biểu đồ"
+      "image": "assets/intro/add.jpg",
+      "title": "add_spending",
+      "content": "add_and_edit_your_daily_spending"
+    },
+    {
+      "image": "assets/intro/share.jpg",
+      "title": "share",
+      "content": "share_your_spending_with_friends"
+    },
+    {
+      "image": "assets/intro/search.jpg",
+      "title": "search",
+      "content": "search_for_your_expenses"
+    },
+    {
+      "image": "assets/intro/analytic.jpg",
+      "title": "statistical",
+      "content": "view_your_spending_and_income_reports_through_graphs"
+    },
+    {
+      "image": "assets/intro/profile.jpg",
+      "title": "account",
+      "content": "edit_personal_information_and_other_settings"
     },
   ];
 
@@ -48,9 +68,11 @@ class _OnboardingPageState extends State<OnboardingPage> {
             controller: controller,
             itemCount: listPage.length,
             onPageChanged: (value) {
-              setState(() => isLastPage = value == 2);
+              setState(() => isLastPage = value == 6);
             },
-            itemBuilder: (context, index) => itemOnboarding(listPage[index]),
+            itemBuilder: (context, index) => ItemOnBoarding(
+              item: listPage[index],
+            ),
           ),
         ),
       ),
@@ -88,7 +110,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   Center(
                     child: SmoothPageIndicator(
                       controller: controller,
-                      count: 3,
+                      count: 7,
                       effect: WormEffect(
                         spacing: 10,
                         dotWidth: 10,
