@@ -40,10 +40,10 @@ class _ForgotPageState extends State<ForgotPage> {
                     const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 20),
-              const Text(
+              Text(
                 textAlign: TextAlign.center,
-                "Don't worry! It happens. Please enter the email address with your account!",
-                style: TextStyle(
+                AppLocalizations.of(context).translate('don_worry_it_happens'),
+                style: const TextStyle(
                   fontSize: 18,
                 ),
               ),

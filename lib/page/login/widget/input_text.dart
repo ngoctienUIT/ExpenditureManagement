@@ -1,3 +1,4 @@
+import 'package:expenditure_management/setting/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:expenditure_management/constants/app_styles.dart';
 
@@ -31,11 +32,11 @@ class InputText extends StatelessWidget {
             (value!.isEmpty ||
                 !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                     .hasMatch(value))) {
-          return 'Enter a valid email!';
+          return AppLocalizations.of(context).translate('enter_valid_email');
         } else if (validator == 1 && value!.isEmpty) {
-          return 'Enter a valid name';
+          return AppLocalizations.of(context).translate('enter_valid_name');
         } else if (validator == 2 && value!.isEmpty) {
-          return 'Enter a valid OTP';
+          return AppLocalizations.of(context).translate('enter_valid_OTP');
         }
         return null;
       },

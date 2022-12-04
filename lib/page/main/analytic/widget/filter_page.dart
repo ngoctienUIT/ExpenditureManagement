@@ -1,4 +1,5 @@
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
+import 'package:expenditure_management/constants/function/route_function.dart';
 import 'package:expenditure_management/constants/list.dart';
 import 'package:expenditure_management/models/filter.dart';
 import 'package:expenditure_management/page/add_spending/add_friend_page.dart';
@@ -218,10 +219,9 @@ class _FilterPageState extends State<FilterPage> {
         Expanded(
           child: InkWell(
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => AddFriendPage(
+              Navigator.of(context).push(
+                createRoute(
+                  screen: AddFriendPage(
                     friends: filter.friends!,
                     colors: filter.colors!,
                     action: (friends, colors) {
@@ -231,6 +231,7 @@ class _FilterPageState extends State<FilterPage> {
                       });
                     },
                   ),
+                  begin: const Offset(1, 0),
                 ),
               );
             },

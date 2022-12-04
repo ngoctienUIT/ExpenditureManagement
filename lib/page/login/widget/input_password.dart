@@ -1,3 +1,4 @@
+import 'package:expenditure_management/setting/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:expenditure_management/constants/app_styles.dart';
@@ -30,11 +31,12 @@ class InputPassword extends StatelessWidget {
         if (password != null &&
                 password!.text.toString() != controller.text.toString() ||
             password != null && value!.isEmpty) {
-          return 'Enter a valid confirm password!';
+          return AppLocalizations.of(context)
+              .translate('enter_valid_confirm_password');
         }
 
         if (value!.isEmpty && password == null) {
-          return 'Enter a valid password!';
+          return AppLocalizations.of(context).translate('enter_valid_password');
         }
 
         return null;
