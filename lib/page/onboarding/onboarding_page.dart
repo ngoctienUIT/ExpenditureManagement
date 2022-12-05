@@ -101,7 +101,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   TextButton(
-                    onPressed: () => controller.jumpToPage(2),
+                    onPressed: () => controller.jumpToPage(6),
                     child: Text(
                       AppLocalizations.of(context).translate('skip'),
                       style: const TextStyle(fontSize: 16),
