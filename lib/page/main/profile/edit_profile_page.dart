@@ -127,7 +127,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             Row(
                               children: [
                                 const Spacer(),
-                                genderWidget(
+                                GenderWidget(
                                     currentGender: gender,
                                     gender: true,
                                     action: () {
@@ -136,7 +136,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                       }
                                     }),
                                 const Spacer(),
-                                genderWidget(
+                                GenderWidget(
                                     currentGender: gender,
                                     gender: false,
                                     action: () {

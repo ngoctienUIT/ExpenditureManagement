@@ -107,7 +107,7 @@ class _SignupFormState extends State<SignupForm> {
                   Row(
                     children: [
                       const Spacer(),
-                      genderWidget(
+                      GenderWidget(
                           currentGender: gender,
                           gender: true,
                           action: () {
@@ -117,7 +117,7 @@ class _SignupFormState extends State<SignupForm> {
                             }
                           }),
                       const Spacer(),
-                      genderWidget(
+                      GenderWidget(
                           currentGender: gender,
                           gender: false,
                           action: () {

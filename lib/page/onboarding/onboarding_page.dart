@@ -1,4 +1,5 @@
 import 'package:expenditure_management/constants/app_colors.dart';
+import 'package:expenditure_management/constants/function/on_will_pop.dart';
 import 'package:expenditure_management/page/onboarding/item_onboarding.dart';
 import 'package:expenditure_management/setting/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,7 @@ class OnBoardingPage extends StatefulWidget {
 class _OnBoardingPageState extends State<OnBoardingPage> {
   final controller = PageController();
   bool isLastPage = false;
+  DateTime? currentBackPressTime;
   List<Map<String, String>> listPage = [
     {
       "image": "assets/intro/home.jpg",
@@ -61,17 +63,23 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Container(
-          padding: const EdgeInsets.only(bottom: 60),
-          child: PageView.builder(
-            controller: controller,
-            itemCount: listPage.length,
-            onPageChanged: (value) {
-              setState(() => isLastPage = value == 6);
-            },
-            itemBuilder: (context, index) => ItemOnBoarding(
-              item: listPage[index],
+      body: WillPopScope(
+        onWillPop: () => onWillPop(
+          action: (now) => currentBackPressTime = now,
+          currentBackPressTime: currentBackPressTime,
+        ),
+        child: SafeArea(
+          child: Container(
+            padding: const EdgeInsets.only(bottom: 60),
+            child: PageView.builder(
+              controller: controller,
+              itemCount: listPage.length,
+              onPageChanged: (value) {
+                setState(() => isLastPage = value == 6);
+              },
+              itemBuilder: (context, index) => ItemOnBoarding(
+                item: listPage[index],
+              ),
             ),
           ),
         ),
@@ -101,7 +109,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   TextButton(
-                    onPressed: () => controller.jumpToPage(2),
+                    onPressed: () => controller.jumpToPage(6),
                     child: Text(
                       AppLocalizations.of(context).translate('skip'),
                       style: const TextStyle(fontSize: 16),
