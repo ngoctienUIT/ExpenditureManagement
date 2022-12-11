@@ -27,7 +27,7 @@ class HistoryPage extends StatelessWidget {
             .get(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            var data = snapshot.requireData.data() as Map<String, dynamic>;
+            var data = (snapshot.requireData.data() ?? <String, dynamic>{});
             List<String> listID = [];
             for (var list in data.values) {
               listID.addAll(
