@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:math';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expenditure_management/constants/function/loading_animation.dart';
 import 'package:expenditure_management/constants/function/route_function.dart';
 import 'package:expenditure_management/constants/list.dart';
@@ -14,6 +15,7 @@ import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:shimmer/shimmer.dart';
 
 class ViewSpendingPage extends StatefulWidget {
   const ViewSpendingPage({
@@ -233,7 +235,24 @@ class _ViewSpendingPageState extends State<ViewSpendingPage> {
                     ),
                   if (spending.friends != null && spending.friends!.isNotEmpty)
                     const SizedBox(height: 10),
-                  if (spending.image != null) Image.network(spending.image!)
+                  if (spending.image != null)
+                    CachedNetworkImage(
+                      imageUrl: spending.image!,
+                      width: double.infinity,
+                      fit: BoxFit.fitWidth,
+                      placeholder: (context, url) => Shimmer.fromColors(
+                        baseColor: Colors.grey[300]!,
+                        highlightColor: Colors.grey[100]!,
+                        child: Container(
+                          height: 150,
+                          width: double.infinity,
+                          color: Colors.grey,
+                        ),
+                      ),
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
+                    ),
+                  //Image.network(spending.image!)
                 ],
               ),
             ),
@@ -319,6 +338,11 @@ class _ViewSpendingPageState extends State<ViewSpendingPage> {
               children: [
                 const Spacer(),
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
                   onPressed: () async {
                     loadingAnimation(context);
                     await SpendingFirebase.deleteSpending(spending);
@@ -334,6 +358,11 @@ class _ViewSpendingPageState extends State<ViewSpendingPage> {
                 ),
                 const Spacer(),
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
                   onPressed: () {
                     Navigator.pop(context);
                   },

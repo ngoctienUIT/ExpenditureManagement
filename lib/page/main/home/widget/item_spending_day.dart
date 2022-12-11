@@ -1,3 +1,4 @@
+import 'package:expenditure_management/constants/function/route_function.dart';
 import 'package:expenditure_management/constants/list.dart';
 import 'package:expenditure_management/models/spending.dart';
 import 'package:expenditure_management/page/view_spending/view_spending_page.dart';
@@ -123,33 +124,31 @@ class _ItemSpendingDayState extends State<ItemSpendingDay> {
         (index) {
           return InkWell(
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ViewSpendingPage(
-                    spending: list[index],
-                    change: (spending) async {
-                      try {
-                        spending.image = await FirebaseStorage.instance
-                            .ref()
-                            .child("spending/${spending.id}.png")
-                            .getDownloadURL();
-                      } catch (_) {}
-                      widget.spendingList.removeWhere((element) =>
-                          element.id!.compareTo(spending.id!) == 0);
-                      setState(() {
-                        widget.spendingList.add(spending);
-                      });
-                    },
-                    delete: (id) {
-                      setState(() {
-                        widget.spendingList.removeWhere(
-                            (element) => element.id!.compareTo(id) == 0);
-                      });
-                    },
-                  ),
+              Navigator.of(context).push(createRoute(
+                screen: ViewSpendingPage(
+                  spending: list[index],
+                  change: (spending) async {
+                    try {
+                      spending.image = await FirebaseStorage.instance
+                          .ref()
+                          .child("spending/${spending.id}.png")
+                          .getDownloadURL();
+                    } catch (_) {}
+                    widget.spendingList.removeWhere(
+                        (element) => element.id!.compareTo(spending.id!) == 0);
+                    setState(() {
+                      widget.spendingList.add(spending);
+                    });
+                  },
+                  delete: (id) {
+                    setState(() {
+                      widget.spendingList.removeWhere(
+                          (element) => element.id!.compareTo(id) == 0);
+                    });
+                  },
                 ),
-              );
+                begin: const Offset(1, 0),
+              ));
             },
             child: Container(
               padding: const EdgeInsets.all(10),

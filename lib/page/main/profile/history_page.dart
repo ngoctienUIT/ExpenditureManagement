@@ -19,6 +19,12 @@ class HistoryPage extends StatelessWidget {
         elevation: 2,
         title: Text(AppLocalizations.of(context).translate("history")),
         centerTitle: true,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(Icons.arrow_back_ios_new_rounded),
+        ),
       ),
       body: FutureBuilder(
         future: FirebaseFirestore.instance
@@ -27,7 +33,7 @@ class HistoryPage extends StatelessWidget {
             .get(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            var data = snapshot.requireData.data() as Map<String, dynamic>;
+            var data = (snapshot.requireData.data() ?? <String, dynamic>{});
             List<String> listID = [];
             for (var list in data.values) {
               listID.addAll(

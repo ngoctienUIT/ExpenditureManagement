@@ -88,7 +88,11 @@ class _ChangePasswordState extends State<ChangePassword> {
                         );
                       }
                     } catch (e) {
-                      Fluttertoast.showToast(msg: e.toString());
+                      Fluttertoast.showToast(
+                        msg: AppLocalizations.of(context)
+                            .translate("incorrect_password"),
+                      );
+                      // Fluttertoast.showToast(msg: e.toString());
                     }
                     return;
                   }
