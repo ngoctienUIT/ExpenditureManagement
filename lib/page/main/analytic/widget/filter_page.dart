@@ -362,6 +362,11 @@ class _FilterPageState extends State<FilterPage> {
                     ),
                   const SizedBox(height: 10),
                   ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                    ),
                     onPressed: () {
                       int money = int.parse(moneyController.text
                           .replaceAll(RegExp(r'[^0-9]'), ''));

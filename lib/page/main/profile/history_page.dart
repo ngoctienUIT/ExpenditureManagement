@@ -19,6 +19,12 @@ class HistoryPage extends StatelessWidget {
         elevation: 2,
         title: Text(AppLocalizations.of(context).translate("history")),
         centerTitle: true,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(Icons.arrow_back_ios_new_rounded),
+        ),
       ),
       body: FutureBuilder(
         future: FirebaseFirestore.instance
