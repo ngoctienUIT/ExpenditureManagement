@@ -23,7 +23,7 @@ class AboutPage extends StatelessWidget {
           Image.asset("assets/logo/logo.png", width: 150),
           const SizedBox(height: 15),
           const Text(
-            "Spending Manager",
+            "Spending Management",
             style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 10),

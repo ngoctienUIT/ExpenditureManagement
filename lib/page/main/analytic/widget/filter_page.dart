@@ -59,10 +59,7 @@ class _FilterPageState extends State<FilterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          AppLocalizations.of(context).translate('filter'),
-          style: const TextStyle(color: Colors.black),
-        ),
+        title: Text(AppLocalizations.of(context).translate('filter')),
         centerTitle: true,
         leading: IconButton(
           onPressed: () {
@@ -88,7 +85,7 @@ class _FilterPageState extends State<FilterPage> {
             },
             child: Text(
               AppLocalizations.of(context).translate('search'),
-              style: const TextStyle(fontSize: 16, color: Colors.black),
+              style: const TextStyle(fontSize: 16),
             ),
           )
         ],
