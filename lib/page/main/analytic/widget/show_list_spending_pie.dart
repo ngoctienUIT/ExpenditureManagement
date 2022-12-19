@@ -6,7 +6,7 @@ import 'package:expenditure_management/setting/localization/app_localizations.da
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-Widget showListSpending({required List<Spending> list}) {
+Widget showListSpendingPie({required List<Spending> list}) {
   var numberFormat = NumberFormat.currency(locale: "vi_VI");
   int sum = list.isNotEmpty
       ? list.map((e) => e.money).reduce((value, element) => value + element)

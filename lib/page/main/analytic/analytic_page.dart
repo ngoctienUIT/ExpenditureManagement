@@ -8,7 +8,8 @@ import 'package:expenditure_management/page/main/analytic/chart/pie_chart.dart';
 import 'package:expenditure_management/page/main/analytic/search_page.dart';
 import 'package:expenditure_management/page/main/analytic/widget/custom_tabbar.dart';
 import 'package:expenditure_management/page/main/analytic/widget/show_date.dart';
-import 'package:expenditure_management/page/main/analytic/widget/show_list_spending.dart';
+import 'package:expenditure_management/page/main/analytic/widget/show_list_spending_column.dart';
+import 'package:expenditure_management/page/main/analytic/widget/show_list_spending_pie.dart';
 import 'package:expenditure_management/page/main/analytic/widget/tabbar_chart.dart';
 import 'package:expenditure_management/page/main/analytic/widget/tabbar_type.dart';
 import 'package:expenditure_management/page/main/analytic/widget/total_report.dart';
@@ -211,7 +212,11 @@ class _AnalyticPageState extends State<AnalyticPage>
                           if (spendingList.isNotEmpty)
                             TotalReport(list: spendingList),
                           if (spendingList.isNotEmpty)
-                            showListSpending(list: classifySpending)
+                            (chart
+                                ? showListSpendingPie(list: classifySpending)
+                                : ShowListSpendingColumn(
+                                    spendingList: classifySpending,
+                                    index: _tabController.index))
                         ],
                       ),
                     ),

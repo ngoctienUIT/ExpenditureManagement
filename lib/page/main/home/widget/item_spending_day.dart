@@ -75,7 +75,7 @@ class _ItemSpendingDayState extends State<ItemSpendingDay> {
                   child: Row(
                     children: [
                       Text(
-                        "${listDate[index].day}",
+                        DateFormat("dd").format(listDate[index]),
                         style: const TextStyle(fontSize: 30),
                       ),
                       const SizedBox(width: 20),
