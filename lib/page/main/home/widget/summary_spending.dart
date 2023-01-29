@@ -1,12 +1,13 @@
 import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expenditure_management/models/spending.dart';
+import 'package:expenditure_management/models/user.dart' as myuser;
 import 'package:expenditure_management/setting/localization/app_localizations.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:expenditure_management/models/user.dart' as myuser;
 
 class SummarySpending extends StatefulWidget {
   const SummarySpending({Key? key, this.spendingList}) : super(key: key);
@@ -84,7 +85,7 @@ class _SummarySpendingState extends State<SummarySpending> {
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
-            color: Theme.of(context).backgroundColor,
+            color: Theme.of(context).colorScheme.background,
           ),
           child: Column(
             children: [
@@ -151,7 +152,7 @@ class _SummarySpendingState extends State<SummarySpending> {
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
-            color: Theme.of(context).backgroundColor,
+            color: Theme.of(context).colorScheme.background,
           ),
           child: Column(
             children: [

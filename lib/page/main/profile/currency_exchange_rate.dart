@@ -5,8 +5,8 @@ import 'package:expenditure_management/models/api_service.dart';
 import 'package:expenditure_management/setting/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:html/dom.dart' as html_parser;
+import 'package:shimmer/shimmer.dart';
 
 class CurrencyExchangeRate extends StatefulWidget {
   const CurrencyExchangeRate({Key? key}) : super(key: key);
@@ -57,7 +57,7 @@ class _CurrencyExchangeRateState extends State<CurrencyExchangeRate> {
           },
           icon: const Icon(Icons.arrow_back_ios_new_rounded),
         ),
-        backgroundColor: Theme.of(context).backgroundColor,
+        backgroundColor: Theme.of(context).colorScheme.background,
         centerTitle: true,
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(80),
@@ -144,7 +144,7 @@ class _CurrencyExchangeRateState extends State<CurrencyExchangeRate> {
             const SizedBox(height: 10),
             Container(
               padding: const EdgeInsets.all(10),
-              color: Theme.of(context).backgroundColor,
+              color: Theme.of(context).colorScheme.background,
               child: TextField(
                 controller: _searchController,
                 style: const TextStyle(fontSize: 20),
