@@ -6,19 +6,19 @@ import 'package:expenditure_management/models/spending.dart';
 import 'package:expenditure_management/page/main/analytic/chart/column_chart.dart';
 import 'package:expenditure_management/page/main/analytic/chart/pie_chart.dart';
 import 'package:expenditure_management/page/main/analytic/search_page.dart';
-import 'package:expenditure_management/page/main/analytic/widget/custom_tabbar.dart';
-import 'package:expenditure_management/page/main/analytic/widget/show_date.dart';
-import 'package:expenditure_management/page/main/analytic/widget/show_list_spending_column.dart';
-import 'package:expenditure_management/page/main/analytic/widget/show_list_spending_pie.dart';
-import 'package:expenditure_management/page/main/analytic/widget/tabbar_chart.dart';
-import 'package:expenditure_management/page/main/analytic/widget/tabbar_type.dart';
-import 'package:expenditure_management/page/main/analytic/widget/total_report.dart';
-import 'package:expenditure_management/page/main/calendar/widget/custom_table_calendar.dart';
 import 'package:expenditure_management/setting/localization/app_localizations.dart';
+import 'package:expenditure_management/widget/custom_tabbar.dart';
+import 'package:expenditure_management/widget/custom_table_calendar.dart';
+import 'package:expenditure_management/widget/show_date.dart';
+import 'package:expenditure_management/widget/show_list_spending_column.dart';
+import 'package:expenditure_management/widget/show_list_spending_pie.dart';
+import 'package:expenditure_management/widget/tabbar_chart.dart';
+import 'package:expenditure_management/widget/tabbar_type.dart';
+import 'package:expenditure_management/widget/total_report.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:table_calendar/table_calendar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 class AnalyticPage extends StatefulWidget {
   const AnalyticPage({Key? key}) : super(key: key);

@@ -5,8 +5,8 @@ import 'package:expenditure_management/page/main/analytic/analytic_page.dart';
 import 'package:expenditure_management/page/main/calendar/calendar_page.dart';
 import 'package:expenditure_management/page/main/home/home_page.dart';
 import 'package:expenditure_management/page/main/profile/profile_page.dart';
-import 'package:expenditure_management/page/main/widget/item_bottom_tab.dart';
 import 'package:expenditure_management/setting/localization/app_localizations.dart';
+import 'package:expenditure_management/widget/item_bottom_tab.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 

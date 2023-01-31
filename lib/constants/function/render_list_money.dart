@@ -1,5 +1,5 @@
 import 'package:expenditure_management/models/spending.dart';
-import 'package:expenditure_management/page/main/calendar/widget/custom_table_calendar.dart';
+import 'package:expenditure_management/widget/custom_table_calendar.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 

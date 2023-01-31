@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
@@ -7,9 +8,10 @@ import 'package:expenditure_management/constants/app_styles.dart';
 import 'package:expenditure_management/constants/function/loading_animation.dart';
 import 'package:expenditure_management/constants/function/pick_function.dart';
 import 'package:expenditure_management/controls/spending_firebase.dart';
-import 'package:expenditure_management/page/main/profile/widget/show_birthday.dart';
+import 'package:expenditure_management/models/user.dart' as myuser;
 import 'package:expenditure_management/page/signup/gender_widget.dart';
 import 'package:expenditure_management/setting/localization/app_localizations.dart';
+import 'package:expenditure_management/widget/show_birthday.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,7 +19,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:intl/intl.dart';
-import 'package:expenditure_management/models/user.dart' as myuser;
 import 'package:shimmer/shimmer.dart';
 
 class EditProfilePage extends StatefulWidget {

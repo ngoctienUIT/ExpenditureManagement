@@ -1,8 +1,8 @@
 import 'package:expenditure_management/constants/function/route_function.dart';
-import 'package:expenditure_management/page/login/widget/custom_button.dart';
-import 'package:expenditure_management/page/login/widget/input_password.dart';
 import 'package:expenditure_management/page/main/profile/new_password.dart';
 import 'package:expenditure_management/setting/localization/app_localizations.dart';
+import 'package:expenditure_management/widget/custom_button.dart';
+import 'package:expenditure_management/widget/input_password.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';

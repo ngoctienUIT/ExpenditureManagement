@@ -1,7 +1,7 @@
 import 'package:expenditure_management/constants/function/on_will_pop.dart';
 import 'package:expenditure_management/setting/localization/app_localizations.dart';
+import 'package:expenditure_management/widget/custom_button.dart';
 import 'package:flutter/material.dart';
-import 'package:expenditure_management/page/login/widget/custom_button.dart';
 
 class SuccessPage extends StatefulWidget {
   const SuccessPage({Key? key}) : super(key: key);

@@ -1,4 +1,5 @@
 import 'dart:io' show Directory, File, Platform;
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:csv/csv.dart';
 import 'package:expenditure_management/constants/app_colors.dart';
@@ -7,15 +8,16 @@ import 'package:expenditure_management/constants/function/loading_animation.dart
 import 'package:expenditure_management/constants/function/route_function.dart';
 import 'package:expenditure_management/constants/list.dart';
 import 'package:expenditure_management/models/spending.dart';
+import 'package:expenditure_management/models/user.dart' as myuser;
 import 'package:expenditure_management/page/main/profile/about_page.dart';
 import 'package:expenditure_management/page/main/profile/change_password.dart';
 import 'package:expenditure_management/page/main/profile/currency_exchange_rate.dart';
 import 'package:expenditure_management/page/main/profile/edit_profile_page.dart';
 import 'package:expenditure_management/page/main/profile/history_page.dart';
-import 'package:expenditure_management/page/main/profile/widget/info_widget.dart';
-import 'package:expenditure_management/page/main/profile/widget/setting_item.dart';
 import 'package:expenditure_management/setting/bloc/setting_cubit.dart';
 import 'package:expenditure_management/setting/localization/app_localizations.dart';
+import 'package:expenditure_management/widget/info_widget.dart';
+import 'package:expenditure_management/widget/setting_item.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,7 +26,6 @@ import 'package:flutter_switch/flutter_switch.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:expenditure_management/models/user.dart' as myuser;
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
