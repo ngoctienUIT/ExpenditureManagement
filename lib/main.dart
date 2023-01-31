@@ -10,9 +10,9 @@ import 'package:expenditure_management/page/signup/verify/verify_page.dart';
 import 'package:expenditure_management/setting/bloc/setting_cubit.dart';
 import 'package:expenditure_management/setting/bloc/setting_state.dart';
 import 'package:expenditure_management/setting/localization/app_localizations_setup.dart';
-import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -67,11 +67,13 @@ class MyApp extends StatelessWidget {
                     )
                   : ThemeData(
                       cardColor: Colors.white,
-                      backgroundColor: Colors.white,
+                      colorScheme:
+                          const ColorScheme.light(background: Colors.white),
                       brightness: Brightness.light,
                       primarySwatch: Colors.blue,
                       scaffoldBackgroundColor: AppColors.whisperBackground,
-                      bottomAppBarColor: AppColors.whisperBackground,
+                      bottomAppBarTheme:
+                          BottomAppBarTheme(color: AppColors.whisperBackground),
                       floatingActionButtonTheme:
                           const FloatingActionButtonThemeData(
                         backgroundColor: Color.fromRGBO(121, 158, 84, 1),

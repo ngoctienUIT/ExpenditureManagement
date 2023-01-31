@@ -1,14 +1,14 @@
 import 'package:expenditure_management/constants/function/on_will_pop.dart';
 import 'package:expenditure_management/constants/function/route_function.dart';
 import 'package:expenditure_management/page/add_spending/add_spending_page.dart';
-import 'package:expenditure_management/page/main/profile/profile_page.dart';
-import 'package:expenditure_management/setting/localization/app_localizations.dart';
-import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:expenditure_management/page/main/analytic/analytic_page.dart';
 import 'package:expenditure_management/page/main/calendar/calendar_page.dart';
 import 'package:expenditure_management/page/main/home/home_page.dart';
+import 'package:expenditure_management/page/main/profile/profile_page.dart';
 import 'package:expenditure_management/page/main/widget/item_bottom_tab.dart';
+import 'package:expenditure_management/setting/localization/app_localizations.dart';
+import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -44,9 +44,11 @@ class _MainPageState extends State<MainPage> {
           Navigator.of(context).push(
             createRoute(screen: const AddSpendingPage()),
           );
-          // Navigator.pushNamed(context, '/add');
         },
-        child: const Icon(Icons.add_rounded),
+        child: Icon(
+          Icons.add_rounded,
+          color: Theme.of(context).colorScheme.background,
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(

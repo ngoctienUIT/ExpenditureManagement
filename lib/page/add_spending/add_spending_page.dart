@@ -1,18 +1,19 @@
 import 'dart:io';
+
 import 'package:expenditure_management/constants/app_styles.dart';
 import 'package:expenditure_management/constants/function/loading_animation.dart';
 import 'package:expenditure_management/constants/function/pick_function.dart';
 import 'package:expenditure_management/constants/function/route_function.dart';
-import 'package:expenditure_management/page/add_spending/widget/add_friend.dart';
-import 'package:expenditure_management/page/add_spending/widget/input_money.dart';
-import 'package:expenditure_management/page/add_spending/widget/pick_image_widget.dart';
 import 'package:expenditure_management/constants/list.dart';
 import 'package:expenditure_management/controls/spending_firebase.dart';
 import 'package:expenditure_management/models/spending.dart';
 import 'package:expenditure_management/page/add_spending/choose_type.dart';
+import 'package:expenditure_management/page/add_spending/widget/add_friend.dart';
+import 'package:expenditure_management/page/add_spending/widget/input_money.dart';
 import 'package:expenditure_management/page/add_spending/widget/input_spending.dart';
 import 'package:expenditure_management/page/add_spending/widget/item_spending.dart';
 import 'package:expenditure_management/page/add_spending/widget/more_button.dart';
+import 'package:expenditure_management/page/add_spending/widget/pick_image_widget.dart';
 import 'package:expenditure_management/page/add_spending/widget/remove_icon.dart';
 import 'package:expenditure_management/setting/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
@@ -54,7 +55,7 @@ class _AddSpendingPageState extends State<AddSpendingPage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 1,
-        backgroundColor: Theme.of(context).backgroundColor,
+        backgroundColor: Theme.of(context).colorScheme.background,
         title: Text(AppLocalizations.of(context).translate('add_spending')),
         centerTitle: true,
         actions: [
