@@ -1,20 +1,21 @@
-import 'package:expenditure_management/constants/app_colors.dart';
 import 'package:expenditure_management/firebase_options.dart';
-import 'package:expenditure_management/page/forgot/forgot_page.dart';
-import 'package:expenditure_management/page/forgot/success_page.dart';
-import 'package:expenditure_management/page/login/login_page.dart';
-import 'package:expenditure_management/page/main/home/home_page.dart';
-import 'package:expenditure_management/page/main/main_page.dart';
-import 'package:expenditure_management/page/onboarding/onboarding_page.dart';
-import 'package:expenditure_management/page/signup/verify/verify_page.dart';
-import 'package:expenditure_management/setting/bloc/setting_cubit.dart';
-import 'package:expenditure_management/setting/bloc/setting_state.dart';
-import 'package:expenditure_management/setting/localization/app_localizations_setup.dart';
+import 'package:expenditure_management/src/presentation/forgot/screen/forgot_page.dart';
+import 'package:expenditure_management/src/presentation/login/screen/login_page.dart';
+import 'package:expenditure_management/src/presentation/main/screen/main_page.dart';
+import 'package:expenditure_management/src/presentation/onboarding/screen/onboarding_page.dart';
+import 'package:expenditure_management/src/presentation/success/screen/success_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'src/core/setting/bloc/setting_cubit.dart';
+import 'src/core/setting/bloc/setting_state.dart';
+import 'src/core/setting/localization/app_localizations_setup.dart';
+import 'src/core/utils/constants/app_colors.dart';
+import 'src/presentation/home/screen/home_page.dart';
+import 'src/presentation/verify/screen/verify_page.dart';
 
 bool loginMethod = false;
 int? language;

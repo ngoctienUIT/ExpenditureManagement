@@ -43,13 +43,13 @@ dependencies:
   firebase_core: ^2.1.1
   firebase_storage: ^11.0.3
   cloud_firestore: ^4.0.3
-  fl_chart: ^0.60.0
+  fl_chart: ^0.62.0
   equatable: ^2.0.5
   shimmer: ^2.0.0
   font_awesome_flutter: ^10.2.1
-  google_sign_in: ^5.4.1
+  google_sign_in: ^6.1.0
   shared_preferences: ^2.0.15
-  intl: ^0.17.0
+  intl: ^0.18.0
   flutter_facebook_auth: ^5.0.1
   fluttertoast: ^8.0.9
   currency_text_input_formatter: ^2.1.7
@@ -57,7 +57,7 @@ dependencies:
   image_cropper: ^3.0.0
   table_calendar: ^3.0.7
   flutter_switch: ^0.3.2
-  dropdown_button2: ^1.8.5
+  dropdown_button2: ^2.1.0
   smooth_page_indicator: ^1.0.0+2
   cached_network_image: ^3.2.2
   url_launcher: ^6.1.6
@@ -79,7 +79,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
-  flutter_launcher_icons: ^0.11.0
+  flutter_launcher_icons: ^0.13.1
 
 flutter_icons:
   android: true
